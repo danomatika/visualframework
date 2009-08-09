@@ -10,6 +10,15 @@
 using namespace std;
 using namespace visual;
 
+// convenience class
+class OscReceiver : public OscListener
+{
+    protected:
+
+        void process(const osc::ReceivedMessage& m,
+                     const IpEndpointName& remoteEndpoint);
+};
+
 class ClassTests
 {
     public:
@@ -22,8 +31,6 @@ class ClassTests
 
         void testXmlFile(string file);
 
-        static void processOSC(const osc::ReceivedMessage& m, const IpEndpointName& remoteEndpoint);
-
         void startTestOscListener();
 
         void stopTestOscListener();
@@ -34,8 +41,7 @@ class ClassTests
 
     private:
 
-        OscListener listener;
-
+        OscReceiver listener;
 };
 
 #endif // CLASSTESTS_H

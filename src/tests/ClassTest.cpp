@@ -51,9 +51,9 @@ void ClassTests::testXmlFile(string file)
     LOG << endl;
 }
 
-void ClassTests::processOSC(const osc::ReceivedMessage& m, const IpEndpointName& remoteEndpoint)
+void OscReceiver::process(const osc::ReceivedMessage& m, const IpEndpointName& remoteEndpoint)
 {
-    LOG << "OscListener: Recieved OSC message to osc addr \"" << m.AddressPattern()
+    LOG << "OscListener: Received OSC message to osc addr \"" << m.AddressPattern()
         << "\" with type tag \"" << m.TypeTags() << "\"" << endl;
 /*
     osc::ReceivedMessageArgumentIterator argItr = m.ArgumentsBegin();
@@ -74,7 +74,6 @@ void ClassTests::startTestOscListener()
     LOG << "Starting OscListener on port 7000" << endl;
 
     listener.setPort(7000);
-    listener.processFunc(&processOSC);
     listener.startListening();
     LOG << endl;
 }

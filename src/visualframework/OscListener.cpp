@@ -5,50 +5,50 @@
 
 namespace visual {
 
-OscListener::OscListener(int port) : _listenThread(), _iPort(port)
-{
-    //_listenThread.socket = NULL;
-    process_func_ptr = NULL;
-}
+OscListener::OscListener(int port) : Thread("OscListener"), _iPort(port)
+{}
 
 void OscListener::startListening()
 {
-    _listenThread.socket =
+    socket =
         new UdpListeningReceiveSocket(IpEndpointName(IpEndpointName::ANY_ADDRESS, _iPort), this);
 
-    _listenThread.startThread();
+    startThread();
 }
 
 void OscListener::stopListening()
 {
     // stop osc listener
-    _listenThread.socket->AsynchronousBreak();
+    socket->AsynchronousBreak();
 
-    // stop thread
-    _listenThread.stopThread();
+    stopThread();
 
     // memory management
-    delete _listenThread.socket;
-    _listenThread.socket = NULL;
+    delete socket;
+    socket = NULL;
 
 }
 
-/* ***** Private Functions ***** */
+/* ***** Protected Functions ***** */
 
 void OscListener::ProcessMessage(const osc::ReceivedMessage& m, const IpEndpointName& remoteEndpoint)
 {
     try
     {
-        if(process_func_ptr != NULL)
-        {
-            process_func_ptr(m, remoteEndpoint);
-        }
+        // call the callback
+        process(m, remoteEndpoint);
     }
     catch(osc::Exception& e)
     {
-        LOG_ERROR << "OSCListener port " << _iPort << ": error while parsing message: \""
-                  << m.AddressPattern() << "\" \"" << e.what()<< "\"" << std::endl;
+        LOG_ERROR << "OSCListener: error while parsing message: "
+                  << "\"" << m.AddressPattern() << "\" on port "
+                  << _iPort << ": \"" << e.what()<< "\"" << std::endl;
     }
+}
+
+void OscListener::run()
+{
+    socket->Run();
 }
 
 } // namespace

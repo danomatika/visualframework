@@ -19,16 +19,11 @@ namespace visual {
 
     set the processing function to match messages
 **/
-class OscListener : public osc::OscPacketListener
+class OscListener : public osc::OscPacketListener, protected Thread
 {
     public:
 
         OscListener(int port=7000);
-
-        /// set processing function
-        void processFunc(void (*func)(const osc::ReceivedMessage& m,
-                                      const IpEndpointName& remoteEndpoint))
-            {process_func_ptr = func;}
 
         /// start the listening thread, opens connection
         void startListening();
@@ -37,7 +32,7 @@ class OscListener : public osc::OscPacketListener
         void stopListening();
 
         /// is the thread running?
-        bool isListening() {return _listenThread.isThreadRunning();}
+        bool isListening() {return isThreadRunning();}
 
         /// get port num
         int getPort() {return _iPort;}
@@ -48,29 +43,21 @@ class OscListener : public osc::OscPacketListener
 
     protected:
 
-        /// virtual callback from oscpack
-        virtual void ProcessMessage(const osc::ReceivedMessage& m,
-                                    const IpEndpointName& remoteEndpoint);
+        /// callback to implement
+        virtual void process(const osc::ReceivedMessage& m,
+                             const IpEndpointName& remoteEndpoint) = 0;
 
     private:
 
-        // convenience thread class
-        class ListenThread : public Thread
-        {
-            public:
-                ListenThread() : Thread("OscListener") {}
-                UdpListeningReceiveSocket* socket;
-            private:
-                void run()
-                {
-                    socket->Run();
-                }
-        } _listenThread;
+        // virtual callback from oscpack
+        virtual void ProcessMessage(const osc::ReceivedMessage& m,
+                                    const IpEndpointName& remoteEndpoint);
 
-        /// processing function pointer
-        void (*process_func_ptr)(const osc::ReceivedMessage&, const IpEndpointName&);
+        // thread main loop
+        void run();
 
         int _iPort;
+        UdpListeningReceiveSocket* socket;
 };
 
 } // namespace
