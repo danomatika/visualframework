@@ -11,6 +11,6 @@
 #include "./visualframework/OscListener.h"
 #include "./visualframework/OscSender.h"
 #include "./visualframework/Thread.h"
-#include "./visualframework/XmlFile.h"
+#include "./visualframework/Xml.h"
 
 #endif //VISUAL_FRAMEWORK_H

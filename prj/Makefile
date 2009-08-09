@@ -9,11 +9,11 @@ endif
 
 export CONFIG
 
-.PHONY: all clean externals visualframework
+.PHONY: all clean externals visualframework vftests
 
-all: externals visualframework
+all: externals visualframework vftests
 
-externals.make visualframework.make: premake.lua
+externals.make vftests.make visualframework.make: premake.lua
 	@echo ==== Regenerating Makefiles ====
 	@premake --file $^ --cc gcc --target gnu
 
@@ -25,6 +25,11 @@ visualframework:
 	@echo ==== Building visualframework ====
 	@$(MAKE) --no-print-directory -C . -f visualframework.make
 
+vftests:
+	@echo ==== Building vftests ====
+	@$(MAKE) --no-print-directory -C . -f vftests.make
+
 clean:
 	@$(MAKE) --no-print-directory -C . -f externals.make clean
 	@$(MAKE) --no-print-directory -C . -f visualframework.make clean
+	@$(MAKE) --no-print-directory -C . -f vftests.make clean

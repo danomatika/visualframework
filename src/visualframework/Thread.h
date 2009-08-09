@@ -52,6 +52,6 @@ class Thread
         std::string _name;
 };
 
-#endif // VISUAL_THREAD_H
-
 } // namespace
+
+#endif // VISUAL_THREAD_H

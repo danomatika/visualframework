@@ -1,0 +1,52 @@
+<?xml version="1.0" standalone=no>
+<visual>
+	<group name="phatnphunky1">
+		<sprite name="bar1" width="12" height="4" frames="2">
+			<frame>
+			------------
+			------------
+			------------
+			*-----------
+			</frame>
+			<frame>
+			------------
+			--------*---
+			------------
+			*-----------
+			</frame>
+		    <color R="255" G="0" B="0" A="255"/>
+		    <size width="640" height="480"/>
+		    <position x="0" y="0"/>
+		    <animate yesno="1"/>
+			<visible yesno="1"/>
+		</sprite>
+		<sprite name="bar2" width="12" height="4" frames="1">
+			<frame>
+			*----------*
+			------------
+			------------
+			*-----------
+			</frame>
+		    <color R="255" G="0" B="0" A="255"/>
+		    <size width="640" height="480"/>
+		    <position x="0" y="0"/>
+		    <animate yesno="0"/>
+			<visible yesno="1"/>
+		</sprite>
+	</group>
+	<group name="sfsdf">
+		<sprite name="bfdf" width="12" height="4" frames="1">
+			<frame>
+			-----------*
+			------------
+			------------
+			*-----------
+			</frame>
+		    <color R="255" G="0" B="255" A="255"/>
+		    <size width="640" height="480"/>
+		    <position x="0" y="0"/>
+		    <animate yesno="0"/>
+			<visible yesno="1"/>
+		</sprite>
+	</group>
+</visual>

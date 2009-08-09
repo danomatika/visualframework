@@ -1,29 +1,33 @@
 #include "Graphics.h"
 
+#include <algorithm>
+#include <sstream>
+
 #include "Log.h"
 #include <SDL/SDL_gfxPrimitives.h>
 
 namespace visual {
 
 // statics
-SDL_Surface* Graphics::_screen = NULL;
-Graphics::Type Graphics::_type = Graphics::UNKOWN;
-int Graphics::_iWidth = 0;
-int Graphics::_iHeight = 0;
-int Graphics::_iDepth = 0;
+SDL_Surface* Graphics::_screen  = NULL;
+Graphics::Type Graphics::_type  = Graphics::UNKNOWN;
+Graphics::Mode Graphics::_mode  = Graphics::WINDOW;
+unsigned int Graphics::_iWidth           = 0;
+unsigned int Graphics::_iHeight          = 0;
+unsigned int Graphics::_iDepth           = 0;
 Color Graphics::_strokeColor;
 Color Graphics::_fillColor;
-bool Graphics::_bStroke = true;
-bool Graphics::_bFill = true;
+bool Graphics::_bStroke         = true;
+bool Graphics::_bFill           = true;
+std::string Graphics::_error    = "";
 
-Graphics::Graphics(int w, int h, int depth, Type type)
+Graphics::Graphics(unsigned int w, unsigned int h, unsigned int depth, Type type)
 {
     _iWidth = w;
     _iHeight = h;
     _iDepth = depth;
     _ui32VideoFlags = 0;
     _type = type;
-    _mode = WINDOW;
 }
 
 Graphics::~Graphics()
@@ -40,33 +44,73 @@ bool Graphics::init()
         return false;
     }
 
-    LOG << "Setting: ";
-    switch(_type)
-    {
-        case SOFTWARE:
-            LOG << "SDL_SWSURFACE";
-            break;
-        case HARDWARE:
-            LOG << "SDL_HWSURFACE";
-            break;
-    }
-    LOG << " " << _iWidth << "x" << _iHeight << "@" << _iDepth << "bit ";
-    switch(_mode)
-    {
-        case WINDOW:
-            LOG << "window";
-            break;
-        case FULLSCREEN:
-            LOG << "fullscreen";
-            break;
-    }
-    LOG << std::endl;
-
     // set proper flags for mode
     _ui32VideoFlags = _type|SDL_DOUBLEBUF|_mode;
 
     // make sure SDL cleans up before exit
     atexit(SDL_Quit);
+
+    return true;
+}
+
+// sort resolutions by area in descending order
+bool cmpRes(SDL_Rect* a, SDL_Rect* b )
+{
+    int areaA = a->w*a->h;
+    int areaB = b->w*b->h;
+    return areaA < areaB;
+}
+
+std::vector<SDL_Rect*> Graphics::getResolutions()
+{
+    // get available fullscreen modes
+    SDL_Rect** modes;
+    std::vector<SDL_Rect*> resolutions;
+    modes = SDL_ListModes(NULL, SDL_FULLSCREEN|_type);
+
+    // check if there are any modes available
+    if(modes == (SDL_Rect**)0)
+    {
+        LOG_WARN << "No resolutions available!" << std::endl;
+    }
+
+    // check if our resolution is restricted
+    if(modes == (SDL_Rect**)-1)
+    {
+        LOG << "All resolutions available" << std::endl;
+    }
+
+    else
+    {
+        for(int i=0; modes[i] != NULL; ++i)
+        {
+            resolutions.push_back(modes[i]);
+        }
+    }
+
+    // sort into descending order
+    std::sort(resolutions.begin(), resolutions.end(), cmpRes);
+
+    return resolutions;
+}
+
+void Graphics::setWindowTitle(std::string title)
+{
+    _sTitle = title;
+    SDL_WM_SetCaption(_sTitle.c_str(), NULL);
+}
+
+bool Graphics::setWindowIcon(std::string bitmap)
+{
+    SDL_Surface *icon = SDL_LoadBMP(bitmap.c_str());
+    if(icon == NULL)
+    {
+        LOG_ERROR << "Unable to load window icon \"" << bitmap << "\": "
+                  << SDL_GetError() << std::endl;
+        return false;
+    }
+
+    SDL_WM_SetIcon(icon, NULL);
 
     return true;
 }
@@ -81,10 +125,86 @@ bool Graphics::createWindow(std::string title)
         return false;
     }
 
-    _sTitle = title;
-    SDL_WM_SetCaption(_sTitle.c_str(), NULL);
+    LOG << "Setting: " << getModeString() << std::endl;
+
+    if(title != "")
+    {
+        _sTitle = title;
+        SDL_WM_SetCaption(_sTitle.c_str(), NULL);
+    }
 
     return true;
+}
+
+bool Graphics::toggleFullscreen()
+{
+    if(_screen == NULL)
+    {
+        LOG_ERROR << "Unable to toggle fullscreen: window does not exist" << std::endl;
+        return false;
+    }
+
+    SDL_FreeSurface(_screen);
+
+    switch(_mode)
+    {
+        case WINDOW:
+            _mode = FULLSCREEN;
+            break;
+
+        case FULLSCREEN:
+            _mode = WINDOW;
+            break;
+    }
+
+    // set proper flags for mode
+    _ui32VideoFlags = _type|SDL_DOUBLEBUF|_mode;
+
+    return createWindow(_sTitle);
+}
+
+bool Graphics::changeResolution(unsigned int w, unsigned int h)
+{
+    if(_screen == NULL)
+    {
+        LOG_ERROR << "Unable to change resolution: window does not exist" << std::endl;
+        return false;
+    }
+
+    SDL_FreeSurface(_screen);
+
+    // set new resolution
+    _iWidth = w;
+    _iHeight = h;
+
+    return createWindow(_sTitle);
+}
+
+std::string Graphics::getModeString()
+{
+    std::ostringstream stream;
+
+    switch(_type)
+    {
+        case SOFTWARE:
+            stream << "SDL_SWSURFACE";
+            break;
+        case HARDWARE:
+            stream << "SDL_HWSURFACE";
+            break;
+    }
+    stream << " " << _iWidth << "x" << _iHeight << "@" << _iDepth << "bit ";
+    switch(_mode)
+    {
+        case WINDOW:
+            stream << "window";
+            break;
+        case FULLSCREEN:
+            stream << "fullscreen";
+            break;
+    }
+
+    return stream.str();
 }
 
 // ***** global color *****
@@ -206,6 +326,13 @@ void Graphics::string(int x, int y, std::string line)
     {
         stringColor(_screen, x, y, line.c_str(), _strokeColor.rgba);
     }
+}
+
+std::string Graphics::getLastError()
+{
+    _error = SDL_GetError();
+    SDL_ClearError();
+    return _error;
 }
 
 } // namespace

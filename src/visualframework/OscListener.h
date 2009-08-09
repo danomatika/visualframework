@@ -8,8 +8,6 @@
 #include <osc/OscPacketListener.h>
 #include <ip/UdpSocket.h>
 
-#include <SDL/SDL_thread.h>
-
 #include "Common.h"
 #include "Thread.h"
 
@@ -19,7 +17,7 @@ namespace visual {
     \class  OscListener
     \brief  a threaded OSC listener
 
-    set the processing fucntion to match messages
+    set the processing function to match messages
 **/
 class OscListener : public osc::OscPacketListener
 {

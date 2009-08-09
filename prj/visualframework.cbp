@@ -66,6 +66,11 @@
 				</Linker>
 			</Target>
 		</Build>
+		<Unit filename="../src/visualframework.h">
+			<Option compilerVar="CPP" />
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
 		<Unit filename="../src/visualframework/OscSender.h">
 			<Option compilerVar="CPP" />
 			<Option target="Debug" />

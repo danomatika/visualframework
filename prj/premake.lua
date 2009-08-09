@@ -69,3 +69,47 @@ package.links = { "SDL", "SDL_gfx" }
 package.config["Debug"].links = { "tinyxmlD", "oscpackD" }
 package.config["Release"].links = { "tinyxml", "oscpack" }
 
+---------------------------------------------------------
+--- build some tests
+---------------------------------------------------------
+package = newpackage()
+package.name 		= "vftests"
+package.kind 		= "exe"
+package.language 	= "c++"
+
+package.files = { 
+	matchfiles( "../src/tests/*.h", "../src/tests/*.cpp" )
+}
+
+package.includepaths = {
+	"../src",
+    "/usr/include",
+	"../externals",	
+	"../externals/include"
+}
+
+package.libpaths = {
+	"../lib",
+	"../externals/lib",
+    "/usr/lib"
+}
+
+package.config["Debug"].objdir   = "../obj/vftests/Debug"
+package.config["Release"].objdir = "../obj/vftests/Release"
+
+package.config["Debug"].target   = "vftestsD"
+package.config["Release"].target = "vftests"
+
+package.defines                   = { "LINUX" };
+package.config["Debug"].defines   = { "DEBUG", "_DEBUG" };
+package.config["Release"].defines = { "NDEBUG" };
+
+package.buildflags                   = { "extra-warnings" }
+package.buildoptions                 = { "-Wno-unknown-pragmas" }
+package.config["Debug"].buildoptions = { "-ggdb" }
+
+
+package.links = { "SDL", "SDL_gfx" }
+package.config["Debug"].links = { "visualframeworkD", "tinyxmlD", "oscpackD" }
+package.config["Release"].links = { "visualframework", "tinyxml", "oscpack" }
+
