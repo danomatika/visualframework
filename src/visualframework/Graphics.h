@@ -1,11 +1,16 @@
-#ifndef SDLCONTEXT_H
-#define SDLCONTEXT_H
+/*==============================================================================
+    Dan Wilcox <danomatika@gmail.com>, 2009
+==============================================================================*/
+#ifndef VISUAL_GRAPHICS_H
+#define VISUAL_GRAPHICS_H
 
 #include <string>
 
 #include <SDL/SDL.h>
 
 #include "Color.h"
+
+namespace visual {
 
 class Graphics
 {
@@ -82,4 +87,6 @@ class Graphics
         static bool _bFill;
 };
 
-#endif // SDLCONTEXT_H
+} // namespace
+
+#endif // VISUAL_GRAPHICS_H

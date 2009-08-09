@@ -1,8 +1,8 @@
 /*==============================================================================
-    Dan Wilcox <danomatika@gmail.com>
+    Dan Wilcox <danomatika@gmail.com>, 2009
 ==============================================================================*/
-#ifndef LOG_H
-#define LOG_H
+#ifndef VISUAL_LOG_H
+#define VISUAL_LOG_H
 
 #include <iostream>
 
@@ -11,4 +11,4 @@
 #define LOG_WARN std::cerr << "WARN: "
 #define LOG_ERROR std::cerr << "ERROR: "
 
-#endif // LOG_H
+#endif // VISUAL_LOG_H

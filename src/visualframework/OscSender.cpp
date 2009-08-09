@@ -1,4 +1,9 @@
+/*==============================================================================
+    Dan Wilcox <danomatika@gmail.com>, 2009
+==============================================================================*/
 #include "OscSender.h"
+
+namespace visual {
 
 OscSender::OscSender(std::string addr, int port) :
     osc::OutboundPacketStream(_buffer, OSC_SENDER_BUFFER_SIZE),
@@ -24,3 +29,5 @@ void OscSender::setAddr(std::string addr, int port)
     delete _socket;
     _socket = new UdpTransmitSocket(IpEndpointName(_strAddr.c_str(), _iPort));
 }
+
+} // namespace

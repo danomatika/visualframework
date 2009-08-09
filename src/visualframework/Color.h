@@ -1,10 +1,12 @@
 /*==============================================================================
-    Dan Wilcox <danomatika@gmail.com>
+    Dan Wilcox <danomatika@gmail.com>, 2009
 ==============================================================================*/
-#ifndef COLOR_H
-#define COLOR_H
+#ifndef VISUAL_COLOR_H
+#define VISUAL_COLOR_H
 
 #include <iostream>
+
+namespace visual {
 
 class Color
 {
@@ -69,4 +71,6 @@ class Color
         }
 };
 
-#endif // COLOR_H
+} // namespace
+
+#endif // VISUAL_COLOR_H

@@ -1,16 +1,17 @@
 /*==============================================================================
-    Copyright (c) Ars Electronica Futurelab, 2009.
-    Dan Wilcox <Daniel.Wilcox@aec.at>
+    Dan Wilcox <danomatika@gmail.com>, 2009
 ==============================================================================*/
-#ifndef XMLFILE_H
-#define XMLFILE_H
+#ifndef VISUAL_XMLFILE_H
+#define VISUAL_XMLFILE_H
 
 #include <string>
 
 #include "Common.h"
 
 #define TIXML_USE_STL
-#include "tinyxml.h"
+#include "tinyxml/tinyxml.h"
+
+namespace visual {
 
 class XmlFile
 {
@@ -70,4 +71,6 @@ class XmlFile
         TiXmlElement*       _xmlPtr;    // if NULL, doc is not valid
 };
 
-#endif // XMLFILE_H
+} // namespace
+
+#endif // VISUAL_XMLFILE_H

@@ -1,5 +1,8 @@
-#ifndef OSCSENDER_H
-#define OSCSENDER_H
+/*==============================================================================
+    Dan Wilcox <danomatika@gmail.com>, 2009
+==============================================================================*/
+#ifndef VISUAL_OSC_SENDER_H
+#define VISUAL_OSC_SENDER_H
 
 #include "Common.h"
 
@@ -7,6 +10,8 @@
 #include "ip/UdpSocket.h"
 
 #define OSC_SENDER_BUFFER_SIZE 1024
+
+namespace visual {
 
 /**
     \class  OscSender
@@ -33,4 +38,6 @@ class OscSender : public osc::OutboundPacketStream
         int _iPort;
 };
 
-#endif // OSCSENDER_H
+} // namespace
+
+#endif // VISUAL_OSC_SENDER_H

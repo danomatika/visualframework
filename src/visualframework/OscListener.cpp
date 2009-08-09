@@ -1,4 +1,9 @@
+/*==============================================================================
+    Dan Wilcox <danomatika@gmail.com>, 2009
+==============================================================================*/
 #include "OscListener.h"
+
+namespace visual {
 
 OscListener::OscListener(int port) : _listenThread(), _iPort(port)
 {
@@ -45,3 +50,5 @@ void OscListener::ProcessMessage(const osc::ReceivedMessage& m, const IpEndpoint
                   << m.AddressPattern() << "\" \"" << e.what()<< "\"" << std::endl;
     }
 }
+
+} // namespace

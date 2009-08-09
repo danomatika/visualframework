@@ -1,8 +1,8 @@
 /*==============================================================================
-    Dan Wilcox <danomatika@gmail.com>
+    Dan Wilcox <danomatika@gmail.com>, 2009
 ==============================================================================*/
-#ifndef COMMON_H
-#define COMMON_H
+#ifndef VISUAL_COMMON_H
+#define VISUAL_COMMON_H
 
 // Common, system wide includes
 
@@ -11,4 +11,4 @@
 #include "Log.h"
 #include "Graphics.h"
 
-#endif //COMMON_H
+#endif // VISUAL_COMMON_H

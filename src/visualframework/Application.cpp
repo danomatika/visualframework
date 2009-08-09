@@ -1,4 +1,9 @@
+/*==============================================================================
+    Dan Wilcox <danomatika@gmail.com>, 2009
+==============================================================================*/
 #include "Application.h"
+
+namespace visual {
 
 Application::Application() :
     _bRun(true), _fFrameRate(0), _ui32Ticks(0), _background(0, 0, 0, 255)
@@ -126,3 +131,5 @@ void Application::_events()
         usleep(20000);  // 20 msec for the scheduler
     }
 }
+
+} // namespace

@@ -1,10 +1,11 @@
 /*==============================================================================
-    Copyright (c) Ars Electronica Futurelab, 2009.
-    Dan Wilcox <Daniel.Wilcox@aec.at>
+    Dan Wilcox <danomatika@gmail.com>, 2009
 ==============================================================================*/
 #include "XmlFile.h"
 
 #include <sstream>
+
+namespace visual {
 
 XmlFile::XmlFile() : _xmlPtr(NULL)
 {
@@ -244,3 +245,5 @@ std::string XmlFile::getErrorString()
     error << " line " <<  _xmlDoc->ErrorRow() << " , " << (std::string) _xmlDoc->ErrorDesc();
     return error.str();
 }
+
+} // namespace

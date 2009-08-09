@@ -11,6 +11,19 @@ project.libdir 		= "../lib"
 project.configs		= { "Debug", "Release" }
 
 ---------------------------------------------------------
+--- build the externals
+---------------------------------------------------------
+package = newpackage()
+package.name 		= "externals"
+package.kind 		= "lib"
+package.language 	= "c++"
+
+package.postbuildcommands = {
+	"cd ../externals/oscpack/prj && make",
+    "cd ../externals/tinyxml/prj && make"
+}
+
+---------------------------------------------------------
 --- build the visual framework lib
 ---------------------------------------------------------
 package = newpackage()

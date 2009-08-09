@@ -3,6 +3,8 @@
 #include "Log.h"
 #include <SDL/SDL_gfxPrimitives.h>
 
+namespace visual {
+
 // statics
 SDL_Surface* Graphics::_screen = NULL;
 Graphics::Type Graphics::_type = Graphics::UNKOWN;
@@ -205,3 +207,5 @@ void Graphics::string(int x, int y, std::string line)
         stringColor(_screen, x, y, line.c_str(), _strokeColor.rgba);
     }
 }
+
+} // namespace

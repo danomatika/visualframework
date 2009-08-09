@@ -1,9 +1,14 @@
-#ifndef APPLICATION_H
-#define APPLICATION_H
+/*==============================================================================
+    Dan Wilcox <danomatika@gmail.com>, 2009
+==============================================================================*/
+#ifndef VISUAL_APPLICATION_H
+#define VISUAL_APPLICATION_H
 
 #include "Common.h"
 
 #include "Color.h"
+
+namespace visual {
 
 class Application
 {
@@ -59,4 +64,6 @@ class Application
         void _draw();
 };
 
-#endif // APPLICATION_H
+} // namespace
+
+#endif // VISUAL_APPLICATION_H

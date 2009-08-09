@@ -1,5 +1,8 @@
-#ifndef OSCLISTENER_H
-#define OSCLISTENER_H
+/*==============================================================================
+    Dan Wilcox <danomatika@gmail.com>, 2009
+==============================================================================*/
+#ifndef VISUAL_OSC_LISTENER_H
+#define VISUAL_OSC_LISTENER_H
 
 #include <osc/OscReceivedElements.h>
 #include <osc/OscPacketListener.h>
@@ -9,6 +12,8 @@
 
 #include "Common.h"
 #include "Thread.h"
+
+namespace visual {
 
 /**
     \class  OscListener
@@ -70,4 +75,6 @@ class OscListener : public osc::OscPacketListener
         int _iPort;
 };
 
-#endif // OSCLISTENER_H
+} // namespace
+
+#endif // VISUAL_OSC_LISTENER_H

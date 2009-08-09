@@ -1,4 +1,9 @@
+/*==============================================================================
+    Dan Wilcox <danomatika@gmail.com>, 2009
+==============================================================================*/
 #include "Thread.h"
+
+namespace visual {
 
 Thread::Thread(std::string name, Type type) :
     _thread(NULL), _bRun(false), _type(type), _name(name)
@@ -85,3 +90,5 @@ int Thread::threadFunc(void* data)
 
     return 0;
 }
+
+} // namespace

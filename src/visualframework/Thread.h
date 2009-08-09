@@ -1,8 +1,13 @@
-#ifndef THREAD_H
-#define THREAD_H
+/*==============================================================================
+    Dan Wilcox <danomatika@gmail.com>, 2009
+==============================================================================*/
+#ifndef VISUAL_THREAD_H
+#define VISUAL_THREAD_H
 
 #include "Common.h"
 #include "SDL/SDL_thread.h"
+
+namespace visual {
 
 class Thread
 {
@@ -47,4 +52,6 @@ class Thread
         std::string _name;
 };
 
-#endif // THREAD_H
+#endif // VISUAL_THREAD_H
+
+} // namespace
