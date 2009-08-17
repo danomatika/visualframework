@@ -21,6 +21,9 @@ bool Graphics::_bStroke         = true;
 bool Graphics::_bFill           = true;
 std::string Graphics::_error    = "";
 
+#define MAX_POLY_POINTS  512
+Sint16 _vx[MAX_POLY_POINTS], _vy[MAX_POLY_POINTS];    // point int buffers for polygon()
+
 Graphics::Graphics(unsigned int w, unsigned int h, unsigned int depth, Type type)
 {
     _iWidth = w;
@@ -309,6 +312,27 @@ void Graphics::triangle(int x1, int y1, int x2, int y2, int x3, int y3)
     if(_bStroke)
     {
         trigonColor(_screen, x1, y1, x2, y2, x3, y3, _strokeColor.rgba);
+    }
+}
+
+void Graphics::polygon(std::vector<Point> points)
+{
+    // load point vector into int buffers
+    for(unsigned int i = 0; i < points.size() && i < MAX_POLY_POINTS; i++)
+    {
+        Point& p = points.at(i);
+        _vx[i] = p.x;
+        _vy[i] = p.y;
+    }
+
+    if(_bFill)
+    {
+        filledPolygonColor(_screen, _vx, _vy, points.size(), _fillColor.rgba);
+    }
+
+    if(_bStroke)
+    {
+        polygonColor(_screen, _vx, _vy, points.size(), _strokeColor.rgba);
     }
 }
 

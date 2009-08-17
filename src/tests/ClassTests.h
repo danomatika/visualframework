@@ -65,6 +65,8 @@ class ClassTests
 
         OscReceiver oscListener;
         UdpReceiver udpListener;
+
+        vector<Point> points;
 };
 
 #endif // CLASSTESTS_H

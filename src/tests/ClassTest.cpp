@@ -5,7 +5,14 @@
 #include "ClassTests.h"
 
 ClassTests::ClassTests()
-{}
+{
+    // load points for ploygon
+    points.push_back(Point(400, 100));
+    points.push_back(Point(500, 100));
+    points.push_back(Point(450, 400));
+    points.push_back(Point(400, 200));
+    points.push_back(Point(450, 200));
+}
 
 ClassTests::~ClassTests()
 {}
@@ -187,4 +194,7 @@ void ClassTests::testGraphicsPrimitives()
     Graphics::character(50, 400, '!');
     Graphics::stroke(0xFFFFFF);
     Graphics::string(100, 400, "this is a test string");
+
+    Graphics::fill(0x888888);
+    Graphics::polygon(points);
 }

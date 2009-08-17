@@ -13,6 +13,17 @@
 
 namespace visual {
 
+class Point
+{
+    public:
+
+        Point(int x, int y)
+            {this->x = x; this->y = y;}
+
+        int x;
+        int y;
+};
+
 class Graphics
 {
     public:
@@ -85,6 +96,7 @@ class Graphics
         static void circle(int x, int y, int r);
         static void ellipse(int x, int y, int rx, int ry);
         static void triangle(int x1, int y1, int x2, int y2, int x3, int y3);
+        static void polygon(std::vector<Point> points);
         static void character(int x, int y, char c);
         static void string(int x, int y, std::string line);
 
