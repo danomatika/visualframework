@@ -16,7 +16,7 @@ ifeq ($(CONFIG),Debug)
   CPPFLAGS := $(DEPFLAGS) -D "LINUX" -D "DEBUG" -D "_DEBUG" -I "../src" -I "../src/classes" -I "/usr/include" -I "../externals" -I "../externals/include"
   CFLAGS += $(CPPFLAGS) $(TARGET_ARCH) -g -Wall -Wno-unknown-pragmas -ggdb
   CXXFLAGS += $(CFLAGS)
-  LDFLAGS += -L$(BINDIR) -L$(LIBDIR) -L"../lib" -L"../externals/lib" -L"/usr/lib" -lSDL -lSDL_gfx -ltinyxmlD -loscpackD
+  LDFLAGS += -L$(BINDIR) -L$(LIBDIR) -L"../lib" -L"../externals/lib" -L"/usr/lib" -lSDL -lSDL_gfx -lSDL_net -ltinyxmlD -loscpackD
   LDDEPS :=
   RESFLAGS := -D "LINUX" -D "DEBUG" -D "_DEBUG" -I "../src" -I "../src/classes" -I "/usr/include" -I "../externals" -I "../externals/include"
   TARGET := libvisualframeworkD.a
@@ -31,7 +31,7 @@ ifeq ($(CONFIG),Release)
   CPPFLAGS := $(DEPFLAGS) -D "LINUX" -D "NDEBUG" -I "../src" -I "../src/classes" -I "/usr/include" -I "../externals" -I "../externals/include"
   CFLAGS += $(CPPFLAGS) $(TARGET_ARCH) -O2 -Wall -Wno-unknown-pragmas
   CXXFLAGS += $(CFLAGS)
-  LDFLAGS += -L$(BINDIR) -L$(LIBDIR) -s -L"../lib" -L"../externals/lib" -L"/usr/lib" -lSDL -lSDL_gfx -ltinyxml -loscpack
+  LDFLAGS += -L$(BINDIR) -L$(LIBDIR) -s -L"../lib" -L"../externals/lib" -L"/usr/lib" -lSDL -lSDL_gfx -lSDL_net -ltinyxml -loscpack
   LDDEPS :=
   RESFLAGS := -D "LINUX" -D "NDEBUG" -I "../src" -I "../src/classes" -I "/usr/include" -I "../externals" -I "../externals/include"
   TARGET := libvisualframework.a
@@ -39,12 +39,15 @@ ifeq ($(CONFIG),Release)
 endif
 
 OBJECTS := \
-	$(OBJDIR)/Graphics.o \
 	$(OBJDIR)/Application.o \
-	$(OBJDIR)/OscListener.o \
-	$(OBJDIR)/XmlFile.o \
 	$(OBJDIR)/Thread.o \
+	$(OBJDIR)/Xml.o \
+	$(OBJDIR)/Graphics.o \
+	$(OBJDIR)/UdpSender.o \
 	$(OBJDIR)/OscSender.o \
+	$(OBJDIR)/Net.o \
+	$(OBJDIR)/OscListener.o \
+	$(OBJDIR)/UdpListener.o \
 
 MKDIR_TYPE := msdos
 CMD := $(subst \,\\,$(ComSpec)$(COMSPEC))
@@ -86,22 +89,7 @@ else
 	-@if exist $(subst /,\,$(OBJDIR)) rmdir /s /q $(subst /,\,$(OBJDIR))
 endif
 
-$(OBJDIR)/Graphics.o: ../src/visualframework/Graphics.cpp
-	-@$(CMD_MKOBJDIR)
-	@echo $(notdir $<)
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
 $(OBJDIR)/Application.o: ../src/visualframework/Application.cpp
-	-@$(CMD_MKOBJDIR)
-	@echo $(notdir $<)
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/OscListener.o: ../src/visualframework/OscListener.cpp
-	-@$(CMD_MKOBJDIR)
-	@echo $(notdir $<)
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/XmlFile.o: ../src/visualframework/XmlFile.cpp
 	-@$(CMD_MKOBJDIR)
 	@echo $(notdir $<)
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
@@ -111,7 +99,37 @@ $(OBJDIR)/Thread.o: ../src/visualframework/Thread.cpp
 	@echo $(notdir $<)
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
-$(OBJDIR)/OscSender.o: ../src/visualframework/OscSender.cpp
+$(OBJDIR)/Xml.o: ../src/visualframework/Xml.cpp
+	-@$(CMD_MKOBJDIR)
+	@echo $(notdir $<)
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/Graphics.o: ../src/visualframework/graphics/Graphics.cpp
+	-@$(CMD_MKOBJDIR)
+	@echo $(notdir $<)
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/UdpSender.o: ../src/visualframework/net/UdpSender.cpp
+	-@$(CMD_MKOBJDIR)
+	@echo $(notdir $<)
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/OscSender.o: ../src/visualframework/net/OscSender.cpp
+	-@$(CMD_MKOBJDIR)
+	@echo $(notdir $<)
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/Net.o: ../src/visualframework/net/Net.cpp
+	-@$(CMD_MKOBJDIR)
+	@echo $(notdir $<)
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/OscListener.o: ../src/visualframework/net/OscListener.cpp
+	-@$(CMD_MKOBJDIR)
+	@echo $(notdir $<)
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/UdpListener.o: ../src/visualframework/net/UdpListener.cpp
 	-@$(CMD_MKOBJDIR)
 	@echo $(notdir $<)
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"

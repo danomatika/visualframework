@@ -13,7 +13,7 @@ export CONFIG
 
 all: externals visualframework vftests
 
-externals.make vftests.make visualframework.make: premake.lua
+Makefile: premake.lua
 	@echo ==== Regenerating Makefiles ====
 	@premake --file $^ --cc gcc --target gnu
 

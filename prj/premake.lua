@@ -33,7 +33,12 @@ package.language 	= "c++"
 
 package.files = { 
     matchfiles( "../src/*.h", "../src/*.cpp" ),
-	matchfiles( "../src/visualframework/*.h", "../src/visualframework/*.cpp" )
+	matchfiles( "../src/visualframework/*.h",
+				"../src/visualframework/*.cpp",
+				"../src/visualframework/graphics/*.h",
+				"../src/visualframework/graphics/*.cpp",
+				"../src/visualframework/net/*.h",
+				"../src/visualframework/net/*.cpp" )
 }
 
 package.includepaths = {

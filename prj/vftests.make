@@ -16,7 +16,7 @@ ifeq ($(CONFIG),Debug)
   CPPFLAGS := $(DEPFLAGS) -D "LINUX" -D "DEBUG" -D "_DEBUG" -I "../src" -I "/usr/include" -I "../externals" -I "../externals/include"
   CFLAGS += $(CPPFLAGS) $(TARGET_ARCH) -g -Wall -Wno-unknown-pragmas -ggdb
   CXXFLAGS += $(CFLAGS)
-  LDFLAGS += -L$(BINDIR) -L$(LIBDIR) -L"../lib" -L"../externals/lib" -L"/usr/lib" -lSDL -lSDL_gfx -lvisualframeworkD -ltinyxmlD -loscpackD
+  LDFLAGS += -L$(BINDIR) -L$(LIBDIR) -L"../lib" -L"../externals/lib" -L"/usr/lib" -lSDL -lSDL_gfx -lSDL_net -lvisualframeworkD -ltinyxmlD -loscpackD
   LDDEPS :=
   RESFLAGS := -D "LINUX" -D "DEBUG" -D "_DEBUG" -I "../src" -I "/usr/include" -I "../externals" -I "../externals/include"
   TARGET := vftestsD
@@ -31,7 +31,7 @@ ifeq ($(CONFIG),Release)
   CPPFLAGS := $(DEPFLAGS) -D "LINUX" -D "NDEBUG" -I "../src" -I "/usr/include" -I "../externals" -I "../externals/include"
   CFLAGS += $(CPPFLAGS) $(TARGET_ARCH) -O2 -Wall -Wno-unknown-pragmas
   CXXFLAGS += $(CFLAGS)
-  LDFLAGS += -L$(BINDIR) -L$(LIBDIR) -s -L"../lib" -L"../externals/lib" -L"/usr/lib" -lSDL -lSDL_gfx -lvisualframework -ltinyxml -loscpack
+  LDFLAGS += -L$(BINDIR) -L$(LIBDIR) -s -L"../lib" -L"../externals/lib" -L"/usr/lib" -lSDL -lSDL_gfx -lSDL_net -lvisualframework -ltinyxml -loscpack
   LDDEPS := ../lib/libvisualframework.a
   RESFLAGS := -D "LINUX" -D "NDEBUG" -I "../src" -I "/usr/include" -I "../externals" -I "../externals/include"
   TARGET := vftests
@@ -40,8 +40,8 @@ endif
 
 OBJECTS := \
 	$(OBJDIR)/ClassTest.o \
-	$(OBJDIR)/testMain.o \
 	$(OBJDIR)/TestApp.o \
+	$(OBJDIR)/testMain.o \
 
 MKDIR_TYPE := msdos
 CMD := $(subst \,\\,$(ComSpec)$(COMSPEC))
@@ -88,12 +88,12 @@ $(OBJDIR)/ClassTest.o: ../src/tests/ClassTest.cpp
 	@echo $(notdir $<)
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
-$(OBJDIR)/testMain.o: ../src/tests/testMain.cpp
+$(OBJDIR)/TestApp.o: ../src/tests/TestApp.cpp
 	-@$(CMD_MKOBJDIR)
 	@echo $(notdir $<)
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
-$(OBJDIR)/TestApp.o: ../src/tests/TestApp.cpp
+$(OBJDIR)/testMain.o: ../src/tests/testMain.cpp
 	-@$(CMD_MKOBJDIR)
 	@echo $(notdir $<)
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
