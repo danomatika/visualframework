@@ -27,7 +27,7 @@ void Thread::startThread()
 {
     if(_bRun == true)
     {
-        LOG_WARN << "Thread::start(): thread \"" << _name
+        LOG_WARN << "Thread::start(): Thread \"" << _name
                  << "\" id " << getThreadID()
                  << " already running" << std::endl;
         return;
@@ -35,12 +35,13 @@ void Thread::startThread()
 
     _bRun = true;
 
+    // send this pointer as thread data
     SDL_CreateThread(&threadFunc, this);
 }
 
 void Thread::stopThread()
 {
-    if(_thread == NULL || _type == NORMAL)
+    if(_thread == NULL) //|| _type == NORMAL)
         return;
 
     _bRun = false;
@@ -51,6 +52,7 @@ void Thread::waitThread()
     if(_thread == NULL)
         return;
 
+    _bRun = false;
     SDL_WaitThread(_thread, NULL);
 }
 
@@ -59,8 +61,8 @@ void Thread::killThread()
     if(_thread == NULL)
         return;
 
-    SDL_KillThread(_thread);
     _bRun = false;
+    SDL_KillThread(_thread);
 }
 
 int Thread::getThreadID()
@@ -81,12 +83,15 @@ void Thread::_run()
     {
         run();
     }
+
+    _bRun = false;
 }
 
 int Thread::threadFunc(void* data)
 {
+    // thread pointer as data
     Thread* t = (Thread*) data;
-    t->run();
+    t->_run();
 
     return 0;
 }

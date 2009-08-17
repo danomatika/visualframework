@@ -73,15 +73,18 @@ void ClassTests::startTestOscListener()
 {
     LOG << "Starting OscListener on port 7000" << endl;
 
-    listener.setPort(7000);
-    listener.startListening();
+    oscListener.setPort(7000);
+    oscListener.startListening();
+    LOG << "    OscListener is running? "
+        << oscListener.isListening() << endl;
     LOG << endl;
 }
 
 void ClassTests::stopTestOscListener()
 {
     LOG << "Stopping OscListener" << endl;
-    listener.stopListening();
+    oscListener.stopListening();
+    LOG << endl;
 }
 
 void ClassTests::testOscSender()
@@ -101,6 +104,56 @@ void ClassTests::testOscSender()
     sender << osc::BeginMessage( "/test2" )
            << 1 << "world" << osc::EndMessage;
     sender.send();
+    sleep(2);
+
+    LOG << endl;
+}
+
+void UdpReceiver::process(char* buffer, unsigned int length)
+{
+    LOG << "UdpListener: Received message: '";
+
+    for(unsigned int i = 0; i < length; i++)
+    {
+        LOG << buffer[i];
+    }
+
+    LOG << "'" << endl;
+}
+
+void ClassTests::startTestUdpListener()
+{
+    LOG << "Starting UdpListener on port 8000" << endl;
+
+    udpListener.setPort(8000);
+    udpListener.startListening();
+    LOG << "    UdpListener is running? "
+        << udpListener.isListening() << endl;
+    LOG << endl;
+}
+
+void ClassTests::stopTestUdpListener()
+{
+    LOG << "Stopping UdpListener" << endl;
+    udpListener.stopListening();
+    //udpListener.stopListening();
+    LOG << endl;
+}
+
+void ClassTests::testUdpSender()
+{
+    LOG << "Begin testUdpSender()" << endl;
+
+    UdpSender sender("127.0.0.1", 8000);
+
+    char* text1 = (char*) "hello world";
+    LOG << "    sending string '" << text1 << "'" << endl;
+    sender.send(text1, strlen(text1)+1);
+    sleep(2);
+
+    char* text2 = (char*) "this is a string sent over udp ...";
+    LOG << "    sending string '" << text2 << "'" << endl;
+    sender.send(text2, strlen(text2)+1);
     sleep(2);
 
     LOG << endl;

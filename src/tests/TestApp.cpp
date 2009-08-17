@@ -10,18 +10,27 @@ TestApp::~TestApp()
     //dtor
 }
 
-void TestApp::setup()
+void TestApp::init()
 {
-    _background.set(80, 80, 80);
-    setFrameRate(5);
-
     test.testLog();
 
     test.startTestOscListener();
     sleep(1);
     test.testOscSender();
     test.stopTestOscListener();
+
+    test.startTestUdpListener();
+    sleep(1);
+    //test.testUdpSender();
+    test.stopTestUdpListener();
+
     test.testXmlFile("../data/test.xml");
+}
+
+void TestApp::setup()
+{
+    _background.set(80, 80, 80);
+    setFrameRate(5);
 }
 
 void TestApp::update()

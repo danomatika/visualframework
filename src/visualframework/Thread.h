@@ -30,7 +30,7 @@ class Thread
 
         void killThread();
 
-        bool isThreadRunning() {return !_bRun;}
+        bool isThreadRunning() {return _bRun;}
 
         int getThreadID();
 

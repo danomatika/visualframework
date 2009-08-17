@@ -17,6 +17,10 @@ int main(int argc, char *argv[])
     Graphics sdl(720, 480, 16, Graphics::HARDWARE);
     sdl.init();
 
+    // initialize app
+    TestApp testApp(sdl);
+    testApp.init();
+
     // set icon
     sdl.setWindowIcon("../data/icon.bmp");
 
@@ -44,9 +48,8 @@ int main(int argc, char *argv[])
     }
     LOG << endl;
 
-    // init app
-    TestApp testApp(sdl);
-    testApp.setFrameRate(30);
+
+    // setup sdl resources
     testApp.setup();
 
     // main app loop

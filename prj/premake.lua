@@ -65,7 +65,7 @@ package.buildoptions                 = { "-Wno-unknown-pragmas" }
 package.config["Debug"].buildoptions = { "-ggdb" }
 
 
-package.links = { "SDL", "SDL_gfx" }
+package.links = { "SDL", "SDL_gfx", "SDL_net" }
 package.config["Debug"].links = { "tinyxmlD", "oscpackD" }
 package.config["Release"].links = { "tinyxml", "oscpack" }
 
@@ -109,7 +109,7 @@ package.buildoptions                 = { "-Wno-unknown-pragmas" }
 package.config["Debug"].buildoptions = { "-ggdb" }
 
 
-package.links = { "SDL", "SDL_gfx" }
+package.links = { "SDL", "SDL_gfx", "SDL_net" }
 package.config["Debug"].links = { "visualframeworkD", "tinyxmlD", "oscpackD" }
 package.config["Release"].links = { "visualframework", "tinyxml", "oscpack" }
 

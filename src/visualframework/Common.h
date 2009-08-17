@@ -9,6 +9,6 @@
 #include <SDL/SDL.h>
 
 #include "Log.h"
-#include "Graphics.h"
+#include "graphics/Graphics.h"
 
 #endif // VISUAL_COMMON_H

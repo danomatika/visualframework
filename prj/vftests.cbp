@@ -9,31 +9,33 @@
 			<Target title="Debug">
 				<Option output="../bin/vftestsD" prefix_auto="0" extension_auto="0" />
 				<Option object_output="../obj/vftests/Debug" />
+				<Option external_deps="../lib/libvisualframeworkD.a;" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-Wall" />
 					<Add option="-g" />
+					<Add option="-Wno-unknown-pragmas" />
+					<Add option="-ggdb" />
 					<Add option="-DLINUX" />
 					<Add option="-DDEBUG" />
 					<Add option="-D_DEBUG" />
-					<Add option="-Wno-unknown-pragmas" />
-					<Add option="-ggdb" />
 					<Add directory="../src" />
 					<Add directory="/usr/include" />
 					<Add directory="../externals" />
 					<Add directory="../externals/include" />
 				</Compiler>
 				<Linker>
+					<Add library="SDL" />
+					<Add library="SDL_gfx" />
+					<Add library="SDL_net" />
+					<Add library="visualframeworkD" />
+					<Add library="tinyxmlD" />
+					<Add library="oscpackD" />
 					<Add directory="../bin" />
 					<Add directory="../lib" />
 					<Add directory="../externals/lib" />
 					<Add directory="/usr/lib" />
-					<Add library="SDL" />
-					<Add library="SDL_gfx" />
-					<Add library="visualframeworkD" />
-					<Add library="tinyxmlD" />
-					<Add library="oscpackD" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -42,11 +44,11 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-Wall" />
 					<Add option="-O" />
+					<Add option="-Wall" />
+					<Add option="-Wno-unknown-pragmas" />
 					<Add option="-DLINUX" />
 					<Add option="-DNDEBUG" />
-					<Add option="-Wno-unknown-pragmas" />
 					<Add directory="../src" />
 					<Add directory="/usr/include" />
 					<Add directory="../externals" />
@@ -54,43 +56,28 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
+					<Add library="SDL" />
+					<Add library="SDL_gfx" />
+					<Add library="SDL_net" />
+					<Add library="visualframework" />
+					<Add library="tinyxml" />
+					<Add library="oscpack" />
 					<Add directory="../bin" />
 					<Add directory="../lib" />
 					<Add directory="../externals/lib" />
 					<Add directory="/usr/lib" />
-					<Add library="SDL" />
-					<Add library="SDL_gfx" />
-					<Add library="visualframework" />
-					<Add library="tinyxml" />
-					<Add library="oscpack" />
 				</Linker>
 			</Target>
 		</Build>
-		<Unit filename="../src/tests/TestApp.h">
-			<Option compilerVar="CPP" />
-			<Option target="Debug" />
-			<Option target="Release" />
-		</Unit>
-		<Unit filename="../src/tests/ClassTests.h">
-			<Option compilerVar="CPP" />
-			<Option target="Debug" />
-			<Option target="Release" />
-		</Unit>
-		<Unit filename="../src/tests/ClassTest.cpp">
-			<Option compilerVar="CPP" />
-			<Option target="Debug" />
-			<Option target="Release" />
-		</Unit>
-		<Unit filename="../src/tests/testMain.cpp">
-			<Option compilerVar="CPP" />
-			<Option target="Debug" />
-			<Option target="Release" />
-		</Unit>
-		<Unit filename="../src/tests/TestApp.cpp">
-			<Option compilerVar="CPP" />
-			<Option target="Debug" />
-			<Option target="Release" />
-		</Unit>
-		<Extensions />
+		<Unit filename="../src/tests/ClassTest.cpp" />
+		<Unit filename="../src/tests/ClassTests.h" />
+		<Unit filename="../src/tests/TestApp.cpp" />
+		<Unit filename="../src/tests/TestApp.h" />
+		<Unit filename="../src/tests/testMain.cpp" />
+		<Extensions>
+			<envvars />
+			<code_completion />
+			<debugger />
+		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

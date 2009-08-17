@@ -15,6 +15,8 @@ class TestApp : public Application
 
         virtual ~TestApp();
 
+        void init();
+
         void setup();
 
         void update();

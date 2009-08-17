@@ -14,6 +14,8 @@ Application::Application() :
 Application::~Application()
 {}
 
+void Application::init() {}
+
 void Application::mainLoop()
 {
     // program main loop

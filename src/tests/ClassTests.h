@@ -13,10 +13,26 @@ using namespace visual;
 // convenience class
 class OscReceiver : public OscListener
 {
+    public:
+
+       OscReceiver() : OscListener() {}
+
     protected:
 
         void process(const osc::ReceivedMessage& m,
                      const IpEndpointName& remoteEndpoint);
+};
+
+// convenience class
+class UdpReceiver : public UdpListener
+{
+    public:
+
+       UdpReceiver() : UdpListener() {}
+
+    protected:
+
+        void process(char *buffer, unsigned int length);
 };
 
 class ClassTests
@@ -37,11 +53,18 @@ class ClassTests
 
         void testOscSender();
 
+        void startTestUdpListener();
+
+        void stopTestUdpListener();
+
+        void testUdpSender();
+
         void testGraphicsPrimitives();
 
     private:
 
-        OscReceiver listener;
+        OscReceiver oscListener;
+        UdpReceiver udpListener;
 };
 
 #endif // CLASSTESTS_H

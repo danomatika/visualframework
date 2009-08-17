@@ -5,11 +5,11 @@
 
 namespace visual {
 
-OscSender::OscSender(std::string addr, int port) :
+OscSender::OscSender(std::string addr, unsigned int port) :
     osc::OutboundPacketStream(_buffer, OSC_SENDER_BUFFER_SIZE),
-    _strAddr(addr), _iPort(port)
+    _sAddr(addr), _uiPort(port)
 {
-    _socket = new UdpTransmitSocket(IpEndpointName(_strAddr.c_str(), _iPort));
+    _socket = new UdpTransmitSocket(IpEndpointName(_sAddr.c_str(), _uiPort));
 }
 
 void OscSender::send()
@@ -18,16 +18,16 @@ void OscSender::send()
     Clear();
 }
 
-void OscSender::setAddr(std::string addr, int port)
+void OscSender::setAddr(std::string addr, unsigned int port)
 {
     // dont rebuild object if the same address and port
-    if(_strAddr == addr && _iPort == port)
+    if(_sAddr == addr && _uiPort == port)
         return;
 
-    _strAddr = addr;
-    _iPort = port;
+    _sAddr = addr;
+    _uiPort = port;
     delete _socket;
-    _socket = new UdpTransmitSocket(IpEndpointName(_strAddr.c_str(), _iPort));
+    _socket = new UdpTransmitSocket(IpEndpointName(_sAddr.c_str(), _uiPort));
 }
 
 } // namespace

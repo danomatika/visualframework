@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <sstream>
 
-#include "Log.h"
+#include "../Log.h"
 #include <SDL/SDL_gfxPrimitives.h>
 
 namespace visual {

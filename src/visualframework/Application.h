@@ -6,8 +6,6 @@
 
 #include "Common.h"
 
-#include "Color.h"
-
 namespace visual {
 
 class Application
@@ -17,6 +15,8 @@ class Application
         Application();
 
         virtual ~Application();
+
+        virtual void init();
 
         virtual void setup() = 0;
 

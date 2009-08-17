@@ -8,8 +8,8 @@
 #include <osc/OscPacketListener.h>
 #include <ip/UdpSocket.h>
 
-#include "Common.h"
-#include "Thread.h"
+#include "Net.h"
+#include "../Thread.h"
 
 namespace visual {
 
@@ -23,7 +23,13 @@ class OscListener : public osc::OscPacketListener, protected Thread
 {
     public:
 
-        OscListener(int port=7000);
+        /// calls setPort automatically
+        OscListener(unsigned int port=7000);
+
+        ~OscListener();
+
+        /// setup the udp socket using the given port
+        void setPort(unsigned int port);
 
         /// start the listening thread, opens connection
         void startListening();
@@ -35,11 +41,7 @@ class OscListener : public osc::OscPacketListener, protected Thread
         bool isListening() {return isThreadRunning();}
 
         /// get port num
-        int getPort() {return _iPort;}
-
-        /// set port num
-        void setPort(int port) {_iPort = port;}
-
+        unsigned int getPort() {return _uiPort;}
 
     protected:
 
@@ -56,8 +58,9 @@ class OscListener : public osc::OscPacketListener, protected Thread
         // thread main loop
         void run();
 
-        int _iPort;
-        UdpListeningReceiveSocket* socket;
+        bool _bSetup;
+        unsigned int _uiPort;
+        UdpListeningReceiveSocket* _socket;
 };
 
 } // namespace
