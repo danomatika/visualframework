@@ -32,6 +32,30 @@ void Net::quit()
     SDLNet_Quit();
 }
 
+bool Net::allocatePacket(UDPpacket* packet, unsigned int length)
+{
+    // clear existing packet
+    freePacket(packet);
+
+    // allocate packet memory
+    packet = SDLNet_AllocPacket(length);
+    if(packet == NULL)
+    {
+        LOG_ERROR << "Net: Could not allocate packet:" << SDLNet_GetError() << std::endl;
+        return false;
+    }
+
+    return true;
+}
+
+void Net::freePacket(UDPpacket* packet)
+{
+    if(packet != NULL)
+    {
+        SDLNet_FreePacket(packet);
+    }
+}
+
 std::string Net::getError()
 {
     _error = SDLNet_GetError();

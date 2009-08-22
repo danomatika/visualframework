@@ -23,13 +23,14 @@ class OscListener : public osc::OscPacketListener, protected Thread
 {
     public:
 
-        /// calls setPort automatically
-        OscListener(unsigned int port=7000);
+        OscListener();
+        virtual ~OscListener();
 
-        ~OscListener();
+        /// calls setPort automatically
+        OscListener(unsigned int port);
 
         /// setup the udp socket using the given port
-        void setPort(unsigned int port);
+        void setup(unsigned int port);
 
         /// start the listening thread, opens connection
         void startListening();

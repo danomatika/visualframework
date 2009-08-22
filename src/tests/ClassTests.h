@@ -13,10 +13,6 @@ using namespace visual;
 // convenience class
 class OscReceiver : public OscListener
 {
-    public:
-
-       OscReceiver() : OscListener() {}
-
     protected:
 
         void process(const osc::ReceivedMessage& m,
@@ -26,13 +22,9 @@ class OscReceiver : public OscListener
 // convenience class
 class UdpReceiver : public UdpListener
 {
-    public:
-
-       UdpReceiver() : UdpListener() {}
-
     protected:
 
-        void process(char *buffer, unsigned int length);
+        void process(UDPpacket* packet);
 };
 
 class ClassTests

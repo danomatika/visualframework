@@ -5,29 +5,21 @@
 ==============================================================================*/
 #include "UdpSender.h"
 
-#define UDP_SENDER_MAX_PACKET_LEN   1024
-
 #include <exception>
 
 namespace visual {
 
 UdpSender::UdpSender() : _bSetup(false), _packet(NULL)
 {
-    if(!Net::isSetup())
-    {
-        Net::init();
-    }
+    Net::init();
 }
 
 UdpSender::UdpSender(std::string addr, unsigned int port) :
     _bSetup(false), _packet(NULL)
 {
-    if(!Net::isSetup())
-    {
-        Net::init();
-    }
+    Net::init();
 
-    setAddr(addr, port);
+    setup(addr, port);
 }
 
 UdpSender::~UdpSender()
@@ -41,7 +33,7 @@ UdpSender::~UdpSender()
     }
 }
 
-void UdpSender::setAddr(std::string addr, unsigned int port)
+void UdpSender::setup(std::string addr, unsigned int port)
 {
     _sAddr = addr;
     _uiPort = port;
@@ -77,15 +69,12 @@ bool UdpSender::send(char* buffer, unsigned int length)
     // allocate packet memory (if not allocated)
     if(_packet == NULL)
     {
-        if(!(_packet = SDLNet_AllocPacket(UDP_SENDER_MAX_PACKET_LEN)))
+        if(!(_packet = SDLNet_AllocPacket(VISUAL_MAX_PACKET_LEN)))
         {
             LOG_ERROR << "UdpSender: Could not allocate packet:" << SDLNet_GetError() << std::endl;
             return false;
         }
     }
-
-    _packet->address.host = _destination.host;
-    _packet->address.port = _destination.port;
 
     unsigned int position = 0, numSend = 0;
     while(position < length)
@@ -111,15 +100,39 @@ bool UdpSender::send(char* buffer, unsigned int length)
         }
 
         // send
-		if(SDLNet_UDP_Send(_socket, -1, _packet) == 0)
+		if(!send(_packet))
 		{
-		    LOG_WARN << "UdpSender: Send error: " << SDLNet_GetError() << std::endl;
 		    return false;
 		}
 
 		// move index position
 		position += numSend;
 	}
+
+    return true;
+}
+
+bool UdpSender::send(UDPpacket* packet)
+{
+    if(_socket == NULL)
+        return false;
+
+    if(packet == NULL)
+    {
+        LOG_WARN << "UdpSender: Send error: Packet is NULL" << std::endl;
+        return false;
+    }
+
+    // load packet destination
+    packet->address.host = _destination.host;
+    packet->address.port = _destination.port;
+
+    // send
+    if(SDLNet_UDP_Send(_socket, -1, packet) == 0)
+    {
+        LOG_WARN << "UdpSender: Send error: " << SDLNet_GetError() << std::endl;
+        return false;
+    }
 
     return true;
 }

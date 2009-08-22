@@ -22,10 +22,13 @@ class UdpSender
         UdpSender(std::string addr="127.0.0.1", unsigned int port=8000);
 
         /// setup the udp socket using the given port
-        void setAddr(std::string addr="127.0.0.1", unsigned int port=8000);
+        void setup(std::string addr="127.0.0.1", unsigned int port=8000);
 
         /// send the message
         bool send(char* buffer, unsigned int length);
+
+        /// send a packet
+        bool send(UDPpacket* packet);
 
         /// get the ip addr and port
         std::string getAddr()   {return _sAddr;}

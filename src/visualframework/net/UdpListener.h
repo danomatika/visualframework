@@ -18,13 +18,14 @@ class UdpListener : protected Thread
 {
     public:
 
-        /// calls setPort automatically
-        UdpListener(unsigned int port=8000);
-
+        UdpListener();
         virtual ~UdpListener();
 
+        /// calls setup automatically
+        UdpListener(unsigned int port);
+
         /// setup the udp socket using the given port
-        void setPort(unsigned int port);
+        void setup(unsigned int port, unsigned int packetLen=VISUAL_MAX_PACKET_LEN);
 
         /// start the listening thread, opens connection
         void startListening();
@@ -41,7 +42,7 @@ class UdpListener : protected Thread
     protected:
 
         /// callback to implement
-        virtual void process(char* buffer, unsigned int length) = 0;
+        virtual void process(UDPpacket* packet) = 0;
 
     private:
 

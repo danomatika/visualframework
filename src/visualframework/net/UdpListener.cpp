@@ -2,19 +2,24 @@
 
 namespace visual {
 
+UdpListener::UdpListener() : Thread("UdpListener", Thread::LOOP), _bSetup(false), _packet(NULL)
+{
+    Net::init();
+}
+
 UdpListener::UdpListener(unsigned int port) : Thread("UdpListener", Thread::LOOP),
      _bSetup(false), _packet(NULL)
 {
-    if(!Net::isSetup())
-    {
-        Net::init();
-    }
+    Net::init();
 
-    setPort(port);
+    setup(port);
 }
 
 UdpListener::~UdpListener()
-{}
+{
+    if(_packet != NULL)
+        SDLNet_FreePacket(_packet);
+}
 
 void UdpListener::startListening()
 {
@@ -35,7 +40,7 @@ void UdpListener::stopListening()
     stopThread();
 }
 
-void UdpListener::setPort(unsigned int port)
+void UdpListener::setup(unsigned int port, unsigned int packetLen)
 {
     if(isThreadRunning())
     {
@@ -46,7 +51,7 @@ void UdpListener::setPort(unsigned int port)
     // allocate packet memory (if not allocated)
     if(_packet == NULL)
     {
-        if(!(_packet = SDLNet_AllocPacket(VISUAL_MAX_PACKET_LEN)))
+        if(!(_packet = SDLNet_AllocPacket(packetLen)))
         {
             LOG_ERROR << "UdpListener: Could not allocate packet:" << SDLNet_GetError() << std::endl;
             return;
@@ -77,9 +82,9 @@ void UdpListener::setPort(unsigned int port)
 void UdpListener::run()
 {
     // handle packets ...
-    if(SDLNet_UDP_Recv(_socket, _packet))
+    if(SDLNet_UDP_Recv(_socket, _packet) == true)
     {
-        process((char*) _packet->data, _packet->len);
+        process(_packet);
     }
 
     usleep(10000);   // dont eat the cpu

@@ -80,7 +80,7 @@ void ClassTests::startTestOscListener()
 {
     LOG << "Starting OscListener on port 7000" << endl;
 
-    oscListener.setPort(7000);
+    oscListener.setup(7000);
     oscListener.startListening();
     LOG << "    OscListener is running? "
         << oscListener.isListening() << endl;
@@ -116,23 +116,23 @@ void ClassTests::testOscSender()
     LOG << endl;
 }
 
-void UdpReceiver::process(char* buffer, unsigned int length)
+void UdpReceiver::process(UDPpacket* packet)
 {
     LOG << "UdpListener: Received message: '";
 
-    for(unsigned int i = 0; i < length; i++)
+    for(int i = 0; i < packet->len; i++)
     {
-        LOG << buffer[i];
+        LOG << packet->data[i];
     }
 
-    LOG << "'" << endl;
+    LOG << "' len: " << packet->len << endl;
 }
 
 void ClassTests::startTestUdpListener()
 {
     LOG << "Starting UdpListener on port 8000" << endl;
 
-    udpListener.setPort(8000);
+    udpListener.setup(8000);
     udpListener.startListening();
     LOG << "    UdpListener is running? "
         << udpListener.isListening() << endl;
@@ -143,7 +143,8 @@ void ClassTests::stopTestUdpListener()
 {
     LOG << "Stopping UdpListener" << endl;
     udpListener.stopListening();
-    //udpListener.stopListening();
+    LOG << "    UdpListener is running? "
+        << udpListener.isListening() << endl;
     LOG << endl;
 }
 
@@ -159,8 +160,26 @@ void ClassTests::testUdpSender()
     sleep(2);
 
     char* text2 = (char*) "this is a string sent over udp ...";
+    LOG << "len: " << strlen(text2)+1 << std::endl;
+
+    UDPpacket* p;
+    p = SDLNet_AllocPacket(1000);
+
+    try
+    {
+        memcpy(p->data, text2, 35);//
+        //strlen(text2)+1);
+    }
+    catch(std::exception& e)
+    {
+        LOG_ERROR << "UdpSender: memcpy failed to load packet: " << e.what() << std::endl;
+        return;
+    }
+
+    p->len = strlen(text2)+1;
     LOG << "    sending string '" << text2 << "'" << endl;
-    sender.send(text2, strlen(text2)+1);
+    sender.send(p);
+    //Net::freePacket(p);
     sleep(2);
 
     LOG << endl;

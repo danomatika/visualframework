@@ -21,7 +21,7 @@ void TestApp::init()
 
     test.startTestUdpListener();
     sleep(1);
-    //test.testUdpSender();
+    test.testUdpSender();
     test.stopTestUdpListener();
 
     test.testXmlFile("../data/test.xml");

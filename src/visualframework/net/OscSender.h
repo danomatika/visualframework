@@ -21,10 +21,11 @@ class OscSender : public osc::OutboundPacketStream
 {
     public:
 
-        OscSender(std::string addr="127.0.0.1", unsigned int port=8000);
+        OscSender();
+        OscSender(std::string addr, unsigned int port);
 
         /// setup the socket address and port
-        void setAddr(std::string addr, unsigned int port=8000);
+        void setup(std::string addr, unsigned int port=8000);
 
         /// send the message
         void send();
@@ -36,7 +37,7 @@ class OscSender : public osc::OutboundPacketStream
     private:
 
         UdpTransmitSocket* _socket;
-        char _buffer[1024];
+        char _buffer[OSC_SENDER_BUFFER_SIZE];
 
         std::string _sAddr;
         unsigned int _uiPort;

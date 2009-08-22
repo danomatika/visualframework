@@ -5,10 +5,14 @@
 
 namespace visual {
 
+OscListener::OscListener() :
+    Thread("OscListener"), _bSetup(false), _uiPort(0), _socket(NULL)
+{}
+
 OscListener::OscListener(unsigned int port) :
     Thread("OscListener"), _bSetup(false), _socket(NULL)
 {
-    setPort(port);
+    setup(port);
 }
 
 OscListener::~OscListener()
@@ -41,7 +45,7 @@ void OscListener::stopListening()
     _socket->AsynchronousBreak();
 }
 
-void OscListener::setPort(unsigned int port)
+void OscListener::setup(unsigned int port)
 {
     if(isThreadRunning())
     {
