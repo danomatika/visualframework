@@ -8,38 +8,42 @@
 
 namespace visual {
 
-// statics
+// ***** STATIC VARIABLES *****
 SDL_Surface* Graphics::_screen  = NULL;
-Graphics::Type Graphics::_type  = Graphics::UNKNOWN;
-Graphics::Mode Graphics::_mode  = Graphics::WINDOW;
+
 unsigned int Graphics::_iWidth           = 0;
 unsigned int Graphics::_iHeight          = 0;
 unsigned int Graphics::_iDepth           = 0;
+
+uint32_t Graphics::_ui32VideoFlags  = 0;
+Graphics::Type Graphics::_type      = Graphics::UNKNOWN;
+Graphics::Mode Graphics::_mode      = Graphics::WINDOW;
+std::string Graphics::_sTitle       = "";
+
 Color Graphics::_strokeColor;
 Color Graphics::_fillColor;
-bool Graphics::_bStroke         = true;
-bool Graphics::_bFill           = true;
-std::string Graphics::_error    = "";
+bool Graphics::_bStroke = true;
+bool Graphics::_bFill   = true;
+
+Graphics::RectMode Graphics::_rectMode = CENTER;
+
+std::string Graphics::_error = "";
+
+// ***** LOCAL VARIABLES *****
+int _x1, _y1, _x2, _y2; // computed rectangle points
 
 #define MAX_POLY_POINTS  512
 Sint16 _vx[MAX_POLY_POINTS], _vy[MAX_POLY_POINTS];    // point int buffers for polygon()
 
-Graphics::Graphics(unsigned int w, unsigned int h, unsigned int depth, Type type)
+
+bool Graphics::init(unsigned int w, unsigned int h, unsigned int depth, Type type)
 {
     _iWidth = w;
     _iHeight = h;
     _iDepth = depth;
     _ui32VideoFlags = 0;
     _type = type;
-}
 
-Graphics::~Graphics()
-{
-    //dtor
-}
-
-bool Graphics::init()
-{
     // initialize SDL video
     if(SDL_Init(SDL_INIT_VIDEO) < 0)
     {
@@ -221,6 +225,12 @@ void Graphics::stroke(unsigned int color)
     _bStroke = true;
 }
 
+void Graphics::stroke(Color& color)
+{
+    _strokeColor = color;
+    _bStroke = true;
+}
+
 void Graphics::fill(unsigned int color)
 {
     uint8_t r = color >> 16;
@@ -228,6 +238,12 @@ void Graphics::fill(unsigned int color)
     uint8_t b = color;
 
     _fillColor.set(r, g, b);
+    _bFill = true;
+}
+
+void Graphics::fill(Color& color)
+{
+    _fillColor = color;
     _bFill = true;
 }
 
@@ -244,6 +260,12 @@ void Graphics::noFill()
 // ***** global primitives *****
 void Graphics::point(int x, int y)
 {
+    if(_screen == NULL)
+    {
+        LOG_ERROR << "Graphics::point: Window not setup yet" << std::endl;
+        return;
+    }
+
     if(_bStroke)
     {
         pixelColor(_screen, x, y, _strokeColor.rgba);
@@ -252,32 +274,61 @@ void Graphics::point(int x, int y)
 
 void Graphics::line(int x1, int y1, int x2, int y2)
 {
+    if(_screen == NULL)
+    {
+        LOG_ERROR << "Graphics::line: Window not setup yet" << std::endl;
+        return;
+    }
+
     if(_bStroke)
     {
         lineColor(_screen, x1, y1, x2, y2, _strokeColor.rgba);
     }
 }
 
-void Graphics::rectangle(int x, int y, int w, int h)
+void Graphics::rectangle(int x, int y, int w, int h, RectMode mode)
 {
-    int x1 = x-w/2;
-    int x2 = x+w/2;
-    int y1 = y-h/2;
-    int y2 = y+h/2;
+    if(_screen == NULL)
+    {
+        LOG_ERROR << "Graphics::rectangle: Window not setup yet" << std::endl;
+        return;
+    }
+
+    _rectMode = mode;
+    if(mode == CENTER)
+    {
+        _x1 = x-w/2;
+        _x2 = x+w/2;
+        _y1 = y-h/2;
+        _y2 = y+h/2;
+    }
+    else
+    {
+        _x1 = x;
+        _x2 = x+w;
+        _y1 = y;
+        _y2 = y+h;
+    }
 
     if(_bFill)
     {
-        boxColor(_screen, x1, y1, x2, y2, _fillColor.rgba);
+        boxColor(_screen, _x1, _y1, _x2, _y2, _fillColor.rgba);
     }
 
     if(_bStroke)
     {
-        rectangleColor(_screen, x1, y1, x2, y2, _strokeColor.rgba);
+        rectangleColor(_screen, _x1, _y1, _x2, _y2, _strokeColor.rgba);
     }
 }
 
 void Graphics::circle(int x, int y, int r)
 {
+    if(_screen == NULL)
+    {
+        LOG_ERROR << "Graphics::circle: Window not setup yet" << std::endl;
+        return;
+    }
+
     if(_bFill)
     {
         filledCircleColor(_screen, x, y, r, _fillColor.rgba);
@@ -291,6 +342,12 @@ void Graphics::circle(int x, int y, int r)
 
 void Graphics::ellipse(int x, int y, int rx, int ry)
 {
+    if(_screen == NULL)
+    {
+        LOG_ERROR << "Graphics::ellipse: Window not setup yet" << std::endl;
+        return;
+    }
+
     if(_bFill)
     {
         filledEllipseColor(_screen, x, y, rx, ry, _fillColor.rgba);
@@ -304,6 +361,12 @@ void Graphics::ellipse(int x, int y, int rx, int ry)
 
 void Graphics::triangle(int x1, int y1, int x2, int y2, int x3, int y3)
 {
+    if(_screen == NULL)
+    {
+        LOG_ERROR << "Graphics::triangle: Window not setup yet" << std::endl;
+        return;
+    }
+
     if(_bFill)
     {
         filledTrigonColor(_screen, x1, y1, x2, y2, x3, y3, _fillColor.rgba);
@@ -317,6 +380,12 @@ void Graphics::triangle(int x1, int y1, int x2, int y2, int x3, int y3)
 
 void Graphics::polygon(std::vector<Point> points)
 {
+    if(_screen == NULL)
+    {
+        LOG_ERROR << "Graphics::polygon: Window not setup yet" << std::endl;
+        return;
+    }
+
     // load point vector into int buffers
     for(unsigned int i = 0; i < points.size() && i < MAX_POLY_POINTS; i++)
     {
@@ -338,6 +407,12 @@ void Graphics::polygon(std::vector<Point> points)
 
 void Graphics::character(int x, int y, char c)
 {
+    if(_screen == NULL)
+    {
+        LOG_ERROR << "Graphics::character: Window not setup yet" << std::endl;
+        return;
+    }
+
     if(_bStroke)
     {
         characterColor(_screen, x, y, c, _strokeColor.rgba);
@@ -346,6 +421,12 @@ void Graphics::character(int x, int y, char c)
 
 void Graphics::string(int x, int y, std::string line)
 {
+    if(_screen == NULL)
+    {
+        LOG_ERROR << "Graphics::string: Window not setup yet" << std::endl;
+        return;
+    }
+
     if(_bStroke)
     {
         stringColor(_screen, x, y, line.c_str(), _strokeColor.rgba);

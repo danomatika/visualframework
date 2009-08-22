@@ -19,7 +19,7 @@ class UdpSender
         virtual ~UdpSender();
 
         /// calls setAddr automatically
-        UdpSender(std::string addr="127.0.0.1", unsigned int port=8000);
+        UdpSender(std::string addr, unsigned int port=8000);
 
         /// setup the udp socket using the given port
         void setup(std::string addr="127.0.0.1", unsigned int port=8000);

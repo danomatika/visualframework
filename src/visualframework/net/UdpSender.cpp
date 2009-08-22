@@ -35,6 +35,9 @@ UdpSender::~UdpSender()
 
 void UdpSender::setup(std::string addr, unsigned int port)
 {
+    if(addr == _sAddr && port == _uiPort)
+        return;
+
     _sAddr = addr;
     _uiPort = port;
 

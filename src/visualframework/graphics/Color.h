@@ -25,6 +25,9 @@ class Color
 
         Color() : A(255), B(255), G(255), R(255)  {}
 
+        Color(uint8_t r, uint8_t g, uint8_t b) :
+            A(255), B(b), G(g), R(r) {}
+
         Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a) :
             A(a), B(b), G(g), R(r) {}
 

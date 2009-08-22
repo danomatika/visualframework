@@ -93,6 +93,12 @@ void Application::_events()
                                     _bRun = false;
                                     break;
 
+                                case SDLK_RETURN:
+                                    // toggle fullscreen on ALT+ENTER
+                                    if(event.key.keysym.mod & KMOD_ALT)
+                                        Graphics::toggleFullscreen();
+                                    // don't break so SDLK_RETURN goes to keyPressed
+
                                 default:
                                     keyPressed(event.key.keysym.sym, event.key.keysym.mod);
                                     break;

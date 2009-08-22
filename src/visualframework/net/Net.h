@@ -16,6 +16,8 @@
 #include "OscSender.h"
 #include "OscListener.h"
 
+typedef UDPpacket UdpPacket;
+
 namespace visual {
 
 class Net
