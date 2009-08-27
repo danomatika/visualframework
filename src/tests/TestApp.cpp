@@ -1,8 +1,8 @@
 #include "TestApp.h"
 
-TestApp::TestApp(Graphics& sdl) : _sdl(sdl), _currentRes(0)
+TestApp::TestApp() : _currentRes(0)
 {
-    _resolutions = _sdl.getResolutions();
+    _resolutions = Graphics::getResolutions();
 }
 
 TestApp::~TestApp()
@@ -54,9 +54,9 @@ void TestApp::keyPressed(SDLKey key, SDLMod mod)
             // toggle fullscreen on ALT+ENTER
             if(mod & KMOD_ALT)
             {
-                if(_sdl.toggleFullscreen())
+                if(Graphics::toggleFullscreen())
                 {
-                    switch(_sdl.getMode())
+                    switch(Graphics::getMode())
                     {
                         case Graphics::WINDOW:
                             LOG << "Changed graphics mode to Window" << endl;
@@ -78,8 +78,8 @@ void TestApp::keyPressed(SDLKey key, SDLMod mod)
                 _currentRes = 0;
             }
             LOG << "Changing resolution: " << _currentRes << endl;
-            _sdl.changeResolution(_resolutions[_currentRes]->w,
-                                      _resolutions[_currentRes]->h);
+            Graphics::changeResolution(_resolutions[_currentRes]->w,
+                                       _resolutions[_currentRes]->h);
             break;
 
         case SDLK_LEFTBRACKET:
@@ -90,8 +90,8 @@ void TestApp::keyPressed(SDLKey key, SDLMod mod)
                 _currentRes = _resolutions.size()-1;
             }
             LOG << "Changing resolution: " << _currentRes << endl;
-            _sdl.changeResolution(_resolutions[_currentRes]->w,
-                                      _resolutions[_currentRes]->h);
+            Graphics::changeResolution(_resolutions[_currentRes]->w,
+                                       _resolutions[_currentRes]->h);
             break;
 
         default:

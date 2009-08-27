@@ -31,6 +31,12 @@ class Color
         Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a) :
             A(a), B(b), G(g), R(r) {}
 
+        // html style hex aka 0xFF00FF
+        Color(unsigned int color) : A(255)
+        {
+            set(color);
+        }
+
         virtual ~Color() {}
 
         /// copy constructor
@@ -64,6 +70,13 @@ class Color
             R = r;
             G = g;
             B = b;
+        }
+
+        void set(unsigned int color)
+        {
+            R = color >> 16;
+            G = color >> 8;
+            B = color;
         }
 
         friend std::ostream& operator<<(std::ostream& os, Color& from)

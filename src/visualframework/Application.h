@@ -46,6 +46,7 @@ class Application
         void setFrameRate(float frameRate);
 
         void setBackground(Color color) {_background = color;}
+        void setBackground(unsigned int color) {_background.set(color);}
 
         void inline stop() {_bRun = false;};
 

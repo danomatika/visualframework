@@ -11,7 +11,7 @@ class TestApp : public Application
 {
     public:
 
-        TestApp(Graphics& sdl);
+        TestApp();
 
         virtual ~TestApp();
 
@@ -32,8 +32,6 @@ class TestApp : public Application
         ClassTests test;
 
     private:
-
-        Graphics& _sdl;
 
         int _currentRes;
         vector<SDL_Rect*> _resolutions;

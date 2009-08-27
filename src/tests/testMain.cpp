@@ -14,33 +14,32 @@ int main(int argc, char *argv[])
     LOG << "starting testMain" << endl;
 
     // initialize SDL context
-    Graphics sdl(720, 480, 16, Graphics::HARDWARE);
-    sdl.init();
+    Graphics::init(720, 480, 16, Graphics::HARDWARE);
 
     // initialize app
-    TestApp testApp(sdl);
+    TestApp testApp;
     testApp.init();
 
     // set icon
-    sdl.setWindowIcon("../data/icon.bmp");
+    Graphics::setWindowIcon("../data/icon.bmp");
 
     // open sdl window
-    sdl.createWindow("visualframework test");
+    Graphics::createWindow("visualframework test");
 /*
     sleep(5);
 
-    sdl.changeResolution(640, 480);
+    Graphics::changeResolution(640, 480);
 
     sleep(5);
 
-    sdl.changeResolution(1003, 334);
+    Graphics::changeResolution(1003, 334);
 
     sleep(5);
 
-    sdl.changeResolution(720, 480);
+    Graphics::changeResolution(720, 480);
 */
     // print out the available screen resolutions
-    vector<SDL_Rect*> res = sdl.getResolutions();
+    vector<SDL_Rect*> res = Graphics::getResolutions();
     LOG << "Available resolutions:" << endl;
     for(unsigned int i = 0; i < res.size(); ++i)
     {

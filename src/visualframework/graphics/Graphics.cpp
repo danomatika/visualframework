@@ -217,11 +217,7 @@ std::string Graphics::getModeString()
 // ***** global color *****
 void Graphics::stroke(unsigned int color)
 {
-    uint8_t r = color >> 16;
-    uint8_t g = color >> 8;
-    uint8_t b = color;
-
-    _strokeColor.set(r, g, b);
+    _strokeColor.set(color);
     _bStroke = true;
 }
 
@@ -233,11 +229,7 @@ void Graphics::stroke(Color& color)
 
 void Graphics::fill(unsigned int color)
 {
-    uint8_t r = color >> 16;
-    uint8_t g = color >> 8;
-    uint8_t b = color;
-
-    _fillColor.set(r, g, b);
+    _fillColor.set(color);
     _bFill = true;
 }
 
