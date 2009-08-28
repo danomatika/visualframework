@@ -14,10 +14,28 @@
 namespace visual {
 
 /**
+    \class  OscObject
+    \brief  derive this class to add to an OscListener
+
+    set the processing function to match messages
+**/
+class OscObject
+{
+    friend class OscListener;
+
+    protected:
+
+        /// callback to implement, return true if message handled
+        virtual bool processOscMessage(const osc::ReceivedMessage& m) = 0;
+};
+
+class OscObject;
+
+/**
     \class  OscListener
     \brief  a threaded OSC listener
 
-    set the processing function to match messages
+    set the processing function to match messages or add OscObjects
 **/
 class OscListener : public osc::OscPacketListener, protected Thread
 {
@@ -38,6 +56,9 @@ class OscListener : public osc::OscPacketListener, protected Thread
         /// stop the listening thread, closes connection
         void stopListening();
 
+        void addObject(OscObject* object);
+        void removeObject(OscObject* object);
+
         /// is the thread running?
         bool isListening() {return isThreadRunning();}
 
@@ -46,9 +67,8 @@ class OscListener : public osc::OscPacketListener, protected Thread
 
     protected:
 
-        /// callback to implement
-        virtual void process(const osc::ReceivedMessage& m,
-                             const IpEndpointName& remoteEndpoint) = 0;
+        /// callback, returns true if message handled
+        virtual bool process(const osc::ReceivedMessage& m) {return false;}
 
     private:
 
@@ -62,6 +82,8 @@ class OscListener : public osc::OscPacketListener, protected Thread
         bool _bSetup;
         unsigned int _uiPort;
         UdpListeningReceiveSocket* _socket;
+
+        std::vector<OscObject*> _objectList;    /// list of osc objects
 };
 
 } // namespace

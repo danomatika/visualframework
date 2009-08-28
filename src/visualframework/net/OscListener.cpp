@@ -3,6 +3,8 @@
 ==============================================================================*/
 #include "OscListener.h"
 
+#include <algorithm>
+
 namespace visual {
 
 OscListener::OscListener() :
@@ -23,26 +25,6 @@ OscListener::~OscListener()
         delete _socket;
         _socket = NULL;
     }
-}
-
-void OscListener::startListening()
-{
-    if(!_bSetup)
-    {
-        LOG_WARN << "OscListener: Cannot start thread, address not set" << std::endl;
-        return;
-    }
-
-    startThread();
-}
-
-void OscListener::stopListening()
-{
-    if(!_bSetup)
-        return;
-
-    // stop osc listener
-    _socket->AsynchronousBreak();
 }
 
 void OscListener::setup(unsigned int port)
@@ -77,6 +59,53 @@ void OscListener::setup(unsigned int port)
     _bSetup = true;
 }
 
+void OscListener::startListening()
+{
+    if(!_bSetup)
+    {
+        LOG_WARN << "OscListener: Cannot start thread, address not set" << std::endl;
+        return;
+    }
+
+    startThread();
+}
+
+void OscListener::stopListening()
+{
+    if(!_bSetup)
+        return;
+
+    // stop osc listener
+    _socket->AsynchronousBreak();
+}
+
+void OscListener::addObject(OscObject* object)
+{
+    if(object == NULL)
+    {
+        LOG_WARN << "OscListener: Cannot add NULL object" << std::endl;
+        return;
+    }
+
+    _objectList.push_back(object);
+}
+
+void OscListener::removeObject(OscObject* object)
+{
+    if(object == NULL)
+    {
+        LOG_WARN << "OscListener: Cannot remove NULL object" << std::endl;
+        return;
+    }
+
+    std::vector<OscObject*>::iterator iter;
+    iter = find(_objectList.begin(), _objectList.end(), object);
+    if(iter != _objectList.end())
+    {
+        _objectList.erase(iter);
+    }
+}
+
 /* ***** Protected Functions ***** */
 
 void OscListener::ProcessMessage(const osc::ReceivedMessage& m, const IpEndpointName& remoteEndpoint)
@@ -84,7 +113,24 @@ void OscListener::ProcessMessage(const osc::ReceivedMessage& m, const IpEndpoint
     try
     {
         // call the callback
-        process(m, remoteEndpoint);
+        if(process(m))
+            return;
+
+        // call any attached objects
+        std::vector<OscObject*>::iterator iter;
+        for(iter = _objectList.begin(); iter != _objectList.end(); iter++)
+        {
+            // try to process message
+            if((*iter) != NULL)
+            {
+                if((*iter)->processOscMessage(m))
+                    return;
+            }
+            else    // bad object, so erase it
+            {
+                _objectList.erase(iter);
+            }
+        }
     }
     catch(osc::Exception& e)
     {

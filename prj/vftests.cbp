@@ -69,7 +69,7 @@
 				</Linker>
 			</Target>
 		</Build>
-		<Unit filename="../src/tests/ClassTest.cpp" />
+		<Unit filename="../src/tests/ClassTests.cpp" />
 		<Unit filename="../src/tests/ClassTests.h" />
 		<Unit filename="../src/tests/TestApp.cpp" />
 		<Unit filename="../src/tests/TestApp.h" />

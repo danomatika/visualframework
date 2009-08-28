@@ -39,7 +39,7 @@ ifeq ($(CONFIG),Release)
 endif
 
 OBJECTS := \
-	$(OBJDIR)/ClassTest.o \
+	$(OBJDIR)/ClassTests.o \
 	$(OBJDIR)/TestApp.o \
 	$(OBJDIR)/testMain.o \
 
@@ -83,7 +83,7 @@ else
 	-@if exist $(subst /,\,$(OBJDIR)) rmdir /s /q $(subst /,\,$(OBJDIR))
 endif
 
-$(OBJDIR)/ClassTest.o: ../src/tests/ClassTest.cpp
+$(OBJDIR)/ClassTests.o: ../src/tests/ClassTests.cpp
 	-@$(CMD_MKOBJDIR)
 	@echo $(notdir $<)
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"

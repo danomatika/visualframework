@@ -15,8 +15,7 @@ class OscReceiver : public OscListener
 {
     protected:
 
-        void process(const osc::ReceivedMessage& m,
-                     const IpEndpointName& remoteEndpoint);
+        bool process(const osc::ReceivedMessage& m);
 };
 
 // convenience class
