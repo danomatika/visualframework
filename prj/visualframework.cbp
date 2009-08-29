@@ -77,8 +77,6 @@
 		<Unit filename="../src/visualframework/Log.h" />
 		<Unit filename="../src/visualframework/Thread.cpp" />
 		<Unit filename="../src/visualframework/Thread.h" />
-		<Unit filename="../src/visualframework/Xml.cpp" />
-		<Unit filename="../src/visualframework/Xml.h" />
 		<Unit filename="../src/visualframework/graphics/Color.h" />
 		<Unit filename="../src/visualframework/graphics/Graphics.cpp" />
 		<Unit filename="../src/visualframework/graphics/Graphics.h" />
@@ -92,6 +90,10 @@
 		<Unit filename="../src/visualframework/net/UdpListener.h" />
 		<Unit filename="../src/visualframework/net/UdpSender.cpp" />
 		<Unit filename="../src/visualframework/net/UdpSender.h" />
+		<Unit filename="../src/visualframework/xml/Xml.cpp" />
+		<Unit filename="../src/visualframework/xml/Xml.h" />
+		<Unit filename="../src/visualframework/xml/XmlObject.cpp" />
+		<Unit filename="../src/visualframework/xml/XmlObject.h" />
 		<Extensions>
 			<envvars />
 			<code_completion />

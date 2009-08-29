@@ -1,6 +1,5 @@
 /*==============================================================================
-    Copyright (c) Ars Electronica Futurelab, 2009.
-    Dan Wilcox <Daniel.Wilcox@aec.at>
+    Dan Wilcox <Daniel.Wilcox@aec.at>, 2009
 ==============================================================================*/
 #include "Xml.h"
 

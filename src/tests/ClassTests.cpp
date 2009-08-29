@@ -30,7 +30,7 @@ void ClassTests::testLog()
 void ClassTests::testXmlFile(string file)
 {
     LOG << "Begin testXmlFile()" << endl;
-
+/*
     TiXmlDocument xmlDoc;
     TiXmlElement* xml = Xml::loadFile(&xmlDoc, file);
     if(xml == NULL)
@@ -56,6 +56,7 @@ void ClassTests::testXmlFile(string file)
     }
 
     LOG << endl;
+*/
 }
 
 bool OscReceiver::process(const osc::ReceivedMessage& m)

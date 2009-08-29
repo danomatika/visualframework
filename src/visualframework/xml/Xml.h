@@ -1,13 +1,12 @@
 /*==============================================================================
-    Copyright (c) Ars Electronica Futurelab, 2009.
-    Dan Wilcox <Daniel.Wilcox@aec.at>
+    Dan Wilcox <Daniel.Wilcox@aec.at>, 2009
 ==============================================================================*/
-#ifndef EQF_XML_H
-#define EQF_XML_H
+#ifndef VISUAL_XML_H
+#define VISUAL_XML_H
 
-#include "Common.h"
+#include "../Common.h"
 
-#include <tinyxml.h>
+#include <tinyxml/tinyxml.h>
 #include "XmlObject.h"
 
 namespace visual {
@@ -70,4 +69,4 @@ class Xml
 
 } // namespace
 
-#endif // EQF_XML_H
+#endif // VISUAL_XML_H

@@ -38,7 +38,9 @@ package.files = {
 				"../src/visualframework/graphics/*.h",
 				"../src/visualframework/graphics/*.cpp",
 				"../src/visualframework/net/*.h",
-				"../src/visualframework/net/*.cpp" )
+				"../src/visualframework/net/*.cpp",
+				"../src/visualframework/xml/*.h",
+				"../src/visualframework/xml/*.cpp" )
 }
 
 package.includepaths = {

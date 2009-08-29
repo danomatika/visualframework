@@ -1,15 +1,14 @@
 /*==============================================================================
-    Copyright (c) Ars Electronica Futurelab, 2009.
-    Dan Wilcox <Daniel.Wilcox@aec.at>
+    Dan Wilcox <Daniel.Wilcox@aec.at>, 2009
 ==============================================================================*/
-#ifndef EQF_XML_OBJECT_H
-#define EQF_XML_OBJECT_H
+#ifndef VISUAL_XML_OBJECT_H
+#define VISUAL_XML_OBJECT_H
 
-#include "Log.h"
+#include "../Log.h"
 
 #include <vector>
 
-#include <tinyxml.h>
+#include <tinyxml/tinyxml.h>
 
 namespace visual {
 
@@ -134,7 +133,6 @@ class XmlObject
         }
 
         bool _bDocLoaded;       /// is this doc loaded?
-//        bool _bLoaded;          /// is this object loaded?
         std::string _filename;  /// current filename
         TiXmlDocument* _xmlDoc; /// the xml document
 
@@ -145,4 +143,4 @@ class XmlObject
 
 } // namespace
 
-#endif // EQF_XML_OBJECT_H
+#endif // VISUAL_XML_OBJECT_H

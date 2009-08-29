@@ -2,8 +2,8 @@
 <CodeBlocks_workspace_file>
 	<Workspace title="visualframework">
 		<Project filename="externals.cbp" />
-		<Project filename="visualframework.cbp" />
-		<Project filename="vftests.cbp" active="1">
+		<Project filename="visualframework.cbp" active="1" />
+		<Project filename="vftests.cbp">
 			<Depends filename="externals.cbp" />
 			<Depends filename="visualframework.cbp" />
 		</Project>

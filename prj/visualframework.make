@@ -41,13 +41,14 @@ endif
 OBJECTS := \
 	$(OBJDIR)/Application.o \
 	$(OBJDIR)/Thread.o \
-	$(OBJDIR)/Xml.o \
 	$(OBJDIR)/Graphics.o \
 	$(OBJDIR)/UdpSender.o \
-	$(OBJDIR)/OscSender.o \
-	$(OBJDIR)/Net.o \
-	$(OBJDIR)/OscListener.o \
 	$(OBJDIR)/UdpListener.o \
+	$(OBJDIR)/OscListener.o \
+	$(OBJDIR)/Net.o \
+	$(OBJDIR)/OscSender.o \
+	$(OBJDIR)/Xml.o \
+	$(OBJDIR)/XmlObject.o \
 
 MKDIR_TYPE := msdos
 CMD := $(subst \,\\,$(ComSpec)$(COMSPEC))
@@ -99,11 +100,6 @@ $(OBJDIR)/Thread.o: ../src/visualframework/Thread.cpp
 	@echo $(notdir $<)
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
-$(OBJDIR)/Xml.o: ../src/visualframework/Xml.cpp
-	-@$(CMD_MKOBJDIR)
-	@echo $(notdir $<)
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
 $(OBJDIR)/Graphics.o: ../src/visualframework/graphics/Graphics.cpp
 	-@$(CMD_MKOBJDIR)
 	@echo $(notdir $<)
@@ -114,12 +110,7 @@ $(OBJDIR)/UdpSender.o: ../src/visualframework/net/UdpSender.cpp
 	@echo $(notdir $<)
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
-$(OBJDIR)/OscSender.o: ../src/visualframework/net/OscSender.cpp
-	-@$(CMD_MKOBJDIR)
-	@echo $(notdir $<)
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/Net.o: ../src/visualframework/net/Net.cpp
+$(OBJDIR)/UdpListener.o: ../src/visualframework/net/UdpListener.cpp
 	-@$(CMD_MKOBJDIR)
 	@echo $(notdir $<)
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
@@ -129,7 +120,22 @@ $(OBJDIR)/OscListener.o: ../src/visualframework/net/OscListener.cpp
 	@echo $(notdir $<)
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
-$(OBJDIR)/UdpListener.o: ../src/visualframework/net/UdpListener.cpp
+$(OBJDIR)/Net.o: ../src/visualframework/net/Net.cpp
+	-@$(CMD_MKOBJDIR)
+	@echo $(notdir $<)
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/OscSender.o: ../src/visualframework/net/OscSender.cpp
+	-@$(CMD_MKOBJDIR)
+	@echo $(notdir $<)
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/Xml.o: ../src/visualframework/xml/Xml.cpp
+	-@$(CMD_MKOBJDIR)
+	@echo $(notdir $<)
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/XmlObject.o: ../src/visualframework/xml/XmlObject.cpp
 	-@$(CMD_MKOBJDIR)
 	@echo $(notdir $<)
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
