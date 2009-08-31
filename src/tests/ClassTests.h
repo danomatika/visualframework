@@ -10,7 +10,7 @@
 using namespace std;
 using namespace visual;
 
-// convenience class
+// test classes
 class OscReceiver : public OscListener
 {
     protected:
@@ -18,7 +18,17 @@ class OscReceiver : public OscListener
         bool process(const osc::ReceivedMessage& m);
 };
 
-// convenience class
+class OscRecvObject : public OscObject
+{
+    public:
+
+        OscRecvObject() : OscObject("/test2") {}
+
+    protected:
+
+        bool processOscMessage(const osc::ReceivedMessage& m);
+};
+
 class UdpReceiver : public UdpListener
 {
     protected:
@@ -55,6 +65,7 @@ class ClassTests
     private:
 
         OscReceiver oscListener;
+        OscRecvObject oscRecvObject;
         UdpReceiver udpListener;
 
         vector<Point> points;

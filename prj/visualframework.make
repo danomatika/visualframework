@@ -43,12 +43,13 @@ OBJECTS := \
 	$(OBJDIR)/Thread.o \
 	$(OBJDIR)/Graphics.o \
 	$(OBJDIR)/UdpSender.o \
-	$(OBJDIR)/UdpListener.o \
-	$(OBJDIR)/OscListener.o \
-	$(OBJDIR)/Net.o \
 	$(OBJDIR)/OscSender.o \
-	$(OBJDIR)/Xml.o \
+	$(OBJDIR)/OscObject.o \
+	$(OBJDIR)/Net.o \
+	$(OBJDIR)/OscListener.o \
+	$(OBJDIR)/UdpListener.o \
 	$(OBJDIR)/XmlObject.o \
+	$(OBJDIR)/Xml.o \
 
 MKDIR_TYPE := msdos
 CMD := $(subst \,\\,$(ComSpec)$(COMSPEC))
@@ -110,12 +111,12 @@ $(OBJDIR)/UdpSender.o: ../src/visualframework/net/UdpSender.cpp
 	@echo $(notdir $<)
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
-$(OBJDIR)/UdpListener.o: ../src/visualframework/net/UdpListener.cpp
+$(OBJDIR)/OscSender.o: ../src/visualframework/net/OscSender.cpp
 	-@$(CMD_MKOBJDIR)
 	@echo $(notdir $<)
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
-$(OBJDIR)/OscListener.o: ../src/visualframework/net/OscListener.cpp
+$(OBJDIR)/OscObject.o: ../src/visualframework/net/OscObject.cpp
 	-@$(CMD_MKOBJDIR)
 	@echo $(notdir $<)
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
@@ -125,17 +126,22 @@ $(OBJDIR)/Net.o: ../src/visualframework/net/Net.cpp
 	@echo $(notdir $<)
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
-$(OBJDIR)/OscSender.o: ../src/visualframework/net/OscSender.cpp
+$(OBJDIR)/OscListener.o: ../src/visualframework/net/OscListener.cpp
 	-@$(CMD_MKOBJDIR)
 	@echo $(notdir $<)
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
-$(OBJDIR)/Xml.o: ../src/visualframework/xml/Xml.cpp
+$(OBJDIR)/UdpListener.o: ../src/visualframework/net/UdpListener.cpp
 	-@$(CMD_MKOBJDIR)
 	@echo $(notdir $<)
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/XmlObject.o: ../src/visualframework/xml/XmlObject.cpp
+	-@$(CMD_MKOBJDIR)
+	@echo $(notdir $<)
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/Xml.o: ../src/visualframework/xml/Xml.cpp
 	-@$(CMD_MKOBJDIR)
 	@echo $(notdir $<)
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"

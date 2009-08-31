@@ -3,16 +3,17 @@
 ==============================================================================*/
 #include "Application.h"
 
+#define VISUAL_APP_SLEEP_MS 20
+
 namespace visual {
 
-Application::Application() :
-    _bRun(true), _fFrameRate(0), _ui32Ticks(0), _background(0, 0, 0, 255)
+Application::Application() : bDebug(false),
+    _bRun(true), _frameRate(0), _ticks(0), _background(0, 0, 0, 255)
 {
-    _fFrameRateMs = 0; // no timing
+    _frameRateMs = 0; // no timing
 }
 
-Application::~Application()
-{}
+/* ***** SETUP ***** */
 
 void Application::init() {}
 
@@ -26,28 +27,30 @@ void Application::mainLoop()
         _draw();  // render a frame
 
         // update ticks
-        _ui32Ticks = SDL_GetTicks();
+        _ticks = SDL_GetTicks();
     }
 }
+
+/* ***** UTIL ***** */
 
 void Application::setFrameRate(float frameRate)
 {
     if(frameRate < 0)
         return;
 
-    _fFrameRate = frameRate;
+    _frameRate = frameRate;
 
     // no delay?
     if(frameRate == 0)
     {
-        _fFrameRateMs = 0;
+        _frameRateMs = 0;
         return;
     }
 
-    _fFrameRateMs = 1000/_fFrameRate;   // delay = 1000 ms / fps
+    _frameRateMs = 1000/_frameRate;   // delay = 1000 ms / fps
 }
 
-// ##### private functions #####
+/* ***** PRIVATE FUNCTIONS ***** */
 
 void Application::_draw()
 {
@@ -66,7 +69,7 @@ void Application::_draw()
 void Application::_events()
 {
     // do message processing while waiting for next frame
-    while(SDL_GetTicks() - _ui32Ticks < _fFrameRateMs)
+    while(SDL_GetTicks() - _ticks < _frameRateMs)
     {
         // message processing loop
         SDL_Event event;
@@ -136,7 +139,7 @@ void Application::_events()
             } // end switch
         } // end of message processing
 
-        usleep(20000);  // 20 msec for the scheduler
+        SDL_Delay(VISUAL_APP_SLEEP_MS); // msec for the scheduler
     }
 }
 

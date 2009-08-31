@@ -84,6 +84,8 @@
 		<Unit filename="../src/visualframework/net/Net.h" />
 		<Unit filename="../src/visualframework/net/OscListener.cpp" />
 		<Unit filename="../src/visualframework/net/OscListener.h" />
+		<Unit filename="../src/visualframework/net/OscObject.cpp" />
+		<Unit filename="../src/visualframework/net/OscObject.h" />
 		<Unit filename="../src/visualframework/net/OscSender.cpp" />
 		<Unit filename="../src/visualframework/net/OscSender.h" />
 		<Unit filename="../src/visualframework/net/UdpListener.cpp" />

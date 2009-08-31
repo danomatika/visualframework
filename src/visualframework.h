@@ -11,4 +11,6 @@
 #include "./visualframework/net/Net.h"
 #include "./visualframework/xml/Xml.h"
 
+#include <vmmlib/vmmlib.h>
+
 #endif //VISUAL_FRAMEWORK_H

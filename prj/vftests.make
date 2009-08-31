@@ -40,8 +40,8 @@ endif
 
 OBJECTS := \
 	$(OBJDIR)/ClassTests.o \
-	$(OBJDIR)/testMain.o \
 	$(OBJDIR)/TestApp.o \
+	$(OBJDIR)/testMain.o \
 
 MKDIR_TYPE := msdos
 CMD := $(subst \,\\,$(ComSpec)$(COMSPEC))
@@ -88,12 +88,12 @@ $(OBJDIR)/ClassTests.o: ../src/tests/ClassTests.cpp
 	@echo $(notdir $<)
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
-$(OBJDIR)/testMain.o: ../src/tests/testMain.cpp
+$(OBJDIR)/TestApp.o: ../src/tests/TestApp.cpp
 	-@$(CMD_MKOBJDIR)
 	@echo $(notdir $<)
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
-$(OBJDIR)/TestApp.o: ../src/tests/TestApp.cpp
+$(OBJDIR)/testMain.o: ../src/tests/testMain.cpp
 	-@$(CMD_MKOBJDIR)
 	@echo $(notdir $<)
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"

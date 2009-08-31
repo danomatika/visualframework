@@ -8,7 +8,7 @@
 
 #include "Xml.h"
 
-//#define VISUAL_DEBUG_XML_OBJECT
+#define VISUAL_DEBUG_XML_OBJECT
 
 namespace visual {
 
@@ -51,8 +51,17 @@ bool XmlObject::loadXml(TiXmlElement* e)
         LOG_DEBUG << "elem: " << elem->name << std::endl;
         #endif
 
-        // try to find a child with the same element name
-        child = Xml::getElement(e, elem->name);
+        // check if this element is the same as the root
+        if(e->ValueStr() == elem->name)
+        {
+            child = e;
+        }
+        else    // try to find a child with the same element name
+        {
+
+            child = Xml::getElement(e, elem->name);
+        }
+
         if(child != NULL)
         {
             // load the elements text
@@ -191,8 +200,16 @@ bool XmlObject::saveXml(TiXmlElement* e)
         LOG_DEBUG << "elem: " << elem->name << std::endl;
         #endif
 
-        // find element, add if it dosen't exit
-        child = Xml::obtainElement(e, elem->name);
+        // check if this element is the same as the root
+        if(e->ValueStr() == elem->name)
+        {
+            child = e;
+        }
+        else
+        {
+            // find element, add if it dosen't exit
+            child = Xml::obtainElement(e, elem->name);
+        }
 
         // set the element's text if any
         if(elem->text != NULL)

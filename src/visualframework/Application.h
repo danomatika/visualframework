@@ -16,14 +16,20 @@ class Application
     public:
 
         Application();
+        virtual ~Application() {}
 
-        virtual ~Application();
+        /* ***** SETUP ***** */
 
+        /// initialization, call before creating sdl window
         virtual void init();
 
+        /// sdl resource setup, call after creating sdl window
         virtual void setup() = 0;
 
+        /// start the main run loop
         void mainLoop();
+
+        /* ***** MAIN CALLBACKS ***** */
 
         virtual void update() = 0;
 
@@ -31,7 +37,7 @@ class Application
 
         virtual void cleanup() = 0;
 
-        // input events
+        /* ***** INPUT CALLBACKS ***** */
 
         virtual void keyPressed(SDLKey key, SDLMod mod) {}
 
@@ -43,29 +49,38 @@ class Application
 
         virtual void mouseMotion(int x, int y, int xRel, int yRel) {}
 
-        // utils
+        /* ***** UTIL ***** */
 
-        //
+        /// set the target framerate
         void setFrameRate(float frameRate);
 
+        Color& getBackground() {return _background;}
         void setBackground(Color color) {_background = color;}
         void setBackground(unsigned int color) {_background.set(color);}
 
-        void inline stop() {_bRun = false;};
+        inline bool getDebug() {return bDebug;}
+        inline void setDebug(bool yesno) {bDebug = yesno;}
+
+        /// tell mainLoop to exit
+        inline void stop() {_bRun = false;}
 
     protected:
 
-        bool _bRun;             /// is the main loop running?
-        float _fFrameRate;      /// frame rate in FPS
-        float _fFrameRateMs;    /// frame rate delay in ms
-        Uint32 _ui32Ticks;      /// SDL ticks for frame rate timer
-        Color _background;      /// back ground color
+        bool bDebug;    /// is debug mode on?
 
     private:
 
+        // processes sdl events to input callbacks
         void _events();
 
+        // main sdl loop, calls draw, update, etc
         void _draw();
+
+        bool _bRun;          /// is the main loop running?
+        float _frameRate;    /// frame rate target in FPS
+        float _frameRateMs;  /// frame rate delay in ms
+        Uint32 _ticks;       /// SDL ticks for frame rate timer
+        Color _background;   /// back ground color
 };
 
 } // namespace

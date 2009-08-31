@@ -177,6 +177,37 @@ bool Xml::getAttrBool(const TiXmlElement* xmlPtr, std::string name, bool* b)
     }
 }
 
+bool Xml::getAttrByte(const TiXmlElement* xmlPtr, std::string name, uint8_t* b)
+{
+    if(xmlPtr == NULL || b == NULL)
+    {
+        LOG_ERROR << "Xml::getAttrChar(): element and/or variable are NULL" << std::endl;
+        return false;
+    }
+
+    int value = 0;
+    int iRet = xmlPtr->QueryIntAttribute(name.c_str(), &value);
+
+    switch(iRet)
+    {
+        case TIXML_WRONG_TYPE:
+            LOG_WARN << "Xml::getAttrBool(): attribute \"" << name
+                     << "\" is not of type int in element \"" << xmlPtr->ValueStr()
+                     << "\"" << std::endl;
+            return false;
+
+        case TIXML_NO_ATTRIBUTE:
+            LOG_WARN << "Xml::getAttrBool(): int attribute \"" << name
+                     << "\" was not found in element \"" << xmlPtr->ValueStr()
+                     << "\"" << std::endl;
+            return false;
+
+        default:    // TIXML_SUCCESS:
+            *b = (uint8_t) value;
+            return true;
+    }
+}
+
 bool Xml::getAttr(const TiXmlElement* xmlPtr, std::string name, XmlType type, void* var)
 {
     if(xmlPtr == NULL || var == NULL)
@@ -188,6 +219,10 @@ bool Xml::getAttr(const TiXmlElement* xmlPtr, std::string name, XmlType type, vo
     bool ret = false;
     switch(type)
     {
+        case XML_TYPE_BYTE:
+            ret = getAttrByte(xmlPtr, name, (uint8_t*) var);
+            break;
+
         case XML_TYPE_BOOL:
             ret = getAttrBool(xmlPtr, name, (bool*) var);
             break;
@@ -331,6 +366,17 @@ void Xml::setAttrBool(TiXmlElement* xmlPtr, std::string name, bool b)
     xmlPtr->SetAttribute(name, (int) b);
 }
 
+void Xml::setAttrByte(TiXmlElement* xmlPtr, std::string name, uint8_t b)
+{
+    if(xmlPtr == NULL)
+    {
+        LOG_ERROR << "Xml::setAttrChar(): element is NULL" << std::endl;
+        return;
+    }
+
+    xmlPtr->SetAttribute(name, b);
+}
+
 void Xml::setAttr(TiXmlElement* xmlPtr, std::string name, XmlType type, void* var)
 {
     if(xmlPtr == NULL || var == NULL)
@@ -341,6 +387,13 @@ void Xml::setAttr(TiXmlElement* xmlPtr, std::string name, XmlType type, void* va
 
     switch(type)
     {
+        case XML_TYPE_BYTE:
+        {
+            uint8_t* b = (uint8_t*) var;
+            setAttrByte(xmlPtr, name, *b);
+            break;
+        }
+
         case XML_TYPE_BOOL:
         {
             bool* b = (bool*) var;

@@ -29,6 +29,7 @@ class Xml
         static bool getAttrDouble(const TiXmlElement* xmlPtr, std::string name, double* d);
         static bool getAttrFloat(const TiXmlElement* xmlPtr, std::string name, float* f);
         static bool getAttrBool(const TiXmlElement* xmlPtr, std::string name, bool* b);
+        static bool getAttrByte(const TiXmlElement* xmlPtr, std::string name, uint8_t* b);
 
         /// attribute access using XmlObject type enum
         static bool getAttr(const TiXmlElement* xmlPtr, std::string name, XmlType type, void* var);
@@ -50,6 +51,7 @@ class Xml
         static void setAttrDouble(TiXmlElement* xmlPtr, std::string name, double d);
         static void setAttrFloat(TiXmlElement* xmlPtr, std::string name, float f);
         static void setAttrBool(TiXmlElement* xmlPtr, std::string name, bool b);
+        static void setAttrByte(TiXmlElement* xmlPtr, std::string name, uint8_t b);
 
         /// set attribute using XmlObject type enum
         static void setAttr(TiXmlElement* xmlPtr, std::string name, XmlType type, void* var);

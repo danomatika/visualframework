@@ -133,8 +133,12 @@ bool UdpSender::send(UDPpacket* packet)
     // send
     if(SDLNet_UDP_Send(_socket, -1, packet) == 0)
     {
-        LOG_WARN << "UdpSender: Send error: " << SDLNet_GetError() << std::endl;
-        return false;
+        std::string err = SDLNet_GetError();
+        if(err != "")
+        {
+            LOG_WARN << "UdpSender: Send error: " <<  err << std::endl;
+            return false;
+        }
     }
 
     return true;

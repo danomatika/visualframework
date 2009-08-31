@@ -79,12 +79,28 @@ bool OscReceiver::process(const osc::ReceivedMessage& m)
 	return true;
 }
 
+bool OscRecvObject::processOscMessage(const osc::ReceivedMessage& m)
+{
+    if((string) m.AddressPattern() == oscRootAddress && (string) m.TypeTags() == "is")
+    {
+        osc::ReceivedMessage::const_iterator arg = m.ArgumentsBegin();
+        int num = (arg++)->AsInt32();
+        std::string word = (arg++)->AsString();
+
+        LOG << "OscRecvObject: Processed: " << num << " \"" << word << "\"" << std::endl;
+        return true;
+    }
+
+    return false;
+}
+
 void ClassTests::startTestOscListener()
 {
     LOG << "Starting OscListener on port 7000" << endl;
 
     oscListener.setup(7000);
     oscListener.startListening();
+    oscListener.addObject(&oscRecvObject);
     LOG << "    OscListener is running? "
         << oscListener.isListening() << endl;
     LOG << endl;

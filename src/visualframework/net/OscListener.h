@@ -10,26 +10,9 @@
 
 #include "Net.h"
 #include "../Thread.h"
+#include "OscObject.h"
 
 namespace visual {
-
-/**
-    \class  OscObject
-    \brief  derive this class to add to an OscListener
-
-    set the processing function to match messages
-**/
-class OscObject
-{
-    friend class OscListener;
-
-    protected:
-
-        /// callback to implement, return true if message handled
-        virtual bool processOscMessage(const osc::ReceivedMessage& m) = 0;
-};
-
-class OscObject;
 
 /**
     \class  OscListener
@@ -37,18 +20,22 @@ class OscObject;
 
     set the processing function to match messages or add OscObjects
 **/
-class OscListener : public osc::OscPacketListener, protected Thread
+class OscListener : protected osc::OscPacketListener, protected Thread
 {
     public:
 
-        OscListener();
+        OscListener(std::string rootAddress="");
         virtual ~OscListener();
 
-        /// calls setPort automatically
-        OscListener(unsigned int port);
+        /// calls setup automatically
+        OscListener(unsigned int port, std::string rootAddress="");
+
+        /* ***** SETUP ***** */
 
         /// setup the udp socket using the given port
         void setup(unsigned int port);
+
+        /* ***** THREAD CONTROL ***** */
 
         /// start the listening thread, opens connection
         void startListening();
@@ -56,8 +43,12 @@ class OscListener : public osc::OscPacketListener, protected Thread
         /// stop the listening thread, closes connection
         void stopListening();
 
+        /* ***** ATTACH OSC OBJECTS ***** */
+
         void addObject(OscObject* object);
         void removeObject(OscObject* object);
+
+        /* ***** UTIL ***** */
 
         /// is the thread running?
         bool isListening() {return isThreadRunning();}
@@ -65,10 +56,20 @@ class OscListener : public osc::OscPacketListener, protected Thread
         /// get port num
         unsigned int getPort() {return _uiPort;}
 
+        /// get/set the root address of this object
+        inline void setOscRootAddress(std::string rootAddress) {oscRootAddress = rootAddress;}
+        inline std::string& getOscRootAddress() {return oscRootAddress;}
+
+        // ignore incoming messages?
+        inline void ignoreMessages(bool yesno) {_bIgnoreMessages = yesno;}
+
     protected:
 
         /// callback, returns true if message handled
         virtual bool process(const osc::ReceivedMessage& m) {return false;}
+
+        /// the root address of this object, aka something like "/root/test1/string2"
+        std::string oscRootAddress;
 
     private:
 
@@ -79,7 +80,7 @@ class OscListener : public osc::OscPacketListener, protected Thread
         // thread main loop
         void run();
 
-        bool _bSetup;
+        bool _bSetup, _bIgnoreMessages;
         unsigned int _uiPort;
         UdpListeningReceiveSocket* _socket;
 

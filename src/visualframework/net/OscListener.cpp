@@ -7,12 +7,14 @@
 
 namespace visual {
 
-OscListener::OscListener() :
-    Thread("OscListener"), _bSetup(false), _uiPort(0), _socket(NULL)
+OscListener::OscListener(std::string rootAddress) :
+    Thread("OscListener"), oscRootAddress(rootAddress),
+     _bSetup(false), _bIgnoreMessages(false), _uiPort(0), _socket(NULL)
 {}
 
-OscListener::OscListener(unsigned int port) :
-    Thread("OscListener"), _bSetup(false), _socket(NULL)
+OscListener::OscListener(unsigned int port, std::string rootAddress) :
+     Thread("OscListener"), oscRootAddress(rootAddress),
+    _bSetup(false), _bIgnoreMessages(false), _socket(NULL)
 {
     setup(port);
 }
@@ -25,6 +27,8 @@ OscListener::~OscListener()
         delete _socket;
         _socket = NULL;
     }
+
+    _objectList.clear();
 }
 
 void OscListener::setup(unsigned int port)
@@ -77,6 +81,9 @@ void OscListener::stopListening()
 
     // stop osc listener
     _socket->AsynchronousBreak();
+
+    // reset ignore
+    _bIgnoreMessages = false;
 }
 
 void OscListener::addObject(OscObject* object)
@@ -98,6 +105,7 @@ void OscListener::removeObject(OscObject* object)
         return;
     }
 
+    // find object in list and remove it
     std::vector<OscObject*>::iterator iter;
     iter = find(_objectList.begin(), _objectList.end(), object);
     if(iter != _objectList.end())
@@ -110,12 +118,12 @@ void OscListener::removeObject(OscObject* object)
 
 void OscListener::ProcessMessage(const osc::ReceivedMessage& m, const IpEndpointName& remoteEndpoint)
 {
+    // ignore any incoming messages?
+    if(_bIgnoreMessages)
+        return;
+
     try
     {
-        // call the callback
-        if(process(m))
-            return;
-
         // call any attached objects
         std::vector<OscObject*>::iterator iter;
         for(iter = _objectList.begin(); iter != _objectList.end(); iter++)
@@ -123,14 +131,22 @@ void OscListener::ProcessMessage(const osc::ReceivedMessage& m, const IpEndpoint
             // try to process message
             if((*iter) != NULL)
             {
-                if((*iter)->processOscMessage(m))
+                if((*iter)->processOsc(m))
                     return;
             }
             else    // bad object, so erase it
             {
                 _objectList.erase(iter);
+                LOG_WARN << "OscListner: removed NULL object" <<std::endl;
             }
         }
+
+        // user callback
+        if(process(m))
+            return;
+
+        LOG_DEBUG << "OscListener: unhandled message \"" << m.AddressPattern()
+            << "\" with type tag \"" << m.TypeTags() << "\"" << std::endl;
     }
     catch(osc::Exception& e)
     {
@@ -142,6 +158,7 @@ void OscListener::ProcessMessage(const osc::ReceivedMessage& m, const IpEndpoint
 
 void OscListener::run()
 {
+    // start thread receiving loop
     _socket->Run();
 }
 
