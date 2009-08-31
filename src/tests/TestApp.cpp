@@ -29,7 +29,7 @@ void TestApp::init()
 
 void TestApp::setup()
 {
-    _background.set(80, 80, 80);
+    setBackground(0x505050);
     setFrameRate(5);
 }
 
