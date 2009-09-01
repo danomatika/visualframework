@@ -5,6 +5,7 @@
 
 #include <map>
 #include <algorithm>
+#include <assert.h>
 
 #include "Xml.h"
 
@@ -145,7 +146,7 @@ bool XmlObject::loadXmlFile(std::string filename)
     if(!_xmlDoc->LoadFile(filename.c_str(), TIXML_ENCODING_UTF8))
     {
         LOG_ERROR << "Xml \"" << _elementName << "\": could not load \""
-                  << filename << "\"" << std::endl;
+                  << filename << "\": " << Xml::getErrorString(_xmlDoc)  << std::endl;
         closeXmlFile();
         return false;
     }

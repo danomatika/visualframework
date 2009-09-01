@@ -261,7 +261,11 @@ std::string Xml::getText(const TiXmlElement* xmlPtr)
         return "";
     }
 
-    return (std::string) xmlPtr->GetText();
+    const char* text = xmlPtr->GetText();
+    if(text == NULL)
+        return "";
+
+    return (std::string) text;
 }
 
 std::string Xml::element2String(const TiXmlElement* xmlPtr, std::string indent)
@@ -481,7 +485,7 @@ std::string Xml::getErrorString(const TiXmlDocument* xmlDoc)
         return "";
 
     std::stringstream error;
-    error << " line " <<  xmlDoc->ErrorRow() << " , " << (std::string) xmlDoc->ErrorDesc();
+    error << "line " <<  xmlDoc->ErrorRow() << ", " << (std::string) xmlDoc->ErrorDesc();
     return error.str();
 }
 

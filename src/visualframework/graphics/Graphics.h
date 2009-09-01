@@ -109,6 +109,7 @@ class Graphics
 
         // global utils
         static std::string getLastError();
+        static unsigned int getMillis();
 
     private:
 

@@ -435,4 +435,9 @@ std::string Graphics::getLastError()
     return _error;
 }
 
+unsigned int Graphics::getMillis()
+{
+    return SDL_GetTicks();
+}
+
 } // namespace
