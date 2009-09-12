@@ -31,7 +31,7 @@ void Net::quit()
 
     SDLNet_Quit();
 }
-
+/*
 bool Net::allocatePacket(UDPpacket* packet, unsigned int length)
 {
     // clear existing packet
@@ -55,7 +55,7 @@ void Net::freePacket(UDPpacket* packet)
         SDLNet_FreePacket(packet);
     }
 }
-
+*/
 std::string Net::getError()
 {
     _error = SDLNet_GetError();

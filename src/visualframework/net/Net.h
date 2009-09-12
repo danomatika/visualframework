@@ -32,13 +32,13 @@ class Net
 
         /// has SDL_net been setup?
         static bool isSetup()   {return _bSetup;}
-
+/*
         /// allocates a udp packet, clears if existing
         static bool allocatePacket(UDPpacket* packet, unsigned int length=VISUAL_MAX_PACKET_LEN);
 
         /// free's a udp packet
         static void freePacket(UDPpacket* packet);
-
+*/
         /// get the SDL_net error as a string
         static std::string getError();
 
