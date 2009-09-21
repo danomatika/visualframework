@@ -11,17 +11,19 @@ bool OscObject::processOsc(const osc::ReceivedMessage& m)
 {
     // call any attached objects
     std::vector<OscObject*>::iterator objectIter;
-    for(objectIter = _objectList.begin(); objectIter != _objectList.end(); objectIter++)
+    for(objectIter = _objectList.begin(); objectIter != _objectList.end())
     {
         // try to process message
         if((*objectIter) != NULL)
         {
             if((*objectIter)->processOsc(m))
                 return true;
+
+            objectIter++; // increment iter
         }
         else    // bad object, so erase it
         {
-            _objectList.erase(objectIter);
+            objectIter = _objectList.erase(objectIter);
             LOG_WARN << "OscObject: removed NULL object" <<std::endl;
         }
     }

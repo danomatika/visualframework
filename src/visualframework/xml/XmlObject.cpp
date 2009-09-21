@@ -91,12 +91,12 @@ bool XmlObject::loadXml(TiXmlElement* e)
 
     // load attached objects
     std::vector<XmlObject*>::iterator objectIter;
-    for(objectIter = _objectList.begin(); objectIter != _objectList.end(); objectIter++)
+    for(objectIter = _objectList.begin(); objectIter != _objectList.end();)
     {
         // remove this object if it dosent exist anymore
         if((*objectIter) == NULL)
         {
-            _objectList.erase(objectIter);
+            objectIter = _objectList.erase(objectIter);
             LOG_WARN << "Xml \"" << _elementName << "\" load: removed NULL xml object" << std::endl;
         }
         else // exists
@@ -128,6 +128,8 @@ bool XmlObject::loadXml(TiXmlElement* e)
                 LOG_DEBUG << "  element not found for object" << std::endl;
                 #endif
             }
+
+            ++objectIter; // increment iter
         }
     }
 
@@ -239,13 +241,14 @@ bool XmlObject::saveXml(TiXmlElement* e)
     // save all attached objects
     bool ret = true;
     std::vector<XmlObject*>::iterator objectIter;
-    for(objectIter = _objectList.begin(); objectIter != _objectList.end(); objectIter++)
+    for(objectIter = _objectList.begin(); objectIter != _objectList.end();)
     {
         // remove this object if it dosent exist anymore
         if((*objectIter) == NULL)
         {
             _objectList.erase(objectIter);
             LOG_WARN << "Xml \"" << _elementName << "\" save: removed NULL xml object" << std::endl;
+            ++objectIter; // increment iter
         }
         else // exists
         {
@@ -269,6 +272,8 @@ bool XmlObject::saveXml(TiXmlElement* e)
 
             // save object
             (*objectIter)->saveXml(child);
+
+            ++objectIter; // increment iter
         }
     }
 

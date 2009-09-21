@@ -126,17 +126,19 @@ void OscListener::ProcessMessage(const osc::ReceivedMessage& m, const IpEndpoint
     {
         // call any attached objects
         std::vector<OscObject*>::iterator iter;
-        for(iter = _objectList.begin(); iter != _objectList.end(); iter++)
+        for(iter = _objectList.begin(); iter != _objectList.end();)
         {
             // try to process message
             if((*iter) != NULL)
             {
                 if((*iter)->processOsc(m))
                     return;
+
+                iter++; // increment iter
             }
             else    // bad object, so erase it
             {
-                _objectList.erase(iter);
+                iter = _objectList.erase(iter);
                 LOG_WARN << "OscListner: removed NULL object" <<std::endl;
             }
         }
