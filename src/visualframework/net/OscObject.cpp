@@ -11,7 +11,7 @@ bool OscObject::processOsc(const osc::ReceivedMessage& m)
 {
     // call any attached objects
     std::vector<OscObject*>::iterator objectIter;
-    for(objectIter = _objectList.begin(); objectIter != _objectList.end())
+    for(objectIter = _objectList.begin(); objectIter != _objectList.end();)
     {
         // try to process message
         if((*objectIter) != NULL)
