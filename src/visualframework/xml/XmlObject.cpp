@@ -278,7 +278,7 @@ bool XmlObject::saveXml(TiXmlElement* e)
     }
 
     // process user callback
-    return ret || writeXml(e);
+    return writeXml(e) || ret;
 }
 
 bool XmlObject::saveXmlFile(std::string filename)
