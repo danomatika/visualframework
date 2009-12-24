@@ -131,7 +131,7 @@ bool Graphics::createWindow(std::string title)
     _screen = SDL_SetVideoMode(_iWidth, _iHeight, _iDepth, _ui32VideoFlags);
     if(!_screen)
     {
-        LOG_ERROR << "Unable to set video: " << SDL_GetError() << std::endl;
+        LOG_ERROR << "Unable to set video mode: " << SDL_GetError() << std::endl;
         return false;
     }
 
@@ -154,7 +154,7 @@ bool Graphics::toggleFullscreen()
         return false;
     }
 
-    SDL_FreeSurface(_screen);
+    //SDL_FreeSurface(_screen);
 
     switch(_mode)
     {

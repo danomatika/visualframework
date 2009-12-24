@@ -6,7 +6,7 @@
 
 #include "../Common.h"
 
-#include <tinyxml/tinyxml.h>
+#include <tinyxml.h>
 #include "XmlObject.h"
 
 namespace visual {

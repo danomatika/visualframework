@@ -7,12 +7,12 @@ namespace visual {
 
 OscSender::OscSender() :
     osc::OutboundPacketStream(_buffer, OSC_SENDER_BUFFER_SIZE),
-    _sAddr(""), _uiPort(0)
+    _socket(NULL), _sAddr(""), _uiPort(0)
 {}
 
 OscSender::OscSender(std::string addr, unsigned int port) :
     osc::OutboundPacketStream(_buffer, OSC_SENDER_BUFFER_SIZE),
-    _sAddr(addr), _uiPort(port)
+    _socket(NULL), _sAddr(addr), _uiPort(port)
 {
     setup(_sAddr, _uiPort);
 }
@@ -38,7 +38,7 @@ void OscSender::setup(std::string addr, unsigned int port)
     _sAddr = addr;
     _uiPort = port;
 
-    if(_socket !=NULL)
+    if(_socket != NULL)
     {
         delete _socket;
     }
