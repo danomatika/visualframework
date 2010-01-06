@@ -4070,7 +4070,7 @@ subdirs="$subdirs externals/oscpack externals/tinyxml"
 
 ac_config_headers="$ac_config_headers src/config.h"
 
-ac_config_files="$ac_config_files Makefile src/Makefile src/visualframework/Makefile src/tests/Makefile"
+ac_config_files="$ac_config_files Makefile externals/Makefile src/Makefile src/visualframework/Makefile src/tests/Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -4781,6 +4781,7 @@ do
     "depfiles") CONFIG_COMMANDS="$CONFIG_COMMANDS depfiles" ;;
     "src/config.h") CONFIG_HEADERS="$CONFIG_HEADERS src/config.h" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
+    "externals/Makefile") CONFIG_FILES="$CONFIG_FILES externals/Makefile" ;;
     "src/Makefile") CONFIG_FILES="$CONFIG_FILES src/Makefile" ;;
     "src/visualframework/Makefile") CONFIG_FILES="$CONFIG_FILES src/visualframework/Makefile" ;;
     "src/tests/Makefile") CONFIG_FILES="$CONFIG_FILES src/tests/Makefile" ;;
@@ -5650,19 +5651,11 @@ fi
 #########################################
 ##### Print a summary for the user #####
 
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: 
-	visualframework $VERSION is now configured
-
-	Source directory:     $srcdir
-	Installation prefix:  $prefix
-	C++ compiler:         $CXX $CXXFLAGS
-	Debug build:          $enable_debug
-" >&5
-$as_echo "
-	visualframework $VERSION is now configured
-
-	Source directory:     $srcdir
-	Installation prefix:  $prefix
-	C++ compiler:         $CXX $CXXFLAGS
-	Debug build:          $enable_debug
-" >&6; }
+#AC_MSG_RESULT([
+#	visualframework $VERSION is now configured
+#
+#	Source directory:     $srcdir
+#	Installation prefix:  $prefix
+#	C++ compiler:         $CXX $CXXFLAGS
+#	Debug build:          $enable_debug
+#])

@@ -4,12 +4,12 @@
 #ifndef VISUAL_FRAMEWORK_H
 #define VISUAL_FRAMEWORK_H
 
-#include "./visualframework/Common.h"
+#include "Common.h"
 
-#include "./visualframework/Application.h"
-#include "./visualframework/Thread.h"
-#include "./visualframework/net/Net.h"
-#include "./visualframework/xml/Xml.h"
+#include "Application.h"
+#include "Thread.h"
+#include "net/Net.h"
+#include "xml/Xml.h"
 
 #include <vmmlib/vmmlib.h>
 

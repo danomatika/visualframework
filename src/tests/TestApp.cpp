@@ -53,7 +53,10 @@ void TestApp::keyPressed(SDLKey key, SDLMod mod)
         case SDLK_RETURN:
             // toggle fullscreen on ALT+ENTER
             if(mod & KMOD_ALT)
-            {
+            { }
+			break;
+			
+		case SDLK_f:
                 if(Graphics::toggleFullscreen())
                 {
                     switch(Graphics::getMode())
@@ -67,7 +70,7 @@ void TestApp::keyPressed(SDLKey key, SDLMod mod)
                             break;
                     }
                 }
-            }
+            //}
             break;
 
         case SDLK_RIGHTBRACKET:

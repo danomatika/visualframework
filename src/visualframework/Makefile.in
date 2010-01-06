@@ -55,7 +55,8 @@ libvisualframework_a_LIBADD =
 am_libvisualframework_a_OBJECTS = Application.$(OBJEXT) \
 	Graphics.$(OBJEXT) Net.$(OBJEXT) OscListener.$(OBJEXT) \
 	OscObject.$(OBJEXT) OscSender.$(OBJEXT) UdpListener.$(OBJEXT) \
-	UdpSender.$(OBJEXT) Thread.$(OBJEXT)
+	UdpSender.$(OBJEXT) Thread.$(OBJEXT) Xml.$(OBJEXT) \
+	XmlObject.$(OBJEXT)
 libvisualframework_a_OBJECTS = $(am_libvisualframework_a_OBJECTS)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)/src
 depcomp = $(SHELL) $(top_srcdir)/config/depcomp
@@ -170,22 +171,17 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 
 # directories to build (rel to top)
-EXTERNALS_DIRS = externals/oscpack \
-                 externals/tinyxml
-
+EXTERNALS_DIRS = oscpack tinyxml
 
 # includes
 EXTERNALS_CFLAGS = \
-         -I$(top_srcdir)/externals/oscpack \
-         -I$(top_srcdir)/externals/tclap \
-         -I$(top_srcdir)/externals/tinyxml/src \
-         -I$(top_srcdir)/externals
+        -I$(top_srcdir)/externals/include \
+        -I$(top_srcdir)/externals
 
 
 # libs to link
 EXTERNALS_LIBS = \
-     -L$(top_srcdir)/externals/oscpack -loscpack \
-     -L$(top_srcdir)/externals/tinyxml/src -ltinyxml
+      -L$(top_srcdir)/externals/lib -loscpack -ltinyxml
 
 
 # load externals variables
@@ -216,19 +212,18 @@ libvisualframework_a_SOURCES = \
             net/UdpSender.h \
             net/UdpSender.cpp \
         Thread.h \
-        Thread.cpp
+        Thread.cpp \
+            xml/Xml.h \
+            xml/Xml.cpp \
+            xml/XmlObject.h \
+            xml/XmlObject.cpp
 
 
 # include paths
-AM_CPPFLAGS = \
-        $(CXXFLAGS) $(SDL_CFLAGS) $(SDL_GFX_CFLAGS) $(SDL_NET_CFLAGS) \
-        $(EXTERNALS_CFLAGS)
-
+AM_CPPFLAGS = $(CXXFLAGS) $(SDL_CFLAGS) $(EXTERNALS_CFLAGS)
 
 # libs to link
-AM_LDFLAGS = \
-    $(SDL_LIBS) $(SDL_GFX_LIBS)  $(SDL_NET_LIBS) $(EXTERNALS_LIBS)
-
+AM_LDFLAGS = $(SDL_LIBS) $(SDL_GFX_LIBS) $(SDL_NET_LIBS) $(EXTERNALS_LIBS)
 all: all-am
 
 .SUFFIXES:
@@ -286,6 +281,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Thread.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UdpListener.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UdpSender.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Xml.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/XmlObject.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -398,6 +395,34 @@ UdpSender.obj: net/UdpSender.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='net/UdpSender.cpp' object='UdpSender.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o UdpSender.obj `if test -f 'net/UdpSender.cpp'; then $(CYGPATH_W) 'net/UdpSender.cpp'; else $(CYGPATH_W) '$(srcdir)/net/UdpSender.cpp'; fi`
+
+Xml.o: xml/Xml.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Xml.o -MD -MP -MF $(DEPDIR)/Xml.Tpo -c -o Xml.o `test -f 'xml/Xml.cpp' || echo '$(srcdir)/'`xml/Xml.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/Xml.Tpo $(DEPDIR)/Xml.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='xml/Xml.cpp' object='Xml.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Xml.o `test -f 'xml/Xml.cpp' || echo '$(srcdir)/'`xml/Xml.cpp
+
+Xml.obj: xml/Xml.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Xml.obj -MD -MP -MF $(DEPDIR)/Xml.Tpo -c -o Xml.obj `if test -f 'xml/Xml.cpp'; then $(CYGPATH_W) 'xml/Xml.cpp'; else $(CYGPATH_W) '$(srcdir)/xml/Xml.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/Xml.Tpo $(DEPDIR)/Xml.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='xml/Xml.cpp' object='Xml.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Xml.obj `if test -f 'xml/Xml.cpp'; then $(CYGPATH_W) 'xml/Xml.cpp'; else $(CYGPATH_W) '$(srcdir)/xml/Xml.cpp'; fi`
+
+XmlObject.o: xml/XmlObject.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT XmlObject.o -MD -MP -MF $(DEPDIR)/XmlObject.Tpo -c -o XmlObject.o `test -f 'xml/XmlObject.cpp' || echo '$(srcdir)/'`xml/XmlObject.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/XmlObject.Tpo $(DEPDIR)/XmlObject.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='xml/XmlObject.cpp' object='XmlObject.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o XmlObject.o `test -f 'xml/XmlObject.cpp' || echo '$(srcdir)/'`xml/XmlObject.cpp
+
+XmlObject.obj: xml/XmlObject.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT XmlObject.obj -MD -MP -MF $(DEPDIR)/XmlObject.Tpo -c -o XmlObject.obj `if test -f 'xml/XmlObject.cpp'; then $(CYGPATH_W) 'xml/XmlObject.cpp'; else $(CYGPATH_W) '$(srcdir)/xml/XmlObject.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/XmlObject.Tpo $(DEPDIR)/XmlObject.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='xml/XmlObject.cpp' object='XmlObject.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o XmlObject.obj `if test -f 'xml/XmlObject.cpp'; then $(CYGPATH_W) 'xml/XmlObject.cpp'; else $(CYGPATH_W) '$(srcdir)/xml/XmlObject.cpp'; fi`
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \

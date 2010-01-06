@@ -29,14 +29,15 @@ libvisualframework_a_SOURCES = \
             net/UdpSender.h \
             net/UdpSender.cpp \
         Thread.h \
-        Thread.cpp
+        Thread.cpp \
+            xml/Xml.h \
+            xml/Xml.cpp \
+            xml/XmlObject.h \
+            xml/XmlObject.cpp
 
 # include paths
-AM_CPPFLAGS = \
-        $(CXXFLAGS) $(SDL_CFLAGS) $(SDL_GFX_CFLAGS) $(SDL_NET_CFLAGS) \
-        $(EXTERNALS_CFLAGS)
+AM_CPPFLAGS = $(CXXFLAGS) $(SDL_CFLAGS) $(EXTERNALS_CFLAGS)
 
 
 # libs to link
-AM_LDFLAGS = \
-    $(SDL_LIBS) $(SDL_GFX_LIBS)  $(SDL_NET_LIBS) $(EXTERNALS_LIBS)
+AM_LDFLAGS = $(SDL_LIBS) $(SDL_GFX_LIBS) $(SDL_NET_LIBS) $(EXTERNALS_LIBS)

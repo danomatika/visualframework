@@ -5,22 +5,19 @@ ifndef CONFIG
   CONFIG=Debug
 endif
 
-# if multiple archs are defined turn off automated dependency generation
-DEPFLAGS := $(if $(word 2, $(TARGET_ARCH)), , -MMD)
-
 ifeq ($(CONFIG),Debug)
   BINDIR := ../bin
   LIBDIR := ../lib
   OBJDIR := ../obj/vftests/Debug
   OUTDIR := ../bin
-  CPPFLAGS := $(DEPFLAGS) -D "LINUX" -D "DEBUG" -D "_DEBUG" -I "../src" -I "/usr/include" -I "../externals" -I "../externals/include"
+  CPPFLAGS := -MMD -D "LINUX" -D "DEBUG" -D "_DEBUG" -I "../src" -I "/usr/include" -I "../externals" -I "../externals/include"
   CFLAGS += $(CPPFLAGS) $(TARGET_ARCH) -g -Wall -Wno-unknown-pragmas -ggdb
-  CXXFLAGS += $(CFLAGS)
+  CXXFLAGS := $(CFLAGS)
   LDFLAGS += -L$(BINDIR) -L$(LIBDIR) -L"../lib" -L"../externals/lib" -L"/usr/lib" -lSDL -lSDL_gfx -lSDL_net -lvisualframeworkD -ltinyxmlD -loscpackD
   LDDEPS :=
   RESFLAGS := -D "LINUX" -D "DEBUG" -D "_DEBUG" -I "../src" -I "/usr/include" -I "../externals" -I "../externals/include"
   TARGET := vftestsD
- BLDCMD = $(CXX) -o $(OUTDIR)/$(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(TARGET_ARCH)
+  BLDCMD = $(CXX) -o $(OUTDIR)/$(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(TARGET_ARCH)
 endif
 
 ifeq ($(CONFIG),Release)
@@ -28,14 +25,14 @@ ifeq ($(CONFIG),Release)
   LIBDIR := ../lib
   OBJDIR := ../obj/vftests/Release
   OUTDIR := ../bin
-  CPPFLAGS := $(DEPFLAGS) -D "LINUX" -D "NDEBUG" -I "../src" -I "/usr/include" -I "../externals" -I "../externals/include"
+  CPPFLAGS := -MMD -D "LINUX" -D "NDEBUG" -I "../src" -I "/usr/include" -I "../externals" -I "../externals/include"
   CFLAGS += $(CPPFLAGS) $(TARGET_ARCH) -O2 -Wall -Wno-unknown-pragmas
-  CXXFLAGS += $(CFLAGS)
-  LDFLAGS += -L$(BINDIR) -L$(LIBDIR) -s -L"../lib" -L"../externals/lib" -L"/usr/lib" -lSDL -lSDL_gfx -lSDL_net -lvisualframework -ltinyxml -loscpack
+  CXXFLAGS := $(CFLAGS)
+  LDFLAGS += -L$(BINDIR) -L$(LIBDIR) -Wl,-x -L"../lib" -L"../externals/lib" -L"/usr/lib" -lSDL -lSDL_gfx -lSDL_net -lvisualframework -ltinyxml -loscpack
   LDDEPS := ../lib/libvisualframework.a
   RESFLAGS := -D "LINUX" -D "NDEBUG" -I "../src" -I "/usr/include" -I "../externals" -I "../externals/include"
   TARGET := vftests
- BLDCMD = $(CXX) -o $(OUTDIR)/$(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(TARGET_ARCH)
+  BLDCMD = $(CXX) -o $(OUTDIR)/$(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(TARGET_ARCH)
 endif
 
 OBJECTS := \
@@ -48,7 +45,7 @@ CMD := $(subst \,\\,$(ComSpec)$(COMSPEC))
 ifeq (,$(CMD))
   MKDIR_TYPE := posix
 endif
-ifeq (/bin,$(findstring /bin,$(SHELL)))
+ifeq (/bin/sh.exe,$(SHELL))
   MKDIR_TYPE := posix
 endif
 ifeq ($(MKDIR_TYPE),posix)
@@ -86,17 +83,17 @@ endif
 $(OBJDIR)/ClassTests.o: ../src/tests/ClassTests.cpp
 	-@$(CMD_MKOBJDIR)
 	@echo $(notdir $<)
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+	@$(CXX) $(CXXFLAGS) -o $@ -c $<
 
 $(OBJDIR)/TestApp.o: ../src/tests/TestApp.cpp
 	-@$(CMD_MKOBJDIR)
 	@echo $(notdir $<)
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+	@$(CXX) $(CXXFLAGS) -o $@ -c $<
 
 $(OBJDIR)/testMain.o: ../src/tests/testMain.cpp
 	-@$(CMD_MKOBJDIR)
 	@echo $(notdir $<)
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+	@$(CXX) $(CXXFLAGS) -o $@ -c $<
 
 -include $(OBJECTS:%.o=%.d)
 

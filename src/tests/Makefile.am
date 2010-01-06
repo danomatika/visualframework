@@ -11,9 +11,18 @@ vftests_SOURCES = ClassTests.h ClassTests.cpp \
 include $(top_srcdir)/externals/externals.mk
 
 # include paths
-vftests_CPPFLAGS = $(CXXFLAGS) $(SDL_CFLAGS) $(SDL_GFX_CFLAGS)  $(SDL_NET_CFLAGS) \
-         -I../visualframework $(EXTERNALS_CFLAGS)
+vftests_CPPFLAGS = $(CXXFLAGS) \
+        $(SDL_CFLAGS) -I../visualframework $(EXTERNALS_CFLAGS)
 
 # libs to link
 vftests_LDFLAGS = $(SDL_LIBS) $(SDL_GFX_LIBS)  $(SDL_NET_LIBS) \
         -L../visualframework -lvisualframework $(EXTERNALS_LIBS)
+
+# move bin to bin folder after building
+all-local:
+	mkdir -p $(top_srcdir)/bin
+	mv vftests $(top_srcdir)/bin/vftests
+
+# clean bin
+clean-local:
+	rm -f $(top_srcdir)/bin/vftests

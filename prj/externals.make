@@ -5,22 +5,19 @@ ifndef CONFIG
   CONFIG=Debug
 endif
 
-# if multiple archs are defined turn off automated dependency generation
-DEPFLAGS := $(if $(word 2, $(TARGET_ARCH)), , -MMD)
-
 ifeq ($(CONFIG),Debug)
   BINDIR := ../bin
   LIBDIR := ../lib
   OBJDIR := obj/Debug
   OUTDIR := ../lib
-  CPPFLAGS := $(DEPFLAGS)
+  CPPFLAGS := -MMD
   CFLAGS += $(CPPFLAGS) $(TARGET_ARCH) -g
-  CXXFLAGS += $(CFLAGS)
+  CXXFLAGS := $(CFLAGS)
   LDFLAGS += -L$(BINDIR) -L$(LIBDIR)
   LDDEPS :=
   RESFLAGS :=
   TARGET := libexternals.a
- BLDCMD = ar -rcs $(OUTDIR)/$(TARGET) $(OBJECTS) $(TARGET_ARCH)
+  BLDCMD = ar -rcs $(OUTDIR)/$(TARGET) $(OBJECTS) $(TARGET_ARCH)
 
   define postbuildcmd
 	@echo Running post-build commands...
@@ -34,14 +31,14 @@ ifeq ($(CONFIG),Release)
   LIBDIR := ../lib
   OBJDIR := obj/Release
   OUTDIR := ../lib
-  CPPFLAGS := $(DEPFLAGS)
+  CPPFLAGS := -MMD
   CFLAGS += $(CPPFLAGS) $(TARGET_ARCH) -O2
-  CXXFLAGS += $(CFLAGS)
-  LDFLAGS += -L$(BINDIR) -L$(LIBDIR) -s
+  CXXFLAGS := $(CFLAGS)
+  LDFLAGS += -L$(BINDIR) -L$(LIBDIR) -Wl,-x
   LDDEPS :=
   RESFLAGS :=
   TARGET := libexternals.a
- BLDCMD = ar -rcs $(OUTDIR)/$(TARGET) $(OBJECTS) $(TARGET_ARCH)
+  BLDCMD = ar -rcs $(OUTDIR)/$(TARGET) $(OBJECTS) $(TARGET_ARCH)
 
   define postbuildcmd
 	@echo Running post-build commands...
@@ -57,7 +54,7 @@ CMD := $(subst \,\\,$(ComSpec)$(COMSPEC))
 ifeq (,$(CMD))
   MKDIR_TYPE := posix
 endif
-ifeq (/bin,$(findstring /bin,$(SHELL)))
+ifeq (/bin/sh.exe,$(SHELL))
   MKDIR_TYPE := posix
 endif
 ifeq ($(MKDIR_TYPE),posix)

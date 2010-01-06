@@ -127,6 +127,12 @@ bool Graphics::setWindowIcon(std::string bitmap)
 
 bool Graphics::createWindow(std::string title)
 {
+	unsigned int bpp=SDL_VideoModeOK(_iWidth, _iHeight, _iDepth, _ui32VideoFlags);
+	if(!bpp){
+	  printf("Mode not available.\n");
+	  return false;
+	}
+
     // create a new window
     _screen = SDL_SetVideoMode(_iWidth, _iHeight, _iDepth, _ui32VideoFlags);
     if(!_screen)

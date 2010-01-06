@@ -173,29 +173,24 @@ vftests_SOURCES = ClassTests.h ClassTests.cpp \
 
 
 # directories to build (rel to top)
-EXTERNALS_DIRS = externals/oscpack \
-                 externals/tinyxml
-
+EXTERNALS_DIRS = oscpack tinyxml
 
 # includes
 EXTERNALS_CFLAGS = \
-         -I$(top_srcdir)/externals/oscpack \
-         -I$(top_srcdir)/externals/tclap \
-         -I$(top_srcdir)/externals/tinyxml/src \
-         -I$(top_srcdir)/externals
+        -I$(top_srcdir)/externals/include \
+        -I$(top_srcdir)/externals
 
 
 # libs to link
 EXTERNALS_LIBS = \
-     -L$(top_srcdir)/externals/oscpack -loscpack \
-     -L$(top_srcdir)/externals/tinyxml/src -ltinyxml
+      -L$(top_srcdir)/externals/lib -loscpack -ltinyxml
 
 
 # load externals variables
 
 # include paths
-vftests_CPPFLAGS = $(CXXFLAGS) $(SDL_CFLAGS) $(SDL_GFX_CFLAGS)  $(SDL_NET_CFLAGS) \
-         -I../visualframework $(EXTERNALS_CFLAGS)
+vftests_CPPFLAGS = $(CXXFLAGS) \
+        $(SDL_CFLAGS) -I../visualframework $(EXTERNALS_CFLAGS)
 
 
 # libs to link
@@ -393,7 +388,7 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(PROGRAMS)
+all-am: Makefile $(PROGRAMS) all-local
 installdirs:
 install: install-am
 install-exec: install-exec-am
@@ -422,7 +417,8 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-generic clean-noinstPROGRAMS mostlyclean-am
+clean-am: clean-generic clean-local clean-noinstPROGRAMS \
+	mostlyclean-am
 
 distclean: distclean-am
 	-rm -rf ./$(DEPDIR)
@@ -491,19 +487,28 @@ uninstall-am:
 
 .MAKE: install-am install-strip
 
-.PHONY: CTAGS GTAGS all all-am check check-am clean clean-generic \
-	clean-noinstPROGRAMS ctags distclean distclean-compile \
-	distclean-generic distclean-tags distdir dvi dvi-am html \
-	html-am info info-am install install-am install-data \
-	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-man install-pdf install-pdf-am \
-	install-ps install-ps-am install-strip installcheck \
-	installcheck-am installdirs maintainer-clean \
+.PHONY: CTAGS GTAGS all all-am all-local check check-am clean \
+	clean-generic clean-local clean-noinstPROGRAMS ctags distclean \
+	distclean-compile distclean-generic distclean-tags distdir dvi \
+	dvi-am html html-am info info-am install install-am \
+	install-data install-data-am install-dvi install-dvi-am \
+	install-exec install-exec-am install-html install-html-am \
+	install-info install-info-am install-man install-pdf \
+	install-pdf-am install-ps install-ps-am install-strip \
+	installcheck installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-compile \
 	mostlyclean-generic pdf pdf-am ps ps-am tags uninstall \
 	uninstall-am
 
+
+# move bin to bin folder after building
+all-local:
+	mkdir -p $(top_srcdir)/bin
+	mv vftests $(top_srcdir)/bin/vftests
+
+# clean bin
+clean-local:
+	rm -f $(top_srcdir)/bin/vftests
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -14,14 +14,14 @@ int main(int argc, char *argv[])
     LOG << "starting testMain" << endl;
 
     // initialize SDL context
-    Graphics::init(800, 600, 16, Graphics::HARDWARE);
+    Graphics::init(800, 600, 24, Graphics::HARDWARE);
 
     // initialize app
     TestApp testApp;
     testApp.init();
 
     // set icon
-    Graphics::setWindowIcon("../../data/icon.bmp");
+    Graphics::setWindowIcon("../data/icon.bmp");
 
     // open sdl window
     Graphics::createWindow("visualframework test");

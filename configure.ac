@@ -77,6 +77,7 @@ AC_CONFIG_SUBDIRS([
 AC_CONFIG_HEADERS([src/config.h])
 AC_CONFIG_FILES([
 	Makefile
+	externals/Makefile
 	src/Makefile
 	src/visualframework/Makefile
 	src/tests/Makefile
@@ -86,11 +87,11 @@ AC_OUTPUT
 #########################################
 ##### Print a summary for the user #####
 
-AC_MSG_RESULT([
-	visualframework $VERSION is now configured
-
-	Source directory:     $srcdir
-	Installation prefix:  $prefix
-	C++ compiler:         $CXX $CXXFLAGS
-	Debug build:          $enable_debug
-])
+#AC_MSG_RESULT([
+#	visualframework $VERSION is now configured
+#
+#	Source directory:     $srcdir
+#	Installation prefix:  $prefix
+#	C++ compiler:         $CXX $CXXFLAGS
+#	Debug build:          $enable_debug
+#])

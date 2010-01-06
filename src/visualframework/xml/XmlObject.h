@@ -8,7 +8,7 @@
 
 #include <vector>
 
-#include <tinyxml.h>
+#include <tinyxml/tinyxml.h>
 
 namespace visual {
 
