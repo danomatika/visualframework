@@ -1,0 +1,12 @@
+Tconfigure copy
+v7
+r1
+
+N/bin/sh
+c0000000049FF47FF0000000000148C60
+t1241466879
+s1346656
+
+CExternalBuildToolExecution "configure copy"
+r0
+
