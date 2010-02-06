@@ -153,20 +153,6 @@
 			passBuildSettingsInEnvironment = 1;
 			productName = all;
 		};
-		3056625410F56E8C007A4B62 /* configure */ = {
-			isa = PBXLegacyTarget;
-			buildArgumentsString = "./run_configure $(ACTION) $(DEBUG)";
-			buildConfigurationList = 3056625510F56E8C007A4B62 /* Build configuration list for PBXLegacyTarget "configure" */;
-			buildPhases = (
-			);
-			buildToolPath = /bin/sh;
-			buildWorkingDirectory = ./;
-			dependencies = (
-			);
-			name = configure;
-			passBuildSettingsInEnvironment = 1;
-			productName = test;
-		};
 /* End PBXLegacyTarget section */
 
 /* Begin PBXProject section */
@@ -180,7 +166,6 @@
 			projectRoot = "";
 			targets = (
 				305660F310F55105007A4B62 /* all */,
-				3056625410F56E8C007A4B62 /* configure */,
 			);
 		};
 /* End PBXProject section */
@@ -230,28 +215,6 @@
 			};
 			name = Release;
 		};
-		3056625610F56E8C007A4B62 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-				DEBUG = debug;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				PRODUCT_NAME = configure;
-			};
-			name = Debug;
-		};
-		3056625710F56E8C007A4B62 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				PRODUCT_NAME = test;
-				ZERO_LINK = NO;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -269,15 +232,6 @@
 			buildConfigurations = (
 				305660F410F55105007A4B62 /* Debug */,
 				305660F510F55105007A4B62 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		3056625510F56E8C007A4B62 /* Build configuration list for PBXLegacyTarget "configure" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				3056625610F56E8C007A4B62 /* Debug */,
-				3056625710F56E8C007A4B62 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -18,7 +18,7 @@
 				PBXFileTableDataSourceColumnWidthsKey = (
 					22,
 					300,
-					252,
+					120,
 				);
 				PBXFileTableDataSourceColumnsKey = (
 					PBXExecutablesDataSource_ActiveFlagID,
@@ -70,19 +70,39 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 284519450;
-			PBXWorkspaceStateSaveDate = 284519450;
+			PBXPerProjectTemplateStateSaveDate = 287109012;
+			PBXWorkspaceStateSaveDate = 287109012;
 		};
 		perUserProjectItems = {
+			304FCFF3111CF20200CFBB5E /* PBXTextBookmark */ = 304FCFF3111CF20200CFBB5E /* PBXTextBookmark */;
+			304FCFF4111CF20200CFBB5E /* PBXTextBookmark */ = 304FCFF4111CF20200CFBB5E /* PBXTextBookmark */;
 			3056617010F556A0007A4B62 /* PBXTextBookmark */ = 3056617010F556A0007A4B62 /* PBXTextBookmark */;
 			305661BD10F56373007A4B62 /* PBXTextBookmark */ = 305661BD10F56373007A4B62 /* PBXTextBookmark */;
 			3056621610F56C02007A4B62 /* PBXTargetBookmark */ = 3056621610F56C02007A4B62 /* PBXTargetBookmark */;
-			3056625B10F56EB4007A4B62 /* PBXTargetBookmark */ = 3056625B10F56EB4007A4B62 /* PBXTargetBookmark */;
-			3056625F10F56F3E007A4B62 /* PBXTargetBookmark */ = 3056625F10F56F3E007A4B62 /* PBXTargetBookmark */;
 		};
 		sourceControlManager = 305660F710F55135007A4B62 /* Source Control */;
 		userBuildSettings = {
 		};
+	};
+	304FCFF3111CF20200CFBB5E /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3056610D10F55183007A4B62 /* ClassTests.cpp */;
+		name = "ClassTests.cpp: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 490;
+		vrLoc = 0;
+	};
+	304FCFF4111CF20200CFBB5E /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3056610D10F55183007A4B62 /* ClassTests.cpp */;
+		name = "ClassTests.cpp: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1372;
+		vrLoc = 0;
 	};
 	305660F310F55105007A4B62 /* all */ = {
 		activeExec = 0;
@@ -145,6 +165,21 @@
 			sepNavIntBoundsRect = "{{0, 0}, {617, 127}}";
 			sepNavSelRange = "{0, 0}";
 			sepNavVisRange = "{0, 76}";
+		};
+	};
+	3056610D10F55183007A4B62 /* ClassTests.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {642, 3107}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 1372}";
+		};
+	};
+	3056610E10F55183007A4B62 /* ClassTests.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {600, 975}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 844}";
+			sepNavWindowFrame = "{{61, 140}, {659, 691}}";
 		};
 	};
 	3056612E10F55183007A4B62 /* Thread.h */ = {
@@ -223,26 +258,5 @@
 	3056621610F56C02007A4B62 /* PBXTargetBookmark */ = {
 		isa = PBXTargetBookmark;
 		trg = 3056620610F569AB007A4B62 /* configure */;
-	};
-	3056625410F56E8C007A4B62 /* configure */ = {
-		activeExec = 0;
-	};
-	3056625B10F56EB4007A4B62 /* PBXTargetBookmark */ = {
-		isa = PBXTargetBookmark;
-		trg = 3056625410F56E8C007A4B62 /* configure */;
-	};
-	3056625F10F56F3E007A4B62 /* PBXTargetBookmark */ = {
-		isa = PBXTargetBookmark;
-		trg = 3056625410F56E8C007A4B62 /* configure */;
-		uiCtxt = {
-			TOCViewDetailVisibleRect = "{{0, 0}, {310, 148}}";
-			TOCViewExpandedItems = (
-				"com.apple.target-editor-pane.settings",
-			);
-			TOCViewMasterVisibleRect = "{{0, 0}, {120, 148}}";
-			TOCViewSelectedItems = (
-				"com.apple.target-editor-pane.settings",
-			);
-		};
 	};
 }
