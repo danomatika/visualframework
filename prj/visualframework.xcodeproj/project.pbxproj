@@ -1,0 +1,292 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6CAA3A29704B001271289886 /* Application.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C3712127586001271289886 /* Application.cpp */; };
+		092257B755C0001271289886 /* Thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 478311D36495001271289886 /* Thread.cpp */; };
+		1F9A4B5624A6001271289886 /* Graphics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 333B0E1544EE001271289886 /* Graphics.cpp */; };
+		47C838522276001271289886 /* Net.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6D7A1D7178ED001271289886 /* Net.cpp */; };
+		675305C8196C001271289886 /* UdpListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 13237B6B6EF4001271289886 /* UdpListener.cpp */; };
+		686972CD2A34001271289886 /* UdpSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 347E79150E24001271289886 /* UdpSender.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1C3712127586001271289886 /* Application.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "Application.cpp"; path = "Application.cpp"; sourceTree = "<group>"; };
+		07725B332CDA001271289886 /* Application.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Application.h"; path = "Application.h"; sourceTree = "<group>"; };
+		4264497D500A001271289886 /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Common.h"; path = "Common.h"; sourceTree = "<group>"; };
+		6C7E626250A4001271289886 /* Log.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Log.h"; path = "Log.h"; sourceTree = "<group>"; };
+		478311D36495001271289886 /* Thread.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "Thread.cpp"; path = "Thread.cpp"; sourceTree = "<group>"; };
+		4B036ACC317D001271289886 /* Thread.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Thread.h"; path = "Thread.h"; sourceTree = "<group>"; };
+		50152BFA4D0B001271289886 /* Color.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Color.h"; path = "Color.h"; sourceTree = "<group>"; };
+		333B0E1544EE001271289886 /* Graphics.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "Graphics.cpp"; path = "Graphics.cpp"; sourceTree = "<group>"; };
+		35AE3A5B487B001271289886 /* Graphics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Graphics.h"; path = "Graphics.h"; sourceTree = "<group>"; };
+		6D7A1D7178ED001271289886 /* Net.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "Net.cpp"; path = "Net.cpp"; sourceTree = "<group>"; };
+		06F212492F24001271289886 /* Net.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Net.h"; path = "Net.h"; sourceTree = "<group>"; };
+		13237B6B6EF4001271289886 /* UdpListener.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "UdpListener.cpp"; path = "UdpListener.cpp"; sourceTree = "<group>"; };
+		35B05E095418001271289886 /* UdpListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "UdpListener.h"; path = "UdpListener.h"; sourceTree = "<group>"; };
+		347E79150E24001271289886 /* UdpSender.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "UdpSender.cpp"; path = "UdpSender.cpp"; sourceTree = "<group>"; };
+		3D6B6C690751001271289886 /* UdpSender.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "UdpSender.h"; path = "UdpSender.h"; sourceTree = "<group>"; };
+		01E2336C11EC001271289886 /* visualframework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "visualframework.h"; path = "visualframework.h"; sourceTree = "<group>"; };
+		4AC358BB7508001271289886 /* libvisualframework.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libvisualframework.a"; path = "libvisualframework.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		068D2F5E70B8001271289886 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		62C44B373E5B001271289886 /* visualframework */ = {
+			isa = PBXGroup;
+			children = (
+				045F793C7018001271289886 /* src */,
+				26571AB05163001271289886 /* Products */,
+			);
+			name = visualframework;
+			sourceTree = "<group>";
+		};
+		045F793C7018001271289886 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				68877D9632A5001271289886 /* visualframework */,
+			);
+			name = src;
+			path = ../src;
+			sourceTree = "<group>";
+		};
+		68877D9632A5001271289886 /* visualframework */ = {
+			isa = PBXGroup;
+			children = (
+				1C3712127586001271289886 /* Application.cpp */,
+				07725B332CDA001271289886 /* Application.h */,
+				4264497D500A001271289886 /* Common.h */,
+				6C7E626250A4001271289886 /* Log.h */,
+				478311D36495001271289886 /* Thread.cpp */,
+				4B036ACC317D001271289886 /* Thread.h */,
+				198A71CC0825001271289886 /* graphics */,
+				268452365E90001271289886 /* net */,
+				01E2336C11EC001271289886 /* visualframework.h */,
+			);
+			name = visualframework;
+			path = visualframework;
+			sourceTree = "<group>";
+		};
+		198A71CC0825001271289886 /* graphics */ = {
+			isa = PBXGroup;
+			children = (
+				50152BFA4D0B001271289886 /* Color.h */,
+				333B0E1544EE001271289886 /* Graphics.cpp */,
+				35AE3A5B487B001271289886 /* Graphics.h */,
+			);
+			name = graphics;
+			path = graphics;
+			sourceTree = "<group>";
+		};
+		268452365E90001271289886 /* net */ = {
+			isa = PBXGroup;
+			children = (
+				6D7A1D7178ED001271289886 /* Net.cpp */,
+				06F212492F24001271289886 /* Net.h */,
+				13237B6B6EF4001271289886 /* UdpListener.cpp */,
+				35B05E095418001271289886 /* UdpListener.h */,
+				347E79150E24001271289886 /* UdpSender.cpp */,
+				3D6B6C690751001271289886 /* UdpSender.h */,
+			);
+			name = net;
+			path = net;
+			sourceTree = "<group>";
+		};
+		26571AB05163001271289886 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4AC358BB7508001271289886 /* libvisualframework.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		76A241D20349001271289886 /* visualframework */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4F8F5B1B4F30001271289886 /* Build configuration list for PBXNativeTarget "visualframework" */;
+			buildPhases = (
+				6F661B8211E0001271289886 /* Resources */,
+				2E01000C43E3001271289886 /* Sources */,
+				068D2F5E70B8001271289886 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = visualframework;
+			productName = visualframework;
+			productReference = 4AC358BB7508001271289886 /* libvisualframework.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		08FB7793FE84155DC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "visualframework" */;
+			compatibilityVersion = "Xcode 3.1";
+			hasScannedForEncodings = 1;
+			mainGroup = 62C44B373E5B001271289886 /* visualframework */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				76A241D20349001271289886 /* libvisualframework.a */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6F661B8211E0001271289886 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2E01000C43E3001271289886 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6CAA3A29704B001271289886 /* Application.cpp in Sources */,
+				092257B755C0001271289886 /* Thread.cpp in Sources */,
+				1F9A4B5624A6001271289886 /* Graphics.cpp in Sources */,
+				47C838522276001271289886 /* Net.cpp in Sources */,
+				675305C8196C001271289886 /* UdpListener.cpp in Sources */,
+				686972CD2A34001271289886 /* UdpSender.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		108739C275E7001271289886 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CONFIGURATION_BUILD_DIR = ../lib;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/lib;
+				PRODUCT_NAME = "visualframework";
+			};
+			name = "Debug";
+		};
+		782A41EA7002001271289886 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				CONFIGURATION_BUILD_DIR = ../lib;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/lib;
+				PRODUCT_NAME = "visualframework";
+			};
+			name = "Release";
+		};
+		331A7C7B22A8001271289886 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
+				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"../src",
+					"../externals",
+					"../../../../../../../opt/local/include",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"../../../../../../../opt/local/lib",
+				);
+				OBJROOT = "../obj/Debug/visualframework";
+				ONLY_ACTIVE_ARCH = NO;
+				PREBINDING = NO;
+				SYMROOT = "../lib";
+			};
+			name = "Debug";
+		};
+		1A3313BA2808001271289886 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
+				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"NDEBUG",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"../src",
+					"../externals",
+					"../../../../../../../opt/local/include",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"../../../../../../../opt/local/lib",
+				);
+				OBJROOT = "../obj/Release/visualframework";
+				ONLY_ACTIVE_ARCH = NO;
+				PREBINDING = NO;
+				SYMROOT = "../lib";
+			};
+			name = "Release";
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4F8F5B1B4F30001271289886 /* Build configuration list for PBXNativeTarget "libvisualframework.a" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				108739C275E7001271289886 /* Debug */,
+				782A41EA7002001271289886 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Debug";
+		};
+		1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "visualframework" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				331A7C7B22A8001271289886 /* Debug */,
+				1A3313BA2808001271289886 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Debug";
+		};
+/* End XCConfigurationList section */
+
+	};
+	rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
+}
