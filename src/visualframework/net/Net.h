@@ -12,10 +12,6 @@
 #include "UdpSender.h"
 #include "UdpListener.h"
 
-// osc
-#include "OscSender.h"
-#include "OscListener.h"
-
 typedef UDPpacket UdpPacket;
 
 namespace visual {

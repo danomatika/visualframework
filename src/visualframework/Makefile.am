@@ -18,26 +18,18 @@ libvisualframework_a_SOURCES = \
         Log.h \
             net/Net.h \
             net/Net.cpp \
-            net/OscListener.h \
-            net/OscListener.cpp \
-            net/OscObject.h \
-            net/OscObject.cpp \
-            net/OscSender.h \
-            net/OscSender.cpp \
             net/UdpListener.h \
             net/UdpListener.cpp \
             net/UdpSender.h \
             net/UdpSender.cpp \
         Thread.h \
-        Thread.cpp \
-            xml/Xml.h \
-            xml/Xml.cpp \
-            xml/XmlObject.h \
-            xml/XmlObject.cpp
+        Thread.cpp
 
 # include paths
-AM_CPPFLAGS = $(CXXFLAGS) $(SDL_CFLAGS) $(EXTERNALS_CFLAGS)
+AM_CPPFLAGS = $(CXXFLAGS) \
+			  $(SDL_CFLAGS) $(SDL_gfx_CFLAGS) $(SDL_NET_CFLAGS) \
+			  $(EXTERNALS_CFLAGS)
 
 
 # libs to link
-AM_LDFLAGS = $(SDL_LIBS) $(SDL_GFX_LIBS) $(SDL_NET_LIBS) $(EXTERNALS_LIBS)
+AM_LDFLAGS = $(SDL_LIBS) $(SDL_gfx_LIBS) $(SDL_NET_LIBS)

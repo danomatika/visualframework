@@ -9,7 +9,7 @@
 #include "Application.h"
 #include "Thread.h"
 #include "net/Net.h"
-#include "xml/Xml.h"
+//#include "xml/Xml.h"
 
 #include <vmmlib/vmmlib.h>
 

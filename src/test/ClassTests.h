@@ -9,7 +9,7 @@
 
 using namespace std;
 using namespace visual;
-
+/*
 // test classes
 class OscReceiver : public OscListener
 {
@@ -28,7 +28,7 @@ class OscRecvObject : public OscObject
 
         bool processOscMessage(const osc::ReceivedMessage& m);
 };
-
+*/
 class UdpReceiver : public UdpListener
 {
     protected:
@@ -47,13 +47,13 @@ class ClassTests
         void testLog();
 
         void testXmlFile(string file);
-
+/*
         void startTestOscListener();
 
         void stopTestOscListener();
 
         void testOscSender();
-
+*/
         void startTestUdpListener();
 
         void stopTestUdpListener();
@@ -64,8 +64,8 @@ class ClassTests
 
     private:
 
-        OscReceiver oscListener;
-        OscRecvObject oscRecvObject;
+        //OscReceiver oscListener;
+        //OscRecvObject oscRecvObject;
         UdpReceiver udpListener;
 
         vector<Point> points;

@@ -14,17 +14,17 @@ void TestApp::init()
 {
     test.testLog();
 
-    test.startTestOscListener();
-    sleep(1);
-    test.testOscSender();
-    test.stopTestOscListener();
+    //test.startTestOscListener();
+    //sleep(100);
+    //test.testOscSender();
+    //test.stopTestOscListener();
 
     test.startTestUdpListener();
     sleep(1);
     test.testUdpSender();
     test.stopTestUdpListener();
 
-    test.testXmlFile("../data/test.xml");
+    //test.testXmlFile("../data/test.xml");
 }
 
 void TestApp::setup()

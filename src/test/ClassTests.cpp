@@ -26,11 +26,11 @@ void ClassTests::testLog()
     LOG_WARN << "This is a warning message" << endl;
     LOG_ERROR << "This is an error message" << endl << endl;
 }
-
+/*
 void ClassTests::testXmlFile(string file)
 {
     LOG << "Begin testXmlFile()" << endl;
-/*
+
     TiXmlDocument xmlDoc;
     TiXmlElement* xml = Xml::loadFile(&xmlDoc, file);
     if(xml == NULL)
@@ -56,14 +56,14 @@ void ClassTests::testXmlFile(string file)
     }
 
     LOG << endl;
-*/
+
 }
 
 bool OscReceiver::process(const osc::ReceivedMessage& m)
 {
     LOG << "OscListener: Received OSC message to osc addr \"" << m.AddressPattern()
         << "\" with type tag \"" << m.TypeTags() << "\"" << endl;
-/*
+
     osc::ReceivedMessageArgumentIterator argItr = m.ArgumentsBegin();
     osc::ReceivedMessageArgument arg = argItr;
 
@@ -74,7 +74,7 @@ bool OscReceiver::process(const osc::ReceivedMessage& m)
         float f = *arg;
         LOG << "/test i:" << i << " f: " << f << endl;
     }
-*/
+
 
 	return true;
 }
@@ -134,7 +134,7 @@ void ClassTests::testOscSender()
 
     LOG << endl;
 }
-
+*/
 void UdpReceiver::process(UDPpacket* packet)
 {
     LOG << "UdpListener: Received message: '";
