@@ -104,6 +104,9 @@ AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
+CC = @CC@
+CCDEPMODE = @CCDEPMODE@
+CFLAGS = @CFLAGS@
 CPPFLAGS = @CPPFLAGS@
 CXX = @CXX@
 CXXCPP = @CXXCPP@
@@ -143,8 +146,11 @@ RANLIB = @RANLIB@
 SDL_CFLAGS = @SDL_CFLAGS@
 SDL_LIBS = @SDL_LIBS@
 SDL_NET_LIBS = @SDL_NET_LIBS@
+SDL_TTF_LIBS = @SDL_TTF_LIBS@
 SDL_gfx_CFLAGS = @SDL_gfx_CFLAGS@
 SDL_gfx_LIBS = @SDL_gfx_LIBS@
+SDL_image_CFLAGS = @SDL_image_CFLAGS@
+SDL_image_LIBS = @SDL_image_LIBS@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
@@ -153,6 +159,7 @@ abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
+ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
 am__include = @am__include@
 am__leading_dot = @am__leading_dot@
@@ -193,8 +200,11 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 
+# Tell automake to put the object file for apple/apple.c in dir apple/
+AUTOMAKE_OPTIONS = subdir-objects
+
 # dirs to delve into
-SUBDIRS = externals src
+SUBDIRS = src data
 all: all-recursive
 
 .SUFFIXES:

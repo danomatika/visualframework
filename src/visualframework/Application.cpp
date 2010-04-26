@@ -3,6 +3,8 @@
 ==============================================================================*/
 #include "Application.h"
 
+#include "graphics/Font.h"
+
 #define VISUAL_APP_SLEEP_MS 20
 
 namespace visual {
@@ -11,6 +13,13 @@ Application::Application() : bDebug(false),
     _bRun(true), _frameRate(0), _ticks(0), _background(0, 0, 0, 255)
 {
     _frameRateMs = 0; // no timing
+    
+    Font::initTTF();	// start font
+}
+
+Application::~Application()
+{
+	Font::cleanupTTF();	// stop font
 }
 
 /* ***** SETUP ***** */
@@ -19,6 +28,8 @@ void Application::init() {}
 
 void Application::mainLoop()
 {
+	// start font
+
     // program main loop
     while(_bRun)
     {

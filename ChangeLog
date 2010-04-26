@@ -1,0 +1,11 @@
+2010-04-26 Dan Wilcox <danomatika@gmail.com>
+
+	v0.2.0: Consolidation and update
+
+	* moved from SDL_gfx to sprig
+	* added Image and Font
+
+2009-09-03 Dan Wilcox <danomatika@gmail.com>
+
+	v0.1.0: Initial working wrapper for rc-facade
+

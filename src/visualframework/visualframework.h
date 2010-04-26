@@ -8,8 +8,12 @@
 
 #include "Application.h"
 #include "Thread.h"
+#include "Timer.h"
+
+#include "graphics/Image.h"
+#include "graphics/Font.h"
+
 #include "net/Net.h"
-//#include "xml/Xml.h"
 
 #include <vmmlib/vmmlib.h>
 

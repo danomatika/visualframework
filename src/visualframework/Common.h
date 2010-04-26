@@ -6,8 +6,6 @@
 
 // Common, system wide includes
 
-#include <SDL/SDL.h>
-
 #include "Log.h"
 #include "graphics/Graphics.h"
 

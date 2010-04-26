@@ -17,8 +17,6 @@
 
 # visualframework tests
 
-# external libs variables
-
 VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
@@ -36,10 +34,9 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
-	$(top_srcdir)/externals/externals.mk
 noinst_PROGRAMS = vftest$(EXEEXT)
 subdir = src/test
+DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -52,8 +49,7 @@ PROGRAMS = $(noinst_PROGRAMS)
 am_vftest_OBJECTS = vftest-ClassTests.$(OBJEXT) \
 	vftest-TestApp.$(OBJEXT) vftest-testMain.$(OBJEXT)
 vftest_OBJECTS = $(am_vftest_OBJECTS)
-am__DEPENDENCIES_1 =
-vftest_DEPENDENCIES = $(am__DEPENDENCIES_1)
+vftest_DEPENDENCIES =
 vftest_LINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(vftest_LDFLAGS) \
 	$(LDFLAGS) -o $@
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)/src
@@ -80,6 +76,9 @@ AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
+CC = @CC@
+CCDEPMODE = @CCDEPMODE@
+CFLAGS = @CFLAGS@
 CPPFLAGS = @CPPFLAGS@
 CXX = @CXX@
 CXXCPP = @CXXCPP@
@@ -119,8 +118,11 @@ RANLIB = @RANLIB@
 SDL_CFLAGS = @SDL_CFLAGS@
 SDL_LIBS = @SDL_LIBS@
 SDL_NET_LIBS = @SDL_NET_LIBS@
+SDL_TTF_LIBS = @SDL_TTF_LIBS@
 SDL_gfx_CFLAGS = @SDL_gfx_CFLAGS@
 SDL_gfx_LIBS = @SDL_gfx_LIBS@
+SDL_image_CFLAGS = @SDL_image_CFLAGS@
+SDL_image_LIBS = @SDL_image_LIBS@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
@@ -129,6 +131,7 @@ abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
+ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
 am__include = @am__include@
 am__leading_dot = @am__leading_dot@
@@ -169,38 +172,27 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 
-# directories to build (rel to top)
-EXTERNALS_DIRS = vmmlib
-
-# includes
-EXTERNALS_CFLAGS = -I$(top_srcdir)/externals/
-
-# libs to link
-EXTERNALS_LIBS = 
-
 # bin sources, headers here because we dont want to install them
 vftest_SOURCES = ClassTests.h ClassTests.cpp \
                   TestApp.h TestApp.cpp testMain.cpp
 
 
 # local libraries needed to build (builddir)
-vftest_LDADD = -L$(top_builddir)/src/visualframework -lvisualframework \
-				 $(EXTERNALS_LIBS)
-
+vftest_LDADD = -L$(top_builddir)/src/visualframework -lvisualframework
 
 # include paths
 vftest_CPPFLAGS = $(CXXFLAGS) \
-				   $(SDL_CFLAGS) $(SDL_gfx_CFLAGS) $(SDL_NET_CFLAGS) \
-				   $(EXTERNALS_CFLAGS) -I$(top_srcdir)/src/visualframework
+				   $(SDL_CFLAGS) $(SDL_gfx_CFLAGS) $(SDL_NET_CFLAGS) $(SDL_TTF_CFLAGS) \
+				   $(SDL_image_CFLAGS) -I$(top_srcdir)/src -I$(top_srcdir)/src/visualframework
 
 
 # libs to link
-vftest_LDFLAGS = $(SDL_LIBS) $(SDL_gfx_LIBS) $(SDL_NET_LIBS)
+vftest_LDFLAGS = $(SDL_LIBS) $(SDL_gfx_LIBS) $(SDL_NET_LIBS) $(SDL_TTF_LIBS) $(SDL_image_LIBS)
 all: all-am
 
 .SUFFIXES:
 .SUFFIXES: .cpp .o .obj
-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/externals/externals.mk $(am__configure_deps)
+$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
 	    *$$dep*) \

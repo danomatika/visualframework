@@ -8,6 +8,7 @@
 
 #include "../Log.h"
 #include <SDL/SDL_gfxPrimitives.h>
+#include "sprig/sprig.h"
 
 namespace visual {
 
@@ -19,27 +20,22 @@ unsigned int Graphics::_iHeight          = 0;
 unsigned int Graphics::_iDepth           = 0;
 
 uint32_t Graphics::_ui32VideoFlags  = 0;
-Graphics::Type Graphics::_type      = Graphics::UNKNOWN;
-Graphics::Mode Graphics::_mode      = Graphics::WINDOW;
-std::string Graphics::_sTitle       = "";
+GraphicsType Graphics::_type      = UNKNOWN;
+GraphicsMode Graphics::_mode      = WINDOW;
+std::string Graphics::_sTitle     = "";
 
 Color Graphics::_strokeColor;
 Color Graphics::_fillColor;
 bool Graphics::_bStroke = true;
 bool Graphics::_bFill   = true;
 
-Graphics::RectMode Graphics::_rectMode = CENTER;
+DrawMode Graphics::_rectMode = CORNER;
+DrawMode Graphics::_imageMode = CORNER;
 
-std::string Graphics::_error = "";
-
-// ***** LOCAL VARIABLES *****
+// ***** LOCAL GLOBAL VARIABLES *****
 int _x1, _y1, _x2, _y2; // computed rectangle points
 
-#define MAX_POLY_POINTS  512
-Sint16 _vx[MAX_POLY_POINTS], _vy[MAX_POLY_POINTS];    // point int buffers for polygon()
-
-
-bool Graphics::init(unsigned int w, unsigned int h, unsigned int depth, Type type)
+bool Graphics::init(unsigned int w, unsigned int h, unsigned int depth, GraphicsType type)
 {
     _iWidth = w;
     _iHeight = h;
@@ -50,7 +46,7 @@ bool Graphics::init(unsigned int w, unsigned int h, unsigned int depth, Type typ
     // initialize SDL video
     if(SDL_Init(SDL_INIT_VIDEO) < 0)
     {
-        LOG_ERROR << "Unable to init SDL Video: %s" << SDL_GetError() << std::endl;
+        LOG_ERROR << "Graphics: " << getLastError() << std::endl;
         return false;
     }
 
@@ -104,19 +100,18 @@ std::vector<SDL_Rect*> Graphics::getResolutions()
     return resolutions;
 }
 
-void Graphics::setWindowTitle(std::string title)
+void Graphics::setWindowTitle(const std::string title)
 {
     _sTitle = title;
     SDL_WM_SetCaption(_sTitle.c_str(), NULL);
 }
 
-bool Graphics::setWindowIcon(std::string bitmap)
+bool Graphics::setWindowIcon(const std::string bitmapFile)
 {
-    SDL_Surface *icon = SDL_LoadBMP(bitmap.c_str());
+    SDL_Surface *icon = SDL_LoadBMP(bitmapFile.c_str());
     if(icon == NULL)
     {
-        LOG_ERROR << "Unable to load window icon \"" << bitmap << "\": "
-                  << SDL_GetError() << std::endl;
+        LOG_ERROR << "Graphics: " << getLastError() << std::endl;
         return false;
     }
 
@@ -125,19 +120,20 @@ bool Graphics::setWindowIcon(std::string bitmap)
     return true;
 }
 
-bool Graphics::createWindow(std::string title)
+bool Graphics::createWindow(const std::string title)
 {
-	unsigned int bpp=SDL_VideoModeOK(_iWidth, _iHeight, _iDepth, _ui32VideoFlags);
-	if(!bpp){
-	  printf("Mode not available.\n");
-	  return false;
+	unsigned int bpp = SDL_VideoModeOK(_iWidth, _iHeight, _iDepth, _ui32VideoFlags);
+	if(!bpp)
+    {
+    	LOG_ERROR << "Graphics: " << getLastError() << std::endl;
+    	return false;
 	}
 
     // create a new window
     _screen = SDL_SetVideoMode(_iWidth, _iHeight, _iDepth, _ui32VideoFlags);
     if(!_screen)
     {
-        LOG_ERROR << "Unable to set video mode: " << SDL_GetError() << std::endl;
+        LOG_ERROR << "Graphics: " << getLastError() << std::endl;
         return false;
     }
 
@@ -155,12 +151,7 @@ bool Graphics::createWindow(std::string title)
 bool Graphics::toggleFullscreen()
 {
     if(_screen == NULL)
-    {
-        LOG_ERROR << "Unable to toggle fullscreen: window does not exist" << std::endl;
-        return false;
-    }
-
-    //SDL_FreeSurface(_screen);
+        throw WindowException();
 
     switch(_mode)
     {
@@ -179,13 +170,10 @@ bool Graphics::toggleFullscreen()
     return createWindow(_sTitle);
 }
 
-bool Graphics::changeResolution(unsigned int w, unsigned int h)
+bool Graphics::changeResolution(const unsigned int w, const unsigned int h)
 {
     if(_screen == NULL)
-    {
-        LOG_ERROR << "Unable to change resolution: window does not exist" << std::endl;
-        return false;
-    }
+        throw WindowException();
 
     SDL_FreeSurface(_screen);
 
@@ -224,25 +212,25 @@ std::string Graphics::getModeString()
 }
 
 // ***** global color *****
-void Graphics::stroke(unsigned int color)
+void Graphics::stroke(const unsigned int color)
 {
     _strokeColor.set(color);
     _bStroke = true;
 }
 
-void Graphics::stroke(Color& color)
+void Graphics::stroke(const Color& color)
 {
     _strokeColor = color;
     _bStroke = true;
 }
 
-void Graphics::fill(unsigned int color)
+void Graphics::fill(const unsigned int color)
 {
     _fillColor.set(color);
     _bFill = true;
 }
 
-void Graphics::fill(Color& color)
+void Graphics::fill(const Color& color)
 {
     _fillColor = color;
     _bFill = true;
@@ -259,44 +247,34 @@ void Graphics::noFill()
 }
 
 // ***** global primitives *****
-void Graphics::point(int x, int y)
+void Graphics::point(const int x, const int y)
 {
     if(_screen == NULL)
-    {
-        LOG_ERROR << "Graphics::point: Window not setup yet" << std::endl;
-        return;
-    }
+        throw WindowException();
 
     if(_bStroke)
     {
-        pixelColor(_screen, x, y, _strokeColor.rgba);
+        SPG_Pixel(_screen, x, y, _strokeColor.get(_screen));
     }
 }
 
-void Graphics::line(int x1, int y1, int x2, int y2)
+void Graphics::line(const int x1, const int y1, const int x2, const int y2)
 {
     if(_screen == NULL)
-    {
-        LOG_ERROR << "Graphics::line: Window not setup yet" << std::endl;
-        return;
-    }
+        throw WindowException();
 
     if(_bStroke)
     {
-        lineColor(_screen, x1, y1, x2, y2, _strokeColor.rgba);
+        SPG_Line(_screen, x1, y1, x2, y2, _strokeColor.get(_screen));
     }
 }
 
-void Graphics::rectangle(int x, int y, int w, int h, RectMode mode)
+void Graphics::rectangle(const int x, const int y, const int w, const int h)
 {
     if(_screen == NULL)
-    {
-        LOG_ERROR << "Graphics::rectangle: Window not setup yet" << std::endl;
-        return;
-    }
+        throw WindowException();
 
-    _rectMode = mode;
-    if(mode == CENTER)
+    if(_rectMode == CENTER)
     {
         _x1 = x-w/2;
         _x2 = x+w/2;
@@ -313,106 +291,83 @@ void Graphics::rectangle(int x, int y, int w, int h, RectMode mode)
 
     if(_bFill)
     {
-        boxColor(_screen, _x1, _y1, _x2, _y2, _fillColor.rgba);
+        SPG_RectFilled(_screen, _x1, _y1, _x2, _y2, _fillColor.get(_screen));
     }
 
     if(_bStroke)
     {
-        rectangleColor(_screen, _x1, _y1, _x2, _y2, _strokeColor.rgba);
+        SPG_Rect(_screen, _x1, _y1, _x2, _y2, _strokeColor.get(_screen));
     }
 }
 
-void Graphics::circle(int x, int y, int r)
+void Graphics::circle(const int x, const int y, const int r)
 {
     if(_screen == NULL)
-    {
-        LOG_ERROR << "Graphics::circle: Window not setup yet" << std::endl;
-        return;
-    }
+        throw WindowException();
 
     if(_bFill)
     {
-        filledCircleColor(_screen, x, y, r, _fillColor.rgba);
+        SPG_CircleFilled(_screen, x, y, r, _fillColor.get(_screen));
     }
 
     if(_bStroke)
     {
-        circleColor(_screen, x, y, r, _strokeColor.rgba);
+        SPG_Circle(_screen, x, y, r, _strokeColor.get(_screen));
     }
 }
 
-void Graphics::ellipse(int x, int y, int rx, int ry)
+void Graphics::ellipse(const int x, const int y, const int rx, const int ry)
 {
     if(_screen == NULL)
-    {
-        LOG_ERROR << "Graphics::ellipse: Window not setup yet" << std::endl;
-        return;
-    }
+        throw WindowException();
 
     if(_bFill)
     {
-        filledEllipseColor(_screen, x, y, rx, ry, _fillColor.rgba);
+        SPG_EllipseFilled(_screen, x, y, rx, ry, _fillColor.get(_screen));
     }
 
     if(_bStroke)
     {
-        ellipseColor(_screen, x, y, rx, ry, _strokeColor.rgba);
+        SPG_Ellipse(_screen, x, y, rx, ry, _strokeColor.get(_screen));
     }
 }
 
-void Graphics::triangle(int x1, int y1, int x2, int y2, int x3, int y3)
+void Graphics::triangle(const int x1, const int y1, const int x2, const int y2, const int x3, const int y3)
 {
     if(_screen == NULL)
-    {
-        LOG_ERROR << "Graphics::triangle: Window not setup yet" << std::endl;
-        return;
-    }
+        throw WindowException();
 
     if(_bFill)
     {
-        filledTrigonColor(_screen, x1, y1, x2, y2, x3, y3, _fillColor.rgba);
+        SPG_TrigonFilled(_screen, x1, y1, x2, y2, x3, y3, _fillColor.rgba);
     }
 
     if(_bStroke)
     {
-        trigonColor(_screen, x1, y1, x2, y2, x3, y3, _strokeColor.rgba);
+        SPG_Trigon(_screen, x1, y1, x2, y2, x3, y3, _strokeColor.rgba);
     }
 }
 
-void Graphics::polygon(std::vector<Point> points)
+void Graphics::polygon(const PointList& points)
 {
     if(_screen == NULL)
-    {
-        LOG_ERROR << "Graphics::polygon: Window not setup yet" << std::endl;
-        return;
-    }
-
-    // load point vector into int buffers
-    for(unsigned int i = 0; i < points.size() && i < MAX_POLY_POINTS; i++)
-    {
-        Point& p = points.at(i);
-        _vx[i] = p.x;
-        _vy[i] = p.y;
-    }
+        throw WindowException();
 
     if(_bFill)
     {
-        filledPolygonColor(_screen, _vx, _vy, points.size(), _fillColor.rgba);
+        SPG_PolygonFilled(_screen, points.size(), (SPG_Point*) &points[0], _fillColor.rgba);
     }
 
     if(_bStroke)
     {
-        polygonColor(_screen, _vx, _vy, points.size(), _strokeColor.rgba);
+        SPG_Polygon(_screen, points.size(), (SPG_Point*) &points[0], _strokeColor.rgba);
     }
 }
 
-void Graphics::character(int x, int y, char c)
+void Graphics::character(const int x, const int y, const char c)
 {
     if(_screen == NULL)
-    {
-        LOG_ERROR << "Graphics::character: Window not setup yet" << std::endl;
-        return;
-    }
+        throw WindowException();
 
     if(_bStroke)
     {
@@ -420,13 +375,10 @@ void Graphics::character(int x, int y, char c)
     }
 }
 
-void Graphics::string(int x, int y, std::string line)
+void Graphics::string(const int x, const int y, const std::string line)
 {
     if(_screen == NULL)
-    {
-        LOG_ERROR << "Graphics::string: Window not setup yet" << std::endl;
-        return;
-    }
+        throw WindowException();
 
     if(_bStroke)
     {
@@ -436,9 +388,7 @@ void Graphics::string(int x, int y, std::string line)
 
 std::string Graphics::getLastError()
 {
-    _error = SDL_GetError();
-    SDL_ClearError();
-    return _error;
+    return SDL_GetError();
 }
 
 unsigned int Graphics::getMillis()

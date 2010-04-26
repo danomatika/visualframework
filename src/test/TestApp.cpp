@@ -6,45 +6,40 @@ TestApp::TestApp() : _currentRes(0)
 }
 
 TestApp::~TestApp()
-{
-    //dtor
-}
+{}
 
 void TestApp::init()
 {
     test.testLog();
 
-    //test.startTestOscListener();
-    //sleep(100);
-    //test.testOscSender();
-    //test.stopTestOscListener();
-
-    test.startTestUdpListener();
-    sleep(1);
-    test.testUdpSender();
-    test.stopTestUdpListener();
-
-    //test.testXmlFile("../data/test.xml");
+    //test.startTestUdpListener();
+    //sleep(1);
+    //test.testUdpSender();
+    //test.stopTestUdpListener();
 }
 
 void TestApp::setup()
 {
     setBackground(0x505050);
     setFrameRate(5);
+    
+    test.setup();
 }
 
 void TestApp::update()
 {
+	test.update();
 }
 
 void TestApp::draw()
 {
     test.testGraphicsPrimitives();
+    test.testImage(500, 200);
+    test.testFont(50, 450);
 }
 
 void TestApp::cleanup()
-{
-}
+{}
 
 void TestApp::keyPressed(SDLKey key, SDLMod mod)
 {
@@ -61,11 +56,11 @@ void TestApp::keyPressed(SDLKey key, SDLMod mod)
                 {
                     switch(Graphics::getMode())
                     {
-                        case Graphics::WINDOW:
+                        case WINDOW:
                             LOG << "Changed graphics mode to Window" << endl;
                             break;
 
-                        case Graphics::FULLSCREEN:
+                        case FULLSCREEN:
                             LOG << "Changed graphics mode to Fullscreen" << endl;
                             break;
                     }

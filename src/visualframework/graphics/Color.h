@@ -5,34 +5,34 @@
 #define VISUAL_COLOR_H
 
 #include <iostream>
+#include <cassert>
 
 namespace visual {
 
 class Color
 {
     public:
-        // struct and array for glColor calls
+
         union
         {
             struct
             {
-                uint8_t  A, B, G, R;  // individual access
+                uint8_t	R, G, B, A;  // individual access
             };
-            //uint8_t rgba[4];    // 4 value vector
-            //uint8_t rgb[3];     // 3 value vector
             uint32_t rgba;     // single variable, 0xRRGGBBAA
+            SDL_Color color;
         };
 
-        Color() : A(255), B(255), G(255), R(255)  {}
+        Color() : R(255), G(255), B(255), A(255) {}
 
-        Color(uint8_t r, uint8_t g, uint8_t b) :
-            A(255), B(b), G(g), R(r) {}
+        Color(const uint8_t r, const uint8_t g, const uint8_t b) :
+            R(r), G(g), B(b), A(255) {}
 
-        Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a) :
-            A(a), B(b), G(g), R(r) {}
+        Color(const uint8_t r, const uint8_t g, const uint8_t b, const uint8_t a) :
+            R(r), G(g), B(b), A(a) {}
 
-        // html style hex aka 0xFF00FF
-        Color(unsigned int color) : A(255)
+        /// html style hex aka 0xFF00FF
+        Color(const uint32_t color) : A(255)
         {
             set(color);
         }
@@ -49,7 +49,7 @@ class Color
 		}
 
         /// copy operator
-        void operator =(Color& from)
+        void operator =(const Color& from)
         {
             R = from.R;
             G = from.G;
@@ -58,28 +58,45 @@ class Color
         }
 
         /// attribute sets
-        void set(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+        void set(const uint8_t r, const uint8_t g, const uint8_t b, const uint8_t a)
         {
             R = r;
             G = g;
             B = b;
             A = a;
         }
-        void set(uint8_t r, uint8_t g, uint8_t b)
+        void set(const uint8_t r, const uint8_t g, const uint8_t b)
         {
             R = r;
             G = g;
             B = b;
         }
 
-        void set(unsigned int color)
+        void set(const uint32_t color)
         {
             R = color >> 16;
             G = color >> 8;
             B = color;
         }
+        
+        /// get this color mapped to a surface's pxiel format
+        uint32_t get(const SDL_Surface* surface)
+        {
+        	// surface should never be NULL
+        	assert(surface);
+            
+            return SDL_MapRGBA(surface->format, R, G, B, A);
+        }
+        
+        /// get this color as an SDL_color
+        SDL_Color get()
+        {
+        	SDL_Color c = {R, G, B};
+        	return c;
+        }
 
-        friend std::ostream& operator<<(std::ostream& os, Color& from)
+		/// print this color's value via ostream
+        friend std::ostream& operator<<(std::ostream& os, const Color& from)
         {
             os << "R: " << (int) from.R << " G: " << (int) from.G << " B: " << (int) from.B
                << " A: " << (int) from.A;

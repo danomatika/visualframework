@@ -16,9 +16,9 @@ project "visualframework"
 	kind "StaticLib"
 	language "C++"
 	targetdir "../lib"
-	files { "../src/visualframework/**.h", "../src/visualframework/**.cpp" }
+	files { "../src/visualframework/**.h", "../src/visualframework/**.cpp", "../src/visualframework/**.c" }
 	
-	includedirs { "../src", "../externals" }
+	includedirs { "../src", "../src/visualframework" }
 	libdirs {  }
 	
 	configuration "linux"
@@ -30,6 +30,8 @@ project "visualframework"
 					  "`pkg-config --cflags SDL_image`" }
 	
 	configuration "macosx"
+		-- get rid of visibilty warnings
+		buildoptions { "-fvisibility-inlines-hidden" }
 		-- MacPorts
 		includedirs { "/opt/local/include" }
 		libdirs { "/opt/local/lib" }
@@ -49,8 +51,8 @@ project "vftest"
 	targetdir "../bin"
 	files { "../src/test/**.h", "../src/test/**.cpp" }
 	
-	includedirs { "../src", "../src/visualframework",
-				  "../externals" }
+	includedirs { "../src", "../src/visualframework" }
+
 	libdirs { }
 	links { "visualframework" }
 
@@ -66,7 +68,7 @@ project "vftest"
 		-- MacPorts
 		includedirs { "/opt/local/include"}
 		libdirs { "/opt/local/lib" }
-		links { "lo", "pthread", "SDLmain", "SDL", "SDL_gfx", "SDL_image", "SDL_net" }
+		links { "lo", "pthread", "SDLmain", "SDL", "SDL_gfx", "SDL_image", "SDL_ttf", "SDL_net" }
 		linkoptions { "-Wl,-framework,Cocoa", "-Wl,-framework,OpenGL",
 					  "-Wl,-framework,ApplicationServices",
 					  "-Wl,-framework,Carbon", "-Wl,-framework,AudioToolbox",

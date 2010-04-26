@@ -5,52 +5,59 @@
 #define VISUAL_GRAPHICS_H
 
 #include <string>
-#include <vector>
 
 #include <SDL/SDL.h>
 
 #include "Color.h"
 
+#include "../Point.h"
+#include "../Exception.h"
+
 namespace visual {
 
-class Point
+enum GraphicsMode {
+	WINDOW = 0,
+	FULLSCREEN = SDL_FULLSCREEN
+};
+
+enum GraphicsType {
+    UNKNOWN     = 0,
+    SOFTWARE    = SDL_SWSURFACE,
+    HARDWARE    = SDL_HWSURFACE
+};
+
+ // global primitive draw options
+enum DrawMode
 {
-    public:
+    CENTER,
+    CORNER
+};
 
-        Point(int x, int y)
-            {this->x = x; this->y = y;}
-
-        int x;
-        int y;
+/// Window exception
+class WindowException : public Exception
+{
+	public:
+    	WindowException(
+            const char* w="call to graphics command when SDL window is not yet setup")
+        	: Exception(w) {}
 };
 
 class Graphics
 {
     public:
 
-        enum Mode {
-            WINDOW = 0,
-            FULLSCREEN = SDL_FULLSCREEN
-        };
-
-        enum Type {
-            UNKNOWN     = 0,
-            SOFTWARE    = SDL_SWSURFACE,
-            HARDWARE    = SDL_HWSURFACE
-        };
-
         /// init sdl graphics
-        static bool init(unsigned int w, unsigned int h, unsigned int depth, Type type=HARDWARE);
+        static bool init(unsigned int w, unsigned int h, unsigned int depth, GraphicsType type=HARDWARE);
 
         /// set screen mode before creating window
         static void inline setWindow()     {_mode = WINDOW;}
         static void inline setFullscreen() {_mode = FULLSCREEN;}
 
         /// set the window's title text
-        static void setWindowTitle(std::string title);
+        static void setWindowTitle(const std::string title);
 
         /// set the window's icon
-        static bool setWindowIcon(std::string bitmap);
+        static bool setWindowIcon(const std::string bitmapFile);
 
         /// create the actual sdl draw surface
         static bool createWindow(std::string title="");
@@ -65,47 +72,47 @@ class Graphics
 
         /// change the window/screen resolution
         /// automatically destroys and recreates draw surface
-        static bool changeResolution(unsigned int w, unsigned int h);
+        static bool changeResolution(const unsigned int w, const unsigned int h);
 
         /// get the current vode mode as a string
         static std::string getModeString();
+        
 
         // global gets
-        static const Type getType()     {return _type;}
-        static const Mode getMode()     {return _mode;}
-        static SDL_Surface* getScreen() {return _screen;}
-        static const unsigned int getWidth()     {return _iWidth;}
-        static const unsigned int getHeight()    {return _iHeight;}
-        static const unsigned int getDepth()     {return _iDepth;}
+        static const GraphicsType getType()     {return _type;}
+        static const GraphicsMode getMode()     {return _mode;}
+        static SDL_Surface* getScreen() 		{return _screen;}
+        static const unsigned int getWidth()   	{return _iWidth;}
+        static const unsigned int getHeight()  	{return _iHeight;}
+        static const unsigned int getDepth()   	{return _iDepth;}
 
         // global color
-        static void stroke(unsigned int color);
-        static void stroke(Color& color);
-        static void fill(unsigned int color);
-        static void fill(Color& color);
+        static void stroke(const unsigned int color);
+        static void stroke(const Color& color);
+        static void fill(const unsigned int color);
+        static void fill(const Color& color);
 
         static void noStroke();
         static void noFill();
-
-        // global primitive draw options
-        enum RectMode
-        {
-            CENTER,
-            CORNER
-        };
+        
         // affects rectangles
-        static void rectMode(RectMode mode) {_rectMode = mode;}
+        static void rectMode(const DrawMode mode) {_rectMode = mode;}
+        static const DrawMode getRectMode() {return _rectMode;} 
+        
+        // affects images
+        static void imageMode(const DrawMode mode) {_imageMode = mode;}
+        static const DrawMode getImageMode() {return _imageMode;} 
 
         // global primitives
-        static void point(int x, int y);
-        static void line(int x1, int y1, int x2, int y2);
-        static void rectangle(int x, int y, int w, int h, RectMode mode=CENTER);
-        static void circle(int x, int y, int r);
-        static void ellipse(int x, int y, int rx, int ry);
-        static void triangle(int x1, int y1, int x2, int y2, int x3, int y3);
-        static void polygon(std::vector<Point> points);
-        static void character(int x, int y, char c);
-        static void string(int x, int y, std::string line);
+        static void point(const int x, const int y);
+        static void line(const int x1, const int y1, const int x2, const int y2);
+        static void rectangle(const int x, const int y, const int w, const int h);
+        static void circle(const int x, const int y, const int r);
+        static void ellipse(const int x, const int y, const int rx, const int ry);
+        static void triangle(const int x1, const int y1, const int x2, const int y2, const int x3, const int y3);
+        static void polygon(const PointList& points);
+        static void character(const int x, const int y, const char c);
+        static void string(const int x, const int y, const std::string line);
 
         // global utils
         static std::string getLastError();
@@ -118,15 +125,15 @@ class Graphics
         virtual ~Graphics() {}              // cannot destroy
         void operator =(Color& from) {}     // not copyable
 
-        static SDL_Surface* _screen;   /// SDL draw surface
+        static SDL_Surface* _screen;	/// SDL draw surface
 
         static unsigned int _iWidth;    /// window width
         static unsigned int _iHeight;   /// window height
         static unsigned int _iDepth;    /// bit depth
 
         static uint32_t _ui32VideoFlags;/// sdl video mode flags
-        static Mode _mode;              /// context mode, WINDOW or FULLSCREEN
-        static Type _type;              /// context type
+        static GraphicsMode _mode;      /// context mode, WINDOW or FULLSCREEN
+        static GraphicsType _type;      /// context type
         static std::string _sTitle;     /// window title
 
         // global color settings
@@ -135,9 +142,8 @@ class Graphics
         static bool _bStroke;
         static bool _bFill;
 
-        static RectMode _rectMode;
-
-        static std::string _error;  /// error string
+        static DrawMode _rectMode;
+        static DrawMode _imageMode;
 };
 
 } // namespace

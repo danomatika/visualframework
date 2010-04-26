@@ -16,7 +16,7 @@ class Application
     public:
 
         Application();
-        virtual ~Application() {}
+        virtual ~Application();
 
         /* ***** SETUP ***** */
 

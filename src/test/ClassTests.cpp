@@ -5,17 +5,41 @@
 #include "ClassTests.h"
 
 ClassTests::ClassTests()
-{
-    // load points for ploygon
-    points.push_back(Point(400, 100));
-    points.push_back(Point(500, 100));
-    points.push_back(Point(450, 400));
-    points.push_back(Point(400, 200));
-    points.push_back(Point(450, 200));
-}
+{}
 
 ClassTests::~ClassTests()
 {}
+
+void ClassTests::setup()
+{
+    // load points for polygon
+    polygon.push_back(Point(400, 100));
+    polygon.push_back(Point(500, 100));
+    polygon.push_back(Point(450, 400));
+    polygon.push_back(Point(400, 200));
+    polygon.push_back(Point(450, 200));
+
+	// load image
+	image.load("../data/testImage.jpg");
+    image.scale(0.5, 0.5);
+    image.pixelate(5, 5);
+    //image.resize(320, 240);
+    
+    // load font
+    font.load("../data/ATARCC__.TTF", 25);
+    
+    // set initial timer
+    testTimer.setAlarm(5000);
+}
+
+void ClassTests::update()
+{
+	if(testTimer.alarm())
+    {
+    	LOG << "Timer went off at " << Graphics::getMillis() << " millis" << endl;
+        testTimer.setAlarm(5000);
+    }
+}
 
 void ClassTests::testLog()
 {
@@ -26,115 +50,7 @@ void ClassTests::testLog()
     LOG_WARN << "This is a warning message" << endl;
     LOG_ERROR << "This is an error message" << endl << endl;
 }
-/*
-void ClassTests::testXmlFile(string file)
-{
-    LOG << "Begin testXmlFile()" << endl;
 
-    TiXmlDocument xmlDoc;
-    TiXmlElement* xml = Xml::loadFile(&xmlDoc, file);
-    if(xml == NULL)
-    {
-        LOG << "    Failed to load \"" << file << "\"" << endl;
-        return;
-    }
-    LOG << "    Loaded \"" << file << "\"" << endl;
-
-    // check if the root is correct
-    if(xml->ValueStr() != "poetry")
-    {
-        LOG << "    Doc Root \"" << xml->ValueStr() << "\" != \"poetry\"" << endl;
-        return;
-    }
-
-    // just print whatever children are there
-    TiXmlElement* child = xml->FirstChildElement();
-    while(child != NULL)
-    {
-        LOG << child->ValueStr() << ": " << child->GetText() << endl;
-        child = child->NextSiblingElement();
-    }
-
-    LOG << endl;
-
-}
-
-bool OscReceiver::process(const osc::ReceivedMessage& m)
-{
-    LOG << "OscListener: Received OSC message to osc addr \"" << m.AddressPattern()
-        << "\" with type tag \"" << m.TypeTags() << "\"" << endl;
-
-    osc::ReceivedMessageArgumentIterator argItr = m.ArgumentsBegin();
-    osc::ReceivedMessageArgument arg = argItr;
-
-    if((string) m.AddressPattern() == "/test" && (string) m.TypeTags() == "if")
-    {
-        int i = &arg;
-        arg++;
-        float f = *arg;
-        LOG << "/test i:" << i << " f: " << f << endl;
-    }
-
-
-	return true;
-}
-
-bool OscRecvObject::processOscMessage(const osc::ReceivedMessage& m)
-{
-    if((string) m.AddressPattern() == oscRootAddress && (string) m.TypeTags() == "is")
-    {
-        osc::ReceivedMessage::const_iterator arg = m.ArgumentsBegin();
-        int num = (arg++)->AsInt32();
-        std::string word = (arg++)->AsString();
-
-        LOG << "OscRecvObject: Processed: " << num << " \"" << word << "\"" << std::endl;
-        return true;
-    }
-
-    return false;
-}
-
-void ClassTests::startTestOscListener()
-{
-    LOG << "Starting OscListener on port 7000" << endl;
-
-    oscListener.setup(7000);
-    oscListener.startListening();
-    oscListener.addObject(&oscRecvObject);
-    LOG << "    OscListener is running? "
-        << oscListener.isListening() << endl;
-    LOG << endl;
-}
-
-void ClassTests::stopTestOscListener()
-{
-    LOG << "Stopping OscListener" << endl;
-    oscListener.stopListening();
-    LOG << endl;
-}
-
-void ClassTests::testOscSender()
-{
-    LOG << "Begin testOscSender()" << endl;
-
-    OscSender sender("127.0.0.1", 7000);
-
-    LOG << "    sending /test1 10 1 hello" << endl;
-
-    sender << osc::BeginMessage( "/test1" )
-           << 10 << 1 << "hello" << osc::EndMessage;
-    sender.send();
-    sleep(2);
-
-    LOG << "    sending /test2 1 world" << endl;
-    sender << osc::BeginMessage( "/test2" )
-           << 1 << "world" << osc::EndMessage;
-    sender.send();
-    sleep(2);
-
-    LOG << endl;
-}
-*/
 void UdpReceiver::process(UDPpacket* packet)
 {
     LOG << "UdpListener: Received message: '";
@@ -214,6 +130,7 @@ void ClassTests::testGraphicsPrimitives()
 
     Graphics::noFill();
     Graphics::stroke(0xFF0000);
+    Graphics::rectMode(CENTER);
     Graphics::rectangle(100, 150, 100, 100);
 
     Graphics::noStroke();
@@ -234,5 +151,22 @@ void ClassTests::testGraphicsPrimitives()
     Graphics::string(100, 400, "this is a test string");
 
     Graphics::fill(0x888888);
-    Graphics::polygon(points);
+    //Graphics::noFill();
+    Graphics::polygon(polygon);
+}
+
+void ClassTests::testImage(int x, int y)
+{
+	image.draw(x, y);
+}
+
+void ClassTests::testFont(int x, int y)
+{
+	font.drawSolid('t', x, y, Color(0xFF0000));
+    font.drawBlended('2', x+50, y, Color(0x00FF00));
+    font.drawShaded('3', x+100, y, Color(0x0000FF), Color(0x666666)); 
+    
+	font.drawSolid("this is some solid text", x, y+50, Color(0xFFFF00));
+    font.drawShaded("this is some shaded text", x, y+80, Color(0x00FFFF), Color(0x333333));
+    font.drawBlended("this is some blended text", x, y+110, Color(0x00FF00));
 }

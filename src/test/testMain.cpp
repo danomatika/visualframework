@@ -2,7 +2,7 @@
 #include <unistd.h>
 #include <string>
 
-#include <visualframework.h>
+#include <visualframework/visualframework.h>
 
 #include "TestApp.h"
 
@@ -14,8 +14,9 @@ int main(int argc, char *argv[])
     LOG << "starting testMain" << endl;
 
     // initialize SDL context
-    Graphics::init(800, 600, 24, Graphics::HARDWARE);
-
+    if(Graphics::init(800, 600, 24, HARDWARE))
+    	return EXIT_FAILURE;
+        
     // initialize app
     TestApp testApp;
     testApp.init();

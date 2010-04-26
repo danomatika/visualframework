@@ -5,30 +5,11 @@
 #ifndef CLASSTESTS_H
 #define CLASSTESTS_H
 
-#include <visualframework.h>
+#include <visualframework/visualframework.h>
 
 using namespace std;
 using namespace visual;
-/*
-// test classes
-class OscReceiver : public OscListener
-{
-    protected:
 
-        bool process(const osc::ReceivedMessage& m);
-};
-
-class OscRecvObject : public OscObject
-{
-    public:
-
-        OscRecvObject() : OscObject("/test2") {}
-
-    protected:
-
-        bool processOscMessage(const osc::ReceivedMessage& m);
-};
-*/
 class UdpReceiver : public UdpListener
 {
     protected:
@@ -43,17 +24,13 @@ class ClassTests
         ClassTests();
 
         virtual ~ClassTests();
+        
+        void setup();
+        
+        void update();
 
         void testLog();
 
-        void testXmlFile(string file);
-/*
-        void startTestOscListener();
-
-        void stopTestOscListener();
-
-        void testOscSender();
-*/
         void startTestUdpListener();
 
         void stopTestUdpListener();
@@ -61,14 +38,21 @@ class ClassTests
         void testUdpSender();
 
         void testGraphicsPrimitives();
+        
+        void testImage(int x, int y);
+        
+        void testFont(int x, int y);
 
     private:
 
-        //OscReceiver oscListener;
-        //OscRecvObject oscRecvObject;
         UdpReceiver udpListener;
+        
+        Image image;
+        Font font;
 
-        vector<Point> points;
+        PointList polygon;
+        
+        Timer testTimer;
 };
 
 #endif // CLASSTESTS_H
