@@ -60,6 +60,7 @@ class Application
 
         inline bool getDebug() {return bDebug;}
         inline void setDebug(bool yesno) {bDebug = yesno;}
+        inline void toggleDebug() {bDebug = !bDebug;}
 
         /// tell mainLoop to exit
         inline void stop() {_bRun = false;}
