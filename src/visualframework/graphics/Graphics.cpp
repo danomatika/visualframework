@@ -31,6 +31,7 @@ bool Graphics::_bFill   = true;
 
 DrawMode Graphics::_rectMode = CORNER;
 DrawMode Graphics::_imageMode = CORNER;
+FontMode Graphics::_fontMode = SOLID;
 
 // ***** LOCAL GLOBAL VARIABLES *****
 int _x1, _y1, _x2, _y2; // computed rectangle points

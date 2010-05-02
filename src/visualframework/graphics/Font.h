@@ -27,14 +27,10 @@ class Font
         bool isLoaded();
         
         /// draw characters
-        void drawSolid(const char c, const int x, const int y, const Color& color); ///< fastest
-        void drawBlended(const char c, const int x, const int y, const Color& color); ///< niceest
-        void drawShaded(const char c, const int x, const int y, const Color& foreground, const Color& background); ///< medium, with background
+        void draw(const char c, const int x, const int y);
         
         /// draw strings
-        void drawSolid(const std::string& text, const int x, const int y, const Color& color); ///< fastest
-        void drawBlended(const std::string& text, const int x, const int y, const Color& color); ///< nicest
-        void drawShaded(const std::string& text, const int x, const int y, const Color& foreground, const Color& background); ///< medium, with background
+        void draw(const std::string& text, const int x, const int y);
         
         //const int width();
         //const int height();

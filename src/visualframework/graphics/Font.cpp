@@ -47,12 +47,29 @@ bool Font::isLoaded()
 	return (bool) _font;
 }
 
-void Font::drawSolid(const char c, const int x, const int y, const Color& color)
+void Font::draw(const char c, const int x, const int y)
 {
 	if(!_font)
     	return;
 
-	SDL_Surface* surface = TTF_RenderGlyph_Solid(_font, c, color.color);
+	SDL_Surface* surface = NULL;
+	switch(Graphics::getFontMode())
+    {
+    	case SOLID:
+        	surface = TTF_RenderGlyph_Solid(_font, c, Graphics::getStroke().color);
+            break;
+            
+        case BLENDED:
+        	surface = TTF_RenderGlyph_Blended(_font, c, Graphics::getStroke().color);
+            break;
+            
+        case SHADED:
+        	surface = TTF_RenderGlyph_Shaded(_font, c,
+    			Graphics::getStroke().color,	// foreground
+            	Graphics::getFill().color);		// background
+            break;
+    }
+
 	if(!surface)
     	return;
         
@@ -66,12 +83,29 @@ void Font::drawSolid(const char c, const int x, const int y, const Color& color)
     SDL_FreeSurface(surface);
 }
 
-void Font::drawBlended(const char c, const int x, const int y, const Color& color)
+void Font::draw(const std::string& text, const int x, const int y)
 {
 	if(!_font)
     	return;
 
-	SDL_Surface* surface = TTF_RenderGlyph_Blended(_font, c, color.color);
+	SDL_Surface* surface = NULL;
+	switch(Graphics::getFontMode())
+    {
+    	case SOLID:
+        	surface = TTF_RenderUTF8_Solid(_font, text.c_str(), Graphics::getStroke().color);
+            break;
+            
+        case BLENDED:
+        	surface = TTF_RenderUTF8_Blended(_font, text.c_str(), Graphics::getStroke().color);
+            break;
+            
+        case SHADED:
+        	surface = TTF_RenderUTF8_Shaded(_font, text.c_str(),
+    			Graphics::getStroke().color,	// foreground
+            	Graphics::getFill().color);		// background
+            break;
+    }
+    
 	if(!surface)
     	return;
         
@@ -85,81 +119,6 @@ void Font::drawBlended(const char c, const int x, const int y, const Color& colo
     SDL_FreeSurface(surface);
 }
 
-void Font::drawShaded(const char c, const int x, const int y, const Color& foreground, const Color& background)
-{
-	if(!_font)
-    	return;
-
-	SDL_Surface* surface = TTF_RenderGlyph_Shaded(_font, c, foreground.color, background.color);
-	if(!surface)
-    	return;
-        
-    SDL_Rect dest;
-    dest.x = x;
-    dest.y = y;
-    dest.w = surface->w;
-    dest.h = surface->h;
-
-	SDL_BlitSurface(surface, NULL, Graphics::getScreen(), &dest);
-    SDL_FreeSurface(surface);
-}
-
-void Font::drawSolid(const std::string& text, const int x, const int y, const Color& color)
-{
-	if(!_font)
-    	return;
-
-	SDL_Surface* surface = TTF_RenderUTF8_Solid(_font, text.c_str(), color.color);
-	if(!surface)
-    	return;
-        
-    SDL_Rect dest;
-    dest.x = x;
-    dest.y = y;
-    dest.w = surface->w;
-    dest.h = surface->h;
-
-	SDL_BlitSurface(surface, NULL, Graphics::getScreen(), &dest);
-    SDL_FreeSurface(surface);
-}
-
-void Font::drawBlended(const std::string& text, const int x, const int y, const Color& color)
-{
-	if(!_font)
-    	return;
-
-	SDL_Surface* surface = TTF_RenderUTF8_Blended(_font, text.c_str(), color.color);
-	if(!surface)
-    	return;
-        
-    SDL_Rect dest;
-    dest.x = x;
-    dest.y = y;
-    dest.w = surface->w;
-    dest.h = surface->h;
-
-	SDL_BlitSurface(surface, NULL, Graphics::getScreen(), &dest);
-    SDL_FreeSurface(surface);
-}
-
-void Font::drawShaded(const std::string& text, const int x, const int y, const Color& foreground, const Color& background)
-{
-	if(!_font)
-    	return;
-
-	SDL_Surface* surface = TTF_RenderUTF8_Shaded(_font, text.c_str(), foreground.color, background.color);
-	if(!surface)
-    	return;
-        
-    SDL_Rect dest;
-    dest.x = x;
-    dest.y = y;
-    dest.w = surface->w;
-    dest.h = surface->h;
-
-	SDL_BlitSurface(surface, NULL, Graphics::getScreen(), &dest);
-    SDL_FreeSurface(surface);
-}
 /*
 const int Font::width()
 {

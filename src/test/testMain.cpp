@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     LOG << "starting testMain" << endl;
 
     // initialize SDL context
-    if(Graphics::init(800, 600, 24, HARDWARE))
+    if(!Graphics::init(800, 600, 24, HARDWARE))
     	return EXIT_FAILURE;
         
     // initialize app

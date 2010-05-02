@@ -33,6 +33,14 @@ enum DrawMode
     CORNER
 };
 
+// global font modes
+enum FontMode
+{
+	SOLID,		// fast
+    BLENDED,	// antialiased
+    SHADED		// background
+};
+
 /// Window exception
 class WindowException : public Exception
 {
@@ -95,13 +103,20 @@ class Graphics
         static void noStroke();
         static void noFill();
         
+        static const Color& getStroke()	{return _strokeColor;}
+        static const Color& getFill()	{return _fillColor;}
+        
         // affects rectangles
         static void rectMode(const DrawMode mode) {_rectMode = mode;}
         static const DrawMode getRectMode() {return _rectMode;} 
         
         // affects images
         static void imageMode(const DrawMode mode) {_imageMode = mode;}
-        static const DrawMode getImageMode() {return _imageMode;} 
+        static const DrawMode getImageMode() {return _imageMode;}
+        
+        // affects fonts
+        static void fontMode(const FontMode mode) {_fontMode = mode;}
+        static const FontMode getFontMode() {return _fontMode;}
 
         // global primitives
         static void point(const int x, const int y);
@@ -142,8 +157,10 @@ class Graphics
         static bool _bStroke;
         static bool _bFill;
 
+		// global draw modes
         static DrawMode _rectMode;
         static DrawMode _imageMode;
+        static FontMode _fontMode;
 };
 
 } // namespace

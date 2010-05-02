@@ -16,7 +16,7 @@ class Timer
 {
 	public:
     
-    	Timer() : alarmstamp(0) {set();}
+    	Timer() : alarmMS(0), alarmstamp(0) {set();}
         Timer(const unsigned int alarmTime) {setAlarm(alarmTime);}
         virtual ~Timer() {}
         
@@ -30,8 +30,9 @@ class Timer
         /// \param	alarmTime	how many ms i nthe future the alrm should go off
         inline void setAlarm(const unsigned int alarmTime)
         {
+        	alarmMS = alarmTime;
         	timestamp = Graphics::getMillis();
-        	alarmstamp = timestamp + alarmTime;
+            alarmstamp = timestamp + alarmTime;
         }
         
         /// has the alarm gone off?
@@ -46,10 +47,17 @@ class Timer
         	return Graphics::getMillis() - timestamp;
         }
         
+        /// returns the difference between 0 and 1 (normalized)
+        inline float getDiffN()
+        {
+        	return getDiff()/alarmMS;
+        }
+        
     protected:
     
-    	unsigned int alarmstamp;	///< future timestamp
-    	unsigned int timestamp; 	///< current timestamp
+    	unsigned int alarmMS;	///< length of alarm
+    	unsigned int timestamp;	///< current timestamp
+        unsigned int alarmstamp; ///< future timestamp
 };
 
 } // namespace

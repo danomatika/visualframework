@@ -162,11 +162,31 @@ void ClassTests::testImage(int x, int y)
 
 void ClassTests::testFont(int x, int y)
 {
-	font.drawSolid('t', x, y, Color(0xFF0000));
-    font.drawBlended('2', x+50, y, Color(0x00FF00));
-    font.drawShaded('3', x+100, y, Color(0x0000FF), Color(0x666666)); 
+	// chars
+	Graphics::fontMode(SOLID);	// fastest
+    Graphics::stroke(0xFF0000);
+	font.draw('t', x, y);
     
-	font.drawSolid("this is some solid text", x, y+50, Color(0xFFFF00));
-    font.drawShaded("this is some shaded text", x, y+80, Color(0x00FFFF), Color(0x333333));
-    font.drawBlended("this is some blended text", x, y+110, Color(0x00FF00));
+    Graphics::fontMode(BLENDED);	// anti-aliased, slower
+    Graphics::stroke(0x00FF00);
+    font.draw('2', x+50, y);
+    
+    Graphics::fontMode(SHADED);	// blended with a background fill
+    Graphics::stroke(0x000FF);	// font foreground
+    Graphics::fill(0x666666);	// font background
+    font.draw('3', x+100, y); 
+    
+    // strings
+    Graphics::fontMode(SOLID);
+    Graphics::stroke(0xFFFF00);
+	font.draw("this is some solid text", x, y+50);
+    
+    Graphics::fontMode(SHADED);
+    Graphics::stroke(0x00FFFF);
+    Graphics::fill(0x333333);
+    font.draw("this is some shaded text", x, y+80);
+    
+    Graphics::fontMode(BLENDED);
+    Graphics::stroke(0x00FF00);
+    font.draw("this is some blended text", x, y+110);
 }
