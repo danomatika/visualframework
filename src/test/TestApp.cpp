@@ -1,3 +1,25 @@
+/*==============================================================================
+
+	TestApp.cpp
+
+	vftest: test cases for visualframework
+  
+	Copyright (C) 2009, 2010  Dan Wilcox <danomatika@gmail.com>
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+==============================================================================*/
 #include "TestApp.h"
 
 TestApp::TestApp() : _currentRes(0)
@@ -21,7 +43,7 @@ void TestApp::init()
 void TestApp::setup()
 {
     setBackground(0x505050);
-    setFrameRate(5);
+    setFrameRate(15);
     
     test.setup();
 }
@@ -29,6 +51,7 @@ void TestApp::setup()
 void TestApp::update()
 {
 	test.update();
+	LOG << "fps: " << getFrameRate() << endl;
 }
 
 void TestApp::draw()
@@ -43,6 +66,8 @@ void TestApp::cleanup()
 
 void TestApp::keyPressed(SDLKey key, SDLMod mod)
 {
+	LOG_DEBUG << "key pressed: " << key << endl;
+
     switch(key)
     {
         case SDLK_RETURN:

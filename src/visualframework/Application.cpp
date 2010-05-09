@@ -1,18 +1,39 @@
 /*==============================================================================
-    Dan Wilcox <danomatika@gmail.com>, 2009
+
+	Application.cpp
+
+	visualframework: a simple 2d graphics framework
+  
+	Copyright (C) 2009, 2010  Dan Wilcox <danomatika@gmail.com>
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 ==============================================================================*/
 #include "Application.h"
 
 #include "graphics/Font.h"
 
-#define VISUAL_APP_SLEEP_MS 20
+#define VISUAL_APP_SLEEP_MS 50	// how long to sleep while waiting to draw
+#define VISUAL_APP_FRAMES	5	// number of frames calc current fps
 
 namespace visual {
 
 Application::Application() : bDebug(false),
-    _bRun(true), _frameRate(0), _ticks(0), _background(0, 0, 0, 255)
+    _bRun(true), _frameRate(0), _background(0, 0, 0, 255),
+    _currentFps(0.0), _currentFpsFrames(0)
 {
-    _frameRateMs = 0; // no timing
+    _frameRateMs = 0; 	// no timing
     
     Font::initTTF();	// start font
 }
@@ -28,17 +49,32 @@ void Application::init() {}
 
 void Application::mainLoop()
 {
-	// start font
+	// start fps cal timer
+    _currentFpsTimer.set();
 
     // program main loop
     while(_bRun)
     {
+    	_frameRateTimer.set();
+        
+    	// calc current fps
+        _currentFpsFrames++;
+        if(_currentFpsFrames >= VISUAL_APP_FRAMES)
+        {
+        	_currentFps = (float) _currentFpsFrames/(_currentFpsTimer.getDiff()/1000.0f);
+            _currentFpsFrames = 0;
+            _currentFpsTimer.set();
+        }
+    
         update();   // call the user update function
         _events();  // handle events and do framerate idling
-        _draw();  // render a frame
-
-        // update ticks
-        _ticks = SDL_GetTicks();
+        _draw();  	// render a frame
+        
+        // idle the frame rate
+        if(_frameRateTimer.getDiff() < _frameRateMs)
+        {
+        	SDL_Delay(_frameRateMs - _frameRateTimer.getDiff());
+        }
     }
 }
 
@@ -80,11 +116,11 @@ void Application::_draw()
 void Application::_events()
 {
     // do message processing while waiting for next frame
-    while(SDL_GetTicks() - _ticks < _frameRateMs)
+/*    while(_frameRateTimer.getDiff() <= _frameRateMs)
     {
-        // message processing loop
+*/      // message processing loop
         SDL_Event event;
-        while (SDL_PollEvent(&event))
+        while(SDL_PollEvent(&event))
         {
             // check for messages
             switch(event.type)
@@ -150,8 +186,8 @@ void Application::_events()
             } // end switch
         } // end of message processing
 
-        SDL_Delay(VISUAL_APP_SLEEP_MS); // msec for the scheduler
-    }
+//        SDL_Delay(VISUAL_APP_SLEEP_MS); // msec for the scheduler
+//    }
 }
 
 } // namespace

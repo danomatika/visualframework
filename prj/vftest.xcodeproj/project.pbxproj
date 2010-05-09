@@ -7,102 +7,102 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		14D0213069A3001272826004 /* TestApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03B905D247E3001272826004 /* TestApp.cpp */; };
-		19284976711A001272826004 /* libvisualframework.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 61240CF34EF0001272826004 /* libvisualframework.a */; };
-		5F496B4C5E4D001272826004 /* testMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12E1055A72ED001272826004 /* testMain.cpp */; };
-		79135E4537D7001272826004 /* ClassTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 36D244215697001272826004 /* ClassTests.cpp */; };
+		6D9010FB61EF001273370138 /* TestApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3372180B3A3C001273370138 /* TestApp.cpp */; };
+		702E6DD34934001273370138 /* testMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 537932F85CAB001273370138 /* testMain.cpp */; };
+		75D46CB62332001273370138 /* ClassTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 203B3A04107C001273370138 /* ClassTests.cpp */; };
+		768116134F92001273370138 /* libvisualframework.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A864E5D5534001273370138 /* libvisualframework.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		67D0272326A2001272826004 /* PBXContainerItemProxy */ = {
+		2041486249E1001273370138 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 7FAC27256FB5001272826004 /* visualframework.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 4D9B20EE6CE1001272826004;
+			containerPortal = 3EEC205F6124001273370138 /* visualframework.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 63FA500D27CD001273370138;
 			remoteInfo = libvisualframework.a;
 		};
-		7FBF7DB7266B001272826004 /* PBXContainerItemProxy */ = {
+		476373A166C1001273370138 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 7FAC27256FB5001272826004 /* visualframework.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 53396DC01627001272826004;
+			containerPortal = 3EEC205F6124001273370138 /* visualframework.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6EB5385432D1001273370138;
 			remoteInfo = libvisualframework.a;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		03A56D211F6E001272826004 /* TestApp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestApp.h; sourceTree = "<group>"; };
-		03B905D247E3001272826004 /* TestApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TestApp.cpp; sourceTree = "<group>"; };
-		0BF30B543B21001272826004 /* ClassTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClassTests.h; sourceTree = "<group>"; };
-		12E1055A72ED001272826004 /* testMain.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = testMain.cpp; sourceTree = "<group>"; };
-		36D244215697001272826004 /* ClassTests.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ClassTests.cpp; sourceTree = "<group>"; };
-		6ED969FE62E3001272826004 /* vftest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = vftest; sourceTree = BUILT_PRODUCTS_DIR; };
-		7FAC27256FB5001272826004 /* visualframework.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = visualframework.xcodeproj; sourceTree = SOURCE_ROOT; };
+		203B3A04107C001273370138 /* ClassTests.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ClassTests.cpp; sourceTree = "<group>"; };
+		3372180B3A3C001273370138 /* TestApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TestApp.cpp; sourceTree = "<group>"; };
+		387919D90583001273370138 /* vftest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = vftest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3EEC205F6124001273370138 /* visualframework.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = visualframework.xcodeproj; sourceTree = SOURCE_ROOT; };
+		52812C1E18C7001273370138 /* TestApp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestApp.h; sourceTree = "<group>"; };
+		537932F85CAB001273370138 /* testMain.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = testMain.cpp; sourceTree = "<group>"; };
+		621C4A714E6C001273370138 /* ClassTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClassTests.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		09F607D01508001272826004 /* Frameworks */ = {
+		67C73F3F6F51001273370138 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				19284976711A001272826004 /* libvisualframework.a in Frameworks */,
+				768116134F92001273370138 /* libvisualframework.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0A0013A40F5C001272826004 /* src */ = {
+		00B5083705BF001273370138 /* Projects */ = {
 			isa = PBXGroup;
 			children = (
-				6C371B773607001272826004 /* test */,
+				3EEC205F6124001273370138 /* visualframework.xcodeproj */,
+			);
+			name = Projects;
+			sourceTree = "<group>";
+		};
+		0B840CBE2326001273370138 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				3EB452535F62001273370138 /* test */,
 			);
 			name = src;
 			path = ../src;
 			sourceTree = "<group>";
 		};
-		352462FB0A12001272826004 /* Products */ = {
+		0C284ED93715001273370138 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6ED969FE62E3001272826004 /* vftest */,
+				387919D90583001273370138 /* vftest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		423B404F246B001272826004 /* vftest */ = {
+		25D232025143001273370138 /* vftest */ = {
 			isa = PBXGroup;
 			children = (
-				0A0013A40F5C001272826004 /* src */,
-				352462FB0A12001272826004 /* Products */,
-				5D7C2E0E56A3001272826004 /* Projects */,
+				0B840CBE2326001273370138 /* src */,
+				0C284ED93715001273370138 /* Products */,
+				00B5083705BF001273370138 /* Projects */,
 			);
 			name = vftest;
 			sourceTree = "<group>";
 		};
-		529758310B00001272826004 /* Products */ = {
+		3E912E48244B001273370138 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				61240CF34EF0001272826004 /* libvisualframework.a */,
+				2A864E5D5534001273370138 /* libvisualframework.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		5D7C2E0E56A3001272826004 /* Projects */ = {
+		3EB452535F62001273370138 /* test */ = {
 			isa = PBXGroup;
 			children = (
-				7FAC27256FB5001272826004 /* visualframework.xcodeproj */,
-			);
-			name = Projects;
-			sourceTree = "<group>";
-		};
-		6C371B773607001272826004 /* test */ = {
-			isa = PBXGroup;
-			children = (
-				36D244215697001272826004 /* ClassTests.cpp */,
-				0BF30B543B21001272826004 /* ClassTests.h */,
-				03B905D247E3001272826004 /* TestApp.cpp */,
-				03A56D211F6E001272826004 /* TestApp.h */,
-				12E1055A72ED001272826004 /* testMain.cpp */,
+				203B3A04107C001273370138 /* ClassTests.cpp */,
+				621C4A714E6C001273370138 /* ClassTests.h */,
+				3372180B3A3C001273370138 /* TestApp.cpp */,
+				52812C1E18C7001273370138 /* TestApp.h */,
+				537932F85CAB001273370138 /* testMain.cpp */,
 			);
 			path = test;
 			sourceTree = "<group>";
@@ -110,23 +110,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		5A91689722BE001272826004 /* vftest */ = {
+		72262B143097001273370138 /* vftest */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 792635C74B51001272826004 /* Build configuration list for PBXNativeTarget "vftest" */;
+			buildConfigurationList = 16AF5662599B001273370138 /* Build configuration list for PBXNativeTarget "vftest" */;
 			buildPhases = (
-				6F61788F1CD4001272826004 /* Resources */,
-				51C76EED2BF1001272826004 /* Sources */,
-				09F607D01508001272826004 /* Frameworks */,
+				09BF1A7067B4001273370138 /* Resources */,
+				7B5874BC21F5001273370138 /* Sources */,
+				67C73F3F6F51001273370138 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				472904592772001272826004 /* PBXTargetDependency */,
+				58230F490381001273370138 /* PBXTargetDependency */,
 			);
 			name = vftest;
 			productInstallPath = "$(HOME)/bin";
 			productName = vftest;
-			productReference = 6ED969FE62E3001272826004 /* vftest */;
+			productReference = 387919D90583001273370138 /* vftest */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -137,33 +137,33 @@
 			buildConfigurationList = 1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "vftest" */;
 			compatibilityVersion = "Xcode 3.1";
 			hasScannedForEncodings = 1;
-			mainGroup = 423B404F246B001272826004 /* vftest */;
+			mainGroup = 25D232025143001273370138 /* vftest */;
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 529758310B00001272826004 /* Products */;
-					ProjectRef = 7FAC27256FB5001272826004 /* visualframework.xcodeproj */;
+					ProductGroup = 3E912E48244B001273370138 /* Products */;
+					ProjectRef = 3EEC205F6124001273370138 /* visualframework.xcodeproj */;
 				},
 			);
 			projectRoot = "";
 			targets = (
-				5A91689722BE001272826004 /* vftest */,
+				72262B143097001273370138 /* vftest */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		61240CF34EF0001272826004 /* libvisualframework.a */ = {
+		2A864E5D5534001273370138 /* libvisualframework.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libvisualframework.a;
-			remoteRef = 67D0272326A2001272826004 /* PBXContainerItemProxy */;
+			remoteRef = 476373A166C1001273370138 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
-		6F61788F1CD4001272826004 /* Resources */ = {
+		09BF1A7067B4001273370138 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -173,28 +173,28 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		51C76EED2BF1001272826004 /* Sources */ = {
+		7B5874BC21F5001273370138 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				79135E4537D7001272826004 /* ClassTests.cpp in Sources */,
-				14D0213069A3001272826004 /* TestApp.cpp in Sources */,
-				5F496B4C5E4D001272826004 /* testMain.cpp in Sources */,
+				75D46CB62332001273370138 /* ClassTests.cpp in Sources */,
+				6D9010FB61EF001273370138 /* TestApp.cpp in Sources */,
+				702E6DD34934001273370138 /* testMain.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		472904592772001272826004 /* PBXTargetDependency */ = {
+		58230F490381001273370138 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = libvisualframework.a;
-			targetProxy = 7FBF7DB7266B001272826004 /* PBXContainerItemProxy */;
+			targetProxy = 2041486249E1001273370138 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		1F7D62EA7BB6001272826004 /* Debug */ = {
+		0D8C6D904637001273370138 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -206,20 +206,7 @@
 			};
 			name = Debug;
 		};
-		62251C2807D8001272826004 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CONFIGURATION_BUILD_DIR = ../bin;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_MODEL_TUNING = G5;
-				INSTALL_PATH = /usr/local/bin;
-				PRODUCT_NAME = vftest;
-			};
-			name = Release;
-		};
-		787D6E3C4F8D001272826004 /* Debug */ = {
+		469C60BD46EB001273370138 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
@@ -262,7 +249,20 @@
 			};
 			name = Debug;
 		};
-		7B50589E2CFB001272826004 /* Release */ = {
+		74B6765026AA001273370138 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CONFIGURATION_BUILD_DIR = ../bin;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/bin;
+				PRODUCT_NAME = vftest;
+			};
+			name = Release;
+		};
+		7544010A407C001273370138 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
@@ -306,20 +306,20 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "vftest" */ = {
+		16AF5662599B001273370138 /* Build configuration list for PBXNativeTarget "vftest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				787D6E3C4F8D001272826004 /* Debug */,
-				7B50589E2CFB001272826004 /* Release */,
+				0D8C6D904637001273370138 /* Debug */,
+				74B6765026AA001273370138 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		792635C74B51001272826004 /* Build configuration list for PBXNativeTarget "vftest" */ = {
+		1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "vftest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1F7D62EA7BB6001272826004 /* Debug */,
-				62251C2807D8001272826004 /* Release */,
+				469C60BD46EB001273370138 /* Debug */,
+				7544010A407C001273370138 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
