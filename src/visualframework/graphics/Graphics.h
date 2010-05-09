@@ -94,6 +94,11 @@ class Graphics
         /// toggles between fullscreen and window,
         /// automatically destroys and recreates draw surface
         static bool toggleFullscreen();
+        
+        /// show/hide the mouse cursor (shown by default)
+        static bool getShowMouseCursor();
+        static void showMouseCursor(bool show);
+        static void toggleShowMouseCursor();
 
         /// get available fullscreen video resolutions (descending order)
         /// note: do not free any of the SDL_Rect pointers

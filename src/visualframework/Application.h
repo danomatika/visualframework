@@ -85,11 +85,17 @@ class Application
         inline void toggleDebug() {bDebug = !bDebug;}
 
         /// tell mainLoop to exit
-        inline void stop() {_bRun = false;}
+        inline void exitMainLoop() {_bRun = false;}
 
     protected:
 
         bool bDebug;    /// is debug mode on?
+        
+        /// input variables set in event callbacks
+        int mouseButton;		/// mouse button
+        bool bMousePressed;		/// is the mouse being pressed?
+        int mouseX, mouseY;		/// mouse pos
+        int motionX, motionY;	/// relative motion from last position
 
     private:
 

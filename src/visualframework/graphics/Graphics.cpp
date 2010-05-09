@@ -190,6 +190,31 @@ bool Graphics::toggleFullscreen()
     return createWindow(_sTitle);
 }
 
+bool Graphics::getShowMouseCursor()
+{
+	int state = SDL_ShowCursor(SDL_QUERY);
+    if(state == SDL_ENABLE)
+    	return true;
+    return false;
+}
+
+void Graphics::showMouseCursor(bool show)
+{
+	if(show)
+    	SDL_ShowCursor(SDL_ENABLE);
+    else
+    	SDL_ShowCursor(SDL_DISABLE);
+}
+
+void Graphics::toggleShowMouseCursor()
+{
+	int state = SDL_ShowCursor(SDL_QUERY);
+    if(state == SDL_ENABLE)
+    	SDL_ShowCursor(SDL_DISABLE);
+    else
+    	SDL_ShowCursor(SDL_ENABLE);
+}
+
 bool Graphics::changeResolution(const unsigned int w, const unsigned int h)
 {
     if(_screen == NULL)

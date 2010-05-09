@@ -30,6 +30,8 @@
 namespace visual {
 
 Application::Application() : bDebug(false),
+	mouseButton(0), bMousePressed(false),
+    mouseX(0), mouseY(0), motionX(0), motionY(0),
     _bRun(true), _frameRate(0), _background(0, 0, 0, 255),
     _currentFps(0.0), _currentFpsFrames(0)
 {
@@ -125,61 +127,61 @@ void Application::_events()
             // check for messages
             switch(event.type)
             {
-                // exit if the window is closed
+                // stop the main loop on quit
                 case SDL_QUIT:
                     _bRun = false;
                     break;
 
-                // check for keypresses
                 case SDL_KEYDOWN:
                 {
-                    switch(event.key.state)
+                    switch(event.key.keysym.sym)
                     {
-                        case SDL_PRESSED:
-                            switch(event.key.keysym.sym)
-                            {
-                                // exit if ESCAPE is pressed
-                                case SDLK_ESCAPE:
-                                    _bRun = false;
-                                    break;
-
-                                case SDLK_RETURN:
-                                    // toggle fullscreen on ALT+ENTER
-                                    if(event.key.keysym.mod & KMOD_ALT)
-                                        Graphics::toggleFullscreen();
-                                    // don't break so SDLK_RETURN goes to keyPressed
-
-                                default:
-                                    keyPressed(event.key.keysym.sym, event.key.keysym.mod);
-                                    break;
-                            }
+                        // exit if ESCAPE is pressed
+                        case SDLK_ESCAPE:
+                            _bRun = false;
                             break;
 
-                        case SDL_RELEASED:
-                            keyReleased(event.key.keysym.sym, event.key.keysym.mod);
+                        case SDLK_RETURN:
+                            // toggle fullscreen on ALT+ENTER
+                            if(event.key.keysym.mod & KMOD_ALT)
+                                Graphics::toggleFullscreen();
+                            // don't break so SDLK_RETURN goes to keyPressed
+
+                        default:
+                            keyPressed(event.key.keysym.sym, event.key.keysym.mod);
                             break;
                     }
+                    break;
+                }
+                
+                case SDL_KEYUP:
+                {
+                	keyReleased(event.key.keysym.sym, event.key.keysym.mod);
+                    break;
                 }
 
-                // check for mouse movement
                 case SDL_MOUSEMOTION:
                 {
+                	mouseX = event.motion.x;
+                    mouseY = event.motion.y;
+                    motionX = event.motion.xrel;
+                    motionY = event.motion.yrel;
                     mouseMotion(event.motion.x, event.motion.y, event.motion.xrel, event.motion.yrel);
                     break;
                 }
 
                 case SDL_MOUSEBUTTONDOWN:
                 {
-                    switch(event.button.state)
-                    {
-                        case SDL_PRESSED:
-                            mousePressed(event.button.button, event.button.x, event.button.y);
-                            break;
-
-                        case SDL_RELEASED:
-                            mouseReleased(event.button.button, event.button.x, event.button.y);
-                            break;
-                    }
+                	mouseButton = event.button.button;
+                    bMousePressed = true;
+                    mousePressed(event.button.button, event.button.x, event.button.y);
+                    break;
+                }
+                
+                case SDL_MOUSEBUTTONUP:
+                {
+                	bMousePressed = false;
+                    mouseReleased(event.button.button, event.button.x, event.button.y);
                     break;
                 }
 

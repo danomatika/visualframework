@@ -22,6 +22,8 @@
 ==============================================================================*/
 #include "TestApp.h"
 
+#include <sstream>
+
 TestApp::TestApp() : _currentRes(0)
 {
     _resolutions = Graphics::getResolutions();
@@ -43,7 +45,7 @@ void TestApp::init()
 void TestApp::setup()
 {
     setBackground(0x505050);
-    setFrameRate(15);
+    setFrameRate(25);
     
     test.setup();
 }
@@ -51,7 +53,6 @@ void TestApp::setup()
 void TestApp::update()
 {
 	test.update();
-	LOG << "fps: " << getFrameRate() << endl;
 }
 
 void TestApp::draw()
@@ -59,6 +60,24 @@ void TestApp::draw()
     test.testGraphicsPrimitives();
     test.testImage(500, 200);
     test.testFont(50, 450);
+    
+    // fps display
+    stringstream stream;
+    stream << getFrameRate();
+    Graphics::stroke(0xFFFFFF);
+    Graphics::string(12, 12, stream.str());
+    
+    // draw a rect if the mosue cursor is off
+    if(!Graphics::getShowMouseCursor())
+    {
+    	Graphics::noStroke();
+        if(bMousePressed && mouseButton > 0)
+        	Graphics::fill(0xFFFFFF);
+        else
+    		Graphics::fill(0xFFFF00);
+        Graphics::rectMode(CENTER);
+        Graphics::rectangle(mouseX, mouseY, 20, 20);
+    }
 }
 
 void TestApp::cleanup()
@@ -70,27 +89,17 @@ void TestApp::keyPressed(SDLKey key, SDLMod mod)
 
     switch(key)
     {
-        case SDLK_RETURN:
-            // toggle fullscreen on ALT+ENTER
-            if(mod & KMOD_ALT)
-            { }
-			break;
-			
-		case SDLK_f:
-                if(Graphics::toggleFullscreen())
-                {
-                    switch(Graphics::getMode())
-                    {
-                        case WINDOW:
-                            LOG << "Changed graphics mode to Window" << endl;
-                            break;
-
-                        case FULLSCREEN:
-                            LOG << "Changed graphics mode to Fullscreen" << endl;
-                            break;
-                    }
-                }
-            //}
+    	//	default key handling:
+        //  	- Escape : exit mainloop
+        //		- Alt+Enter : toggle fullscreen
+                                                                            
+        case 'q':
+            exitMainLoop();	// stop the mainloop programmatically
+            break;
+            
+        case 'm':
+        	Graphics::toggleShowMouseCursor();
+            LOG << "Show mouse cursor is: " << Graphics::getShowMouseCursor() << endl;
             break;
 
         case SDLK_RIGHTBRACKET:
@@ -120,4 +129,19 @@ void TestApp::keyPressed(SDLKey key, SDLMod mod)
         default:
             break;
     }
+}
+
+void TestApp::keyReleased(SDLKey key, SDLMod mod)
+{
+	LOG_DEBUG << "key released: " << key << endl;
+}
+
+void TestApp::mousePressed(int button, int x, int y)
+{
+	LOG << "mouse button pressed: " << button << endl;
+}
+
+void TestApp::mouseReleased(int button, int x, int y)
+{
+	LOG << "mouse button released: " << button << endl;
 }

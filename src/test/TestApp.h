@@ -48,6 +48,9 @@ class TestApp : public Application
         void cleanup();
 
         void keyPressed(SDLKey key, SDLMod mod);
+        void keyReleased(SDLKey key, SDLMod mod);
+        void mousePressed(int button, int x, int y);
+        void mouseReleased(int button, int x, int y);
 
     protected:
 
