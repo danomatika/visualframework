@@ -89,10 +89,12 @@ class Color
             R = r;
             G = g;
             B = b;
+            A = 255;
         }
 
         void set(const uint32_t color)
         {
+        	A = color >> 24;
             R = color >> 16;
             G = color >> 8;
             B = color;
@@ -111,6 +113,7 @@ class Color
         SDL_Color get()
         {
         	SDL_Color c = {R, G, B};
+            A = 255;
         	return c;
         }
 
