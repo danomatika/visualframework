@@ -36,10 +36,9 @@ class Color
         {
             struct
             {
-                uint8_t	R, G, B, A;  // individual access
+                uint8_t	A, R, G, B;  // individual access
             };
-            uint32_t rgba;     // single variable, 0xRRGGBBAA
-            SDL_Color color;
+            uint32_t argb;     // single variable, 0xAARRGGBB
         };
 
         Color() : R(255), G(255), B(255), A(255) {}
@@ -94,14 +93,20 @@ class Color
 
         void set(const uint32_t color)
         {
-        	A = color >> 24;
             R = color >> 16;
             G = color >> 8;
             B = color;
+            A = 255;
+        }
+        
+        /// uint operator
+        operator uint32_t() const
+        {
+        	return argb;
         }
         
         /// get this color mapped to a surface's pxiel format
-        uint32_t get(const SDL_Surface* surface)
+        uint32_t get(const SDL_Surface* surface) const
         {
         	// surface should never be NULL
         	assert(surface);
@@ -110,10 +115,9 @@ class Color
         }
         
         /// get this color as an SDL_color
-        SDL_Color get()
+        operator SDL_Color() const// sdlColor() const
         {
         	SDL_Color c = {R, G, B};
-            A = 255;
         	return c;
         }
 

@@ -143,7 +143,7 @@ void Image::setPixel(unsigned int x, unsigned int y, Color& color)
 	if(!_image)
     	return;
 
-	SPG_Pixel(_image, x, y, color.rgba);
+	SPG_Pixel(_image, x, y, color);
 }
 
 void Image::pixelate(unsigned int pixelWidth, unsigned int pixelHeight)

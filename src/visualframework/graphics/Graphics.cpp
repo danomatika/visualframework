@@ -384,12 +384,12 @@ void Graphics::triangle(const int x1, const int y1, const int x2, const int y2, 
 
     if(_bFill)
     {
-        SPG_TrigonFilled(_screen, x1, y1, x2, y2, x3, y3, _fillColor.rgba);
+        SPG_TrigonFilled(_screen, x1, y1, x2, y2, x3, y3, _fillColor);
     }
 
     if(_bStroke)
     {
-        SPG_Trigon(_screen, x1, y1, x2, y2, x3, y3, _strokeColor.rgba);
+        SPG_Trigon(_screen, x1, y1, x2, y2, x3, y3, _strokeColor);
     }
 }
 
@@ -400,12 +400,12 @@ void Graphics::polygon(const PointList& points)
 
     if(_bFill)
     {
-        SPG_PolygonFilled(_screen, points.size(), (SPG_Point*) &points[0], _fillColor.rgba);
+        SPG_PolygonFilled(_screen, points.size(), (SPG_Point*) &points[0], _fillColor);
     }
 
     if(_bStroke)
     {
-        SPG_Polygon(_screen, points.size(), (SPG_Point*) &points[0], _strokeColor.rgba);
+        SPG_Polygon(_screen, points.size(), (SPG_Point*) &points[0], _strokeColor);
     }
 }
 
@@ -416,7 +416,7 @@ void Graphics::character(const int x, const int y, const char c)
 
     if(_bStroke)
     {
-        characterColor(_screen, x, y, c, _strokeColor.rgba);
+        characterColor(_screen, x, y, c, _strokeColor);
     }
 }
 
@@ -427,7 +427,7 @@ void Graphics::string(const int x, const int y, const std::string line)
 
     if(_bStroke)
     {
-        stringColor(_screen, x, y, line.c_str(), _strokeColor.rgba);
+        stringColor(_screen, x, y, line.c_str(), _strokeColor);
     }
 }
 

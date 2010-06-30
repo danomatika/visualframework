@@ -75,18 +75,20 @@ void Font::draw(const char c, const int x, const int y)
 	switch(Graphics::getFontMode())
     {
     	case SOLID:
-        	surface = TTF_RenderGlyph_Solid(_font, c, Graphics::getStroke().color);
+        	surface = TTF_RenderGlyph_Solid(_font, c, Graphics::getStroke());
             break;
             
         case BLENDED:
-        	surface = TTF_RenderGlyph_Blended(_font, c, Graphics::getStroke().color);
+        	surface = TTF_RenderGlyph_Blended(_font, c, Graphics::getStroke());
             break;
             
         case SHADED:
+        {
         	surface = TTF_RenderGlyph_Shaded(_font, c,
-    			Graphics::getStroke().color,	// foreground
-            	Graphics::getFill().color);		// background
+    			Graphics::getStroke(),	// foreground
+            	Graphics::getFill());	// background
             break;
+        }
     }
 
 	if(!surface)
@@ -111,17 +113,17 @@ void Font::draw(const std::string& text, const int x, const int y)
 	switch(Graphics::getFontMode())
     {
     	case SOLID:
-        	surface = TTF_RenderUTF8_Solid(_font, text.c_str(), Graphics::getStroke().color);
+        	surface = TTF_RenderUTF8_Solid(_font, text.c_str(), Graphics::getStroke());
             break;
             
         case BLENDED:
-        	surface = TTF_RenderUTF8_Blended(_font, text.c_str(), Graphics::getStroke().color);
+        	surface = TTF_RenderUTF8_Blended(_font, text.c_str(), Graphics::getStroke());
             break;
             
         case SHADED:
         	surface = TTF_RenderUTF8_Shaded(_font, text.c_str(),
-    			Graphics::getStroke().color,	// foreground
-            	Graphics::getFill().color);		// background
+    			Graphics::getStroke(),	// foreground
+            	Graphics::getFill());		// background
             break;
     }
     
