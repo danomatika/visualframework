@@ -41,13 +41,13 @@ class Color
             uint32_t argb;     // single variable, 0xAARRGGBB
         };
 
-        Color() : R(255), G(255), B(255), A(255) {}
+        Color() : A(255), R(255), G(255), B(255) {}
 
         Color(const uint8_t r, const uint8_t g, const uint8_t b) :
-            R(r), G(g), B(b), A(255) {}
+            A(255), R(r), G(g), B(b) {}
 
         Color(const uint8_t r, const uint8_t g, const uint8_t b, const uint8_t a) :
-            R(r), G(g), B(b), A(a) {}
+            A(a), R(r), G(g), B(b) {}
 
         /// html style hex aka 0xFF00FF
         Color(const uint32_t color) : A(255)
