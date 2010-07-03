@@ -416,7 +416,8 @@ void Graphics::character(const int x, const int y, const char c)
 
     if(_bStroke)
     {
-        characterColor(_screen, x, y, c, _strokeColor);
+        characterRGBA(_screen, x, y, c,
+        	_strokeColor.R, _strokeColor.G, _strokeColor.B, _strokeColor.A);
     }
 }
 
@@ -427,7 +428,8 @@ void Graphics::string(const int x, const int y, const std::string line)
 
     if(_bStroke)
     {
-        stringColor(_screen, x, y, line.c_str(), _strokeColor);
+        stringRGBA(_screen, x, y, line.c_str(),
+        	_strokeColor.R, _strokeColor.G, _strokeColor.B, _strokeColor.A);
     }
 }
 

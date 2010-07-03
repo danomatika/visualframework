@@ -36,19 +36,19 @@ class Color
         {
             struct
             {
-                uint8_t	A, R, G, B;  // individual access
+                uint8_t	B, G, R, A;  // individual access, reversed for proper byte order
             };
             uint32_t argb;     // single variable, 0xAARRGGBB
         };
 
-        Color() : A(255), R(255), G(255), B(255) {}
+        Color() : B(255), G(255), R(255), A(255) {}
 
         Color(const uint8_t r, const uint8_t g, const uint8_t b) :
-            A(255), R(r), G(g), B(b) {}
+        	B(b), G(g), R(r), A(255) {}           
 
         Color(const uint8_t r, const uint8_t g, const uint8_t b, const uint8_t a) :
-            A(a), R(r), G(g), B(b) {}
-
+            B(b), G(g), R(r), A(a) {}
+        
         /// html style hex aka 0xFF00FF
         Color(const uint32_t color) : A(255)
         {
