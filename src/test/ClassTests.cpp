@@ -43,6 +43,11 @@ void ClassTests::setup()
     image.pixelate(5, 5);
     //image.resize(320, 240);
     
+    // laod alpha image
+    imageAlpha.load("../data/testAlpha.png");
+    imageAlpha.scale(0.5, 0.5);
+    imageAlpha.pixelate(5, 5);
+    
     // load font
     font.load("../data/ATARCC__.TTF", 25);
     
@@ -168,21 +173,31 @@ void ClassTests::testGraphicsPrimitives()
     Graphics::stroke(0xFFFFFF);
     Graphics::string(100, 400, "this is a test string");
 
+	Graphics::strokeWeight(3);
     Graphics::fill(0x888888);
-    //Graphics::noFill();
+    Graphics::noFill();
     Graphics::polygon(polygon);
+    Graphics::strokeWeight(1);
+    
+    // cross alpha rects
+    Graphics::noStroke();
+    Graphics::fill(Color(0xFF, 0, 0, 0x66));
+    Graphics::rectangle(600, 50, 50, 50);
+    Graphics::fill(Color(0, 0, 0xFF, 0x66));
+    Graphics::rectangle(625, 75, 50, 50);
 }
 
 void ClassTests::testImage(int x, int y)
 {
 	image.draw(x, y);
+    imageAlpha.draw(x, y+image.width());
 }
 
 void ClassTests::testFont(int x, int y)
 {
 	// chars
 	Graphics::fontMode(SOLID);	// fastest
-    Graphics::stroke(0xFF0000);
+    Graphics::stroke(Color(0xFF, 0x00, 0x00, 128));
 	font.draw('t', x, y);
     
     Graphics::fontMode(BLENDED);	// anti-aliased, slower

@@ -58,7 +58,7 @@ void TestApp::update()
 void TestApp::draw()
 {
     test.testGraphicsPrimitives();
-    test.testImage(500, 200);
+    test.testImage(550, 200);
     test.testFont(50, 450);
     
     // fps display
@@ -67,7 +67,7 @@ void TestApp::draw()
     Graphics::stroke(0xFFFFFF);
     Graphics::string(12, 12, stream.str());
     
-    // draw a rect if the mosue cursor is off
+    // draw a rect if the mouse cursor is off
     if(!Graphics::getShowMouseCursor())
     {
     	Graphics::noStroke();

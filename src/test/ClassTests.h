@@ -65,7 +65,7 @@ class ClassTests
 
         UdpReceiver udpListener;
         
-        Image image;
+        Image image, imageAlpha;
         Font font;
 
         PointList polygon;
