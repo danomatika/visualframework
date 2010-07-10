@@ -164,15 +164,19 @@ void ClassTests::testGraphicsPrimitives()
     Graphics::fill(0x333333);
     Graphics::circle(100, 300, 50);
 
+	// draw a smooth ellipse
+    Graphics::smooth();
     Graphics::stroke(0xFFFF00);
     Graphics::fill(0xAAAAAA);
     Graphics::ellipse(300, 300, 50, 25);
+    Graphics::noSmooth();
 
     Graphics::stroke(0x00FFFF);
     Graphics::character(50, 400, '!');
     Graphics::stroke(0xFFFFFF);
     Graphics::string(100, 400, "this is a test string");
 
+	// draw a thick-edged polygon
 	Graphics::strokeWeight(3);
     Graphics::fill(0x888888);
     Graphics::noFill();

@@ -153,6 +153,10 @@ class Graphics
         
         // affects lines and object edges
         static void strokeWeight(unsigned int weight=1);
+        
+        // antialiasing on lines and objects
+        static void smooth();
+        static void noSmooth();
 
         // global primitives
         static void point(const int x, const int y);

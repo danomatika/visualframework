@@ -312,8 +312,22 @@ void Graphics::noFill()
 
 void Graphics::strokeWeight(unsigned int weight)
 {
+	if(weight == 0)
+    	return;
 	SPG_PopThickness();
     SPG_PushThickness(weight);
+}
+
+void Graphics::smooth()
+{
+	SPG_PopAA();
+    SPG_PushAA(true);
+}
+
+void Graphics::noSmooth()
+{
+    SPG_PopAA();
+    SPG_PushAA(false);
 }
 
 // ***** global primitives *****
