@@ -43,10 +43,15 @@ void ClassTests::setup()
     image.pixelate(5, 5);
     //image.resize(320, 240);
     
-    // laod alpha image
+    // load alpha image
     imageAlpha.load("../data/testAlpha.png");
     imageAlpha.scale(0.5, 0.5);
     imageAlpha.pixelate(5, 5);
+    
+    // load image from pixel array
+    for(int i = 0; i < 64; ++i)
+    	pixels[i] = 0xFFFF0000;
+    imagePixels.load(pixels, 8, 8);
     
     // load font
     font.load("../data/ATARCC__.TTF", 25);
@@ -195,6 +200,7 @@ void ClassTests::testImage(int x, int y)
 {
 	image.draw(x, y);
     imageAlpha.draw(x, y+image.width());
+    imagePixels.draw(x+image.width(), y);
 }
 
 void ClassTests::testFont(int x, int y)

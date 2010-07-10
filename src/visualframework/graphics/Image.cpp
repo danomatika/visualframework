@@ -74,7 +74,9 @@ bool Image::load(const uint32_t* pixels, unsigned int w, unsigned int h)
     {
     	for(unsigned int y = 0; y < h; ++y)
         {
-        	SPG_Pixel(_image, x, y, pixels[y*w + x]);
+        	Color color;
+            color.setWithAlpha(pixels[y*w + x]);
+        	SPG_Pixel(_image, x, y, color.get(_image));
         }
     }
     
@@ -95,21 +97,14 @@ bool Image::isLoaded()
 void Image::draw(int x, int y)
 {
 	assert(_image);	// image not created!
-
-	SDL_Rect dest;
     
 	if(Graphics::getImageMode() == CENTER)
     {
-    	dest.x = x-(_image->w/2);
-        dest.y = y-(_image->h/2);
-    }
-	else
-    {
-        dest.x = x;
-        dest.y = y;
+    	x = x-(_image->w/2);
+        y = y-(_image->h/2);
     }
 
-	SDL_BlitSurface(_image, NULL, Graphics::getScreen(), &dest);
+	Graphics::surface(x, y, _image);
 }
 
 void Image::resize(int w, int h)

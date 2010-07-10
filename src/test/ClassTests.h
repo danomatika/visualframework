@@ -65,7 +65,8 @@ class ClassTests
 
         UdpReceiver udpListener;
         
-        Image image, imageAlpha;
+        Image image, imageAlpha, imagePixels;
+        uint32_t pixels[8*8];	// pixel array
         Font font;
 
         PointList polygon;
