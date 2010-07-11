@@ -45,16 +45,27 @@ UdpSender::~UdpSender()
 {
     if(_packet)
         SDLNet_FreePacket(_packet);
-    SDLNet_UDP_Close(_socket);
+    if(_socket)
+    	SDLNet_UDP_Close(_socket);
 }
 
-bool UdpSender::setup(std::string addr, unsigned int port)
+bool UdpSender::setup(std::string addr, unsigned int port, unsigned int len)
 {
     if(addr == _sAddr && port == _uiPort)
         return false;
 
-    // free the existing socket
-    SDLNet_UDP_Close(_socket);
+	if(_packet)
+		SDLNet_FreePacket(_packet);
+
+	// allocate packet memory
+    if(!(_packet = SDLNet_AllocPacket(len)))
+    {
+        LOG_ERROR << "UdpSender: Could not allocate packet:" << SDLNet_GetError() << std::endl;
+        return false;
+    }
+
+    if(_socket)
+    	SDLNet_UDP_Close(_socket);
 
     // try to open the socket
 	if(!(_socket = SDLNet_UDP_Open(0)))
@@ -83,7 +94,7 @@ bool UdpSender::send(const uint8_t* data, unsigned int len)
 	assert(data);	// data should not be NULL
 
     // allocate packet memory (if not allocated)
-    if(!_packet)
+    if(!_packet || _packet->maxlen < len)
     {
         if(!(_packet = SDLNet_AllocPacket(len)))
         {
@@ -92,37 +103,23 @@ bool UdpSender::send(const uint8_t* data, unsigned int len)
         }
     }
 
-    unsigned int position = 0, numSend = 0;
-    while(position < len)
+    // load packet
+    try
     {
-        // how many bytes to send?
-        numSend = len - position;
-        if(numSend > _packet->maxlen)
-        {
-            numSend = _packet->maxlen;
-        }
+        _packet->len = len;
+        memcpy(_packet->data, data, len);
+    }
+    catch(std::exception& e)
+    {
+        LOG_ERROR << "UdpSender: Failed to load packet: " << e.what() << std::endl;
+        return false;
+    }
 
-        // load packet
-        try
-        {
-            _packet->len = numSend;
-            memcpy(_packet->data, data+position, numSend);
-        }
-        catch(std::exception& e)
-        {
-            LOG_ERROR << "UdpSender: memcpy failed to load packet: " << e.what() << std::endl;
-            return false;
-        }
-
-        // send
-		if(!send(_packet))
-		{
-		    return false;
-		}
-
-		// move index position
-		position += numSend;
-	}
+    // send
+    if(!send(_packet))
+    {
+        return false;
+    }
 
     return true;
 }

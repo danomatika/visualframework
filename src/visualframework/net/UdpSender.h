@@ -41,10 +41,11 @@ class UdpSender
         UdpSender(std::string addr, unsigned int port);
 
         /// setup the udp socket using the given port
-        bool setup(std::string addr, unsigned int port);
+        /// optionally set the max packet len
+        bool setup(std::string addr, unsigned int port, unsigned int len=1024);
 
         /// send the message
-        bool send(const uint8_t* data, unsigned int len=1024);
+        bool send(const uint8_t* data, unsigned int len);
 
         /// send a packet
         bool send(UDPpacket* packet);
