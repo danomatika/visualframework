@@ -29,9 +29,7 @@
 
 // udp
 #include "UdpSender.h"
-#include "UdpListener.h"
-
-typedef UDPpacket UdpPacket;
+#include "UdpReceiver.h"
 
 namespace visual {
 

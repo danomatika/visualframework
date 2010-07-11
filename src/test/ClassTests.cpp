@@ -79,35 +79,58 @@ void ClassTests::testLog()
     LOG_ERROR << "This is an error message" << endl << endl;
 }
 
-void UdpReceiver::process(UDPpacket* packet)
+class MyThread : public Thread
 {
-    LOG << "UdpListener: Received message: '";
+	public:
+		MyThread () : Thread("Test Thread") {}
+    
+	protected:    
+        void run()
+        {
+        	while(threadIsRunning())
+            {
+            	LOG << "Thread ticks: " << Graphics::getMillis() << endl;
+            	SDL_Delay(1000);
+            }
+        }
+};
 
-    for(int i = 0; i < packet->len; i++)
-    {
-        LOG << packet->data[i];
-    }
-
-    LOG << "' len: " << packet->len << endl;
+void ClassTests::testThread()
+{
+	MyThread thread;
+    thread.start();
+    SDL_Delay(5000);
+    thread.stop();
 }
 
-void ClassTests::startTestUdpListener()
+void MyUdpReceiver::process(const uint8_t* data, unsigned int len)
 {
-    LOG << "Starting UdpListener on port 8000" << endl;
+    LOG << "UdpReceiver: Received message: '";
 
-    udpListener.setup(8000);
-    udpListener.startListening();
-    LOG << "    UdpListener is running? "
-        << udpListener.isListening() << endl;
+    for(int i = 0; i < len; ++i)
+    {
+        LOG << data[i];
+    }
+    LOG << "' len: " << len << endl;
+}
+
+void ClassTests::startTestUdpReceiver()
+{
+    LOG << "Starting UdpReceiver on port 8000" << endl;
+
+    udpReceiver.setup(8000);
+    udpReceiver.start();
+    LOG << "    UdpReceiver is running? "
+        << udpReceiver.isListening() << endl;
     LOG << endl;
 }
 
-void ClassTests::stopTestUdpListener()
+void ClassTests::stopTestUdpReceiver()
 {
-    LOG << "Stopping UdpListener" << endl;
-    udpListener.stopListening();
-    LOG << "    UdpListener is running? "
-        << udpListener.isListening() << endl;
+    LOG << "Stopping UdpReceiver" << endl;
+    udpReceiver.stop();
+    LOG << "    UdpReceiver is running? "
+        << udpReceiver.isListening() << endl;
     LOG << endl;
 }
 
@@ -119,7 +142,7 @@ void ClassTests::testUdpSender()
 
     char* text1 = (char*) "hello world";
     LOG << "    sending string '" << text1 << "'" << endl;
-    sender.send(text1, strlen(text1)+1);
+    sender.send((uint8_t*) text1, strlen(text1)+1);
     sleep(2);
 
     char* text2 = (char*) "this is a string sent over udp ...";
@@ -142,8 +165,8 @@ void ClassTests::testUdpSender()
     p->len = strlen(text2)+1;
     LOG << "    sending string '" << text2 << "'" << endl;
     sender.send(p);
-    //Net::freePacket(p);
     sleep(2);
+    SDLNet_FreePacket(p);
 
     LOG << endl;
 }

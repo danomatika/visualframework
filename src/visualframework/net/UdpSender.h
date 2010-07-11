@@ -44,18 +44,16 @@ class UdpSender
         void setup(std::string addr="127.0.0.1", unsigned int port=8000);
 
         /// send the message
-        bool send(char* buffer, unsigned int length);
+        bool send(const uint8_t* buffer, unsigned int length);
 
         /// send a packet
         bool send(UDPpacket* packet);
 
         /// get the ip addr and port
         std::string getAddr()   {return _sAddr;}
-        unsigned int getPort() {return _uiPort;}
+        unsigned int getPort()	{return _uiPort;}
 
     private:
-
-        bool _bSetup;
 
         unsigned int _uiPort;
         std::string _sAddr;

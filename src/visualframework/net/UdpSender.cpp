@@ -28,28 +28,25 @@
 
 namespace visual {
 
-UdpSender::UdpSender() : _bSetup(false), _packet(NULL)
+UdpSender::UdpSender() : _packet(NULL)
 {
     Net::init();
+    _socket = NULL;
+    setup();
 }
 
-UdpSender::UdpSender(std::string addr, unsigned int port) :
-    _bSetup(false), _packet(NULL)
+UdpSender::UdpSender(std::string addr, unsigned int port) : _packet(NULL)
 {
     Net::init();
-
+    _socket = NULL;
     setup(addr, port);
 }
 
 UdpSender::~UdpSender()
 {
-    if(_bSetup)
-    {
-        if(_packet != NULL)
-            SDLNet_FreePacket(_packet);
-
-        SDLNet_UDP_Close(_socket);
-    }
+    if(_packet)
+        SDLNet_FreePacket(_packet);
+    SDLNet_UDP_Close(_socket);
 }
 
 void UdpSender::setup(std::string addr, unsigned int port)
@@ -61,10 +58,7 @@ void UdpSender::setup(std::string addr, unsigned int port)
     _uiPort = port;
 
     // free the existing socket
-    if(_bSetup)
-    {
-        SDLNet_UDP_Close(_socket);
-    }
+    SDLNet_UDP_Close(_socket);
 
     // try to open the socket
 	if(!(_socket = SDLNet_UDP_Open(0)))
@@ -83,13 +77,12 @@ void UdpSender::setup(std::string addr, unsigned int port)
 	}
 }
 
-bool UdpSender::send(char* buffer, unsigned int length)
+bool UdpSender::send(const uint8_t* data, unsigned int len)
 {
-    if(buffer == NULL || _socket == NULL)
-        return false;
+	assert(data);	// data should not be NULL
 
     // allocate packet memory (if not allocated)
-    if(_packet == NULL)
+    if(!_packet)
     {
         if(!(_packet = SDLNet_AllocPacket(VISUAL_MAX_PACKET_LEN)))
         {
@@ -99,10 +92,10 @@ bool UdpSender::send(char* buffer, unsigned int length)
     }
 
     unsigned int position = 0, numSend = 0;
-    while(position < length)
+    while(position < len)
     {
         // how many bytes to send?
-        numSend = length - position;
+        numSend = len - position;
         if(numSend > VISUAL_MAX_PACKET_LEN)
         {
             numSend = VISUAL_MAX_PACKET_LEN;
@@ -113,7 +106,7 @@ bool UdpSender::send(char* buffer, unsigned int length)
         {
             _packet->len = numSend;
             _packet->maxlen = VISUAL_MAX_PACKET_LEN;
-            memcpy(_packet->data, buffer+position, numSend);
+            memcpy(_packet->data, data+position, numSend);
         }
         catch(std::exception& e)
         {
@@ -136,12 +129,11 @@ bool UdpSender::send(char* buffer, unsigned int length)
 
 bool UdpSender::send(UDPpacket* packet)
 {
-    if(_socket == NULL)
-        return false;
-
-    if(packet == NULL)
+	assert(packet);	// packet should not be NULL
+    
+    if(!_socket)
     {
-        LOG_WARN << "UdpSender: Send error: Packet is NULL" << std::endl;
+    	LOG_WARN << "UdpSender: Cannot send, socket not setup" << std::endl;
         return false;
     }
 

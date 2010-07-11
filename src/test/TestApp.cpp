@@ -36,10 +36,13 @@ void TestApp::init()
 {
     test.testLog();
 
-    //test.startTestUdpListener();
-    //sleep(1);
-    //test.testUdpSender();
-    //test.stopTestUdpListener();
+	//test.testThread();
+
+    test.startTestUdpReceiver();
+    sleep(1);
+    test.testUdpSender();
+    test.stopTestUdpReceiver();
+
 }
 
 void TestApp::setup()

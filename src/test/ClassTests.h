@@ -28,11 +28,10 @@
 using namespace std;
 using namespace visual;
 
-class UdpReceiver : public UdpListener
+class MyUdpReceiver : public UdpReceiver
 {
-    protected:
-
-        void process(UDPpacket* packet);
+	protected:
+		void process(const uint8_t* data, unsigned int len);
 };
 
 class ClassTests
@@ -48,10 +47,12 @@ class ClassTests
         void update();
 
         void testLog();
+        
+        void testThread();
 
-        void startTestUdpListener();
+        void startTestUdpReceiver();
 
-        void stopTestUdpListener();
+        void stopTestUdpReceiver();
 
         void testUdpSender();
 
@@ -63,7 +64,7 @@ class ClassTests
 
     private:
 
-        UdpReceiver udpListener;
+        MyUdpReceiver udpReceiver;
         
         Image image, imageAlpha, imagePixels;
         uint32_t pixels[8*8];	// pixel array

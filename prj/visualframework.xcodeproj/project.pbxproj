@@ -13,7 +13,7 @@
 		175E2203124F001273370138 /* SPG_primitives.c in Sources */ = {isa = PBXBuildFile; fileRef = 30C0172B18AF001273370138 /* SPG_primitives.c */; };
 		238E62B112A5001273370138 /* Point.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43F73697164F001273370138 /* Point.cpp */; };
 		28362B1E4341001273370138 /* Thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03E00D5D7EF5001273370138 /* Thread.cpp */; };
-		316377BD37AB001273370138 /* UdpListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7BFD497C1A97001273370138 /* UdpListener.cpp */; };
+		30D977D011E960620004587C /* UdpReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30D977CE11E960620004587C /* UdpReceiver.cpp */; };
 		3BC66E4377A8001273370138 /* SPG_misc.c in Sources */ = {isa = PBXBuildFile; fileRef = 46814B4B3057001273370138 /* SPG_misc.c */; };
 		3F5E70B730B9001273370138 /* Application.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2F5C7A14696A001273370138 /* Application.cpp */; };
 		424826F54860001273370138 /* SPG_surface.c in Sources */ = {isa = PBXBuildFile; fileRef = 27FB03287163001273370138 /* SPG_surface.c */; };
@@ -55,6 +55,8 @@
 		2DDF4C84791C001273370138 /* lapack_types.hpp */ = {isa = PBXFileReference; lastKnownFileType = text; path = lapack_types.hpp; sourceTree = "<group>"; };
 		2F5C7A14696A001273370138 /* Application.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Application.cpp; sourceTree = "<group>"; };
 		30C0172B18AF001273370138 /* SPG_primitives.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = SPG_primitives.c; sourceTree = "<group>"; };
+		30D977CE11E960620004587C /* UdpReceiver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UdpReceiver.cpp; sourceTree = "<group>"; };
+		30D977CF11E960620004587C /* UdpReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UdpReceiver.h; sourceTree = "<group>"; };
 		32F26F7A4850001273370138 /* lapack_linear_least_squares.hpp */ = {isa = PBXFileReference; lastKnownFileType = text; path = lapack_linear_least_squares.hpp; sourceTree = "<group>"; };
 		38476C57495D001273370138 /* frustum.hpp */ = {isa = PBXFileReference; lastKnownFileType = text; path = frustum.hpp; sourceTree = "<group>"; };
 		3C5835887F62001273370138 /* lapack_svd.hpp */ = {isa = PBXFileReference; lastKnownFileType = text; path = lapack_svd.hpp; sourceTree = "<group>"; };
@@ -78,7 +80,6 @@
 		557A6A091662001273370138 /* matrix_functors.hpp */ = {isa = PBXFileReference; lastKnownFileType = text; path = matrix_functors.hpp; sourceTree = "<group>"; };
 		55C46FB90FD7001273370138 /* quaternion.hpp */ = {isa = PBXFileReference; lastKnownFileType = text; path = quaternion.hpp; sourceTree = "<group>"; };
 		565978CB69D9001273370138 /* visibility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = visibility.h; sourceTree = "<group>"; };
-		593E11255027001273370138 /* UdpListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UdpListener.h; sourceTree = "<group>"; };
 		5D2D45A97AD0001273370138 /* Net.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Net.h; sourceTree = "<group>"; };
 		667B2C803F22001273370138 /* vector3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vector3.h; sourceTree = "<group>"; };
 		668613BE33AA001273370138 /* Exception.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Exception.h; sourceTree = "<group>"; };
@@ -94,7 +95,6 @@
 		72A603A9701B001273370138 /* frustumCuller.hpp */ = {isa = PBXFileReference; lastKnownFileType = text; path = frustumCuller.hpp; sourceTree = "<group>"; };
 		751424B43465001273370138 /* vector2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vector2.h; sourceTree = "<group>"; };
 		75E85A343593001273370138 /* Net.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Net.cpp; sourceTree = "<group>"; };
-		7BFD497C1A97001273370138 /* UdpListener.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UdpListener.cpp; sourceTree = "<group>"; };
 		7C7B7CF96009001273370138 /* resize++.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "resize++.cpp"; sourceTree = "<group>"; };
 		7DAD758D314D001273370138 /* Font.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Font.h; sourceTree = "<group>"; };
 		7FFD7BFA72F0001273370138 /* helperFunctions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = helperFunctions.h; sourceTree = "<group>"; };
@@ -202,10 +202,10 @@
 		6A6A5A3021E9001273370138 /* net */ = {
 			isa = PBXGroup;
 			children = (
+				30D977CE11E960620004587C /* UdpReceiver.cpp */,
+				30D977CF11E960620004587C /* UdpReceiver.h */,
 				75E85A343593001273370138 /* Net.cpp */,
 				5D2D45A97AD0001273370138 /* Net.h */,
-				7BFD497C1A97001273370138 /* UdpListener.cpp */,
-				593E11255027001273370138 /* UdpListener.h */,
 				717E3BC5216B001273370138 /* UdpSender.cpp */,
 				44892B146CDA001273370138 /* UdpSender.h */,
 			);
@@ -321,8 +321,8 @@
 				7EB809CB0B9D001273370138 /* SPG_rotation.c in Sources */,
 				424826F54860001273370138 /* SPG_surface.c in Sources */,
 				48D271AB4691001273370138 /* Net.cpp in Sources */,
-				316377BD37AB001273370138 /* UdpListener.cpp in Sources */,
 				08692AE148C9001273370138 /* UdpSender.cpp in Sources */,
+				30D977D011E960620004587C /* UdpReceiver.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
