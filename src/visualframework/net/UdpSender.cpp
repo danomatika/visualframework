@@ -94,8 +94,10 @@ bool UdpSender::send(const uint8_t* data, unsigned int len)
 	assert(data);	// data should not be NULL
 
     // allocate packet memory (if not allocated)
-    if(!_packet || _packet->maxlen < len)
+    if(!_packet || _packet->maxlen < (int) len)
     {
+    	if(_packet)
+        	SDLNet_FreePacket(_packet);
         if(!(_packet = SDLNet_AllocPacket(len)))
         {
             LOG_ERROR << "UdpSender: Could not allocate packet:" << SDLNet_GetError() << std::endl;

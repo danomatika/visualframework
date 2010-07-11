@@ -107,7 +107,7 @@ void MyUdpReceiver::process(const uint8_t* data, unsigned int len)
 {
     LOG << "UdpReceiver: Received message: '";
 
-    for(int i = 0; i < len; ++i)
+    for(unsigned int i = 0; i < len; ++i)
     {
         LOG << data[i];
     }
