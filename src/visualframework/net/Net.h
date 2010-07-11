@@ -25,8 +25,6 @@
 
 #include "../Common.h"
 
-#define VISUAL_MAX_PACKET_LEN   1024
-
 // udp
 #include "UdpSender.h"
 #include "UdpReceiver.h"

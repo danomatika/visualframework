@@ -53,27 +53,27 @@ bool UdpSender::setup(std::string addr, unsigned int port)
     if(addr == _sAddr && port == _uiPort)
         return false;
 
-    _sAddr = addr;
-    _uiPort = port;
-
     // free the existing socket
     SDLNet_UDP_Close(_socket);
 
     // try to open the socket
 	if(!(_socket = SDLNet_UDP_Open(0)))
 	{
-		LOG_ERROR << "UdpSender: Could not open socket on port " << _uiPort << ": "
+		LOG_ERROR << "UdpSender: Could not open socket on port " << port << ": "
                   <<  SDLNet_GetError() << std::endl;
 		return false;
 	}
 
 	// Resolve server name
-	if(SDLNet_ResolveHost(&_destination, _sAddr.c_str(), _uiPort) == -1)
+	if(SDLNet_ResolveHost(&_destination, addr.c_str(), port) == -1)
 	{
-	    LOG_ERROR << "UdpSender: Could not resolve hostname " << _sAddr
-                  << " on port " <<  _uiPort<< ": " << SDLNet_GetError() << std::endl;
+	    LOG_ERROR << "UdpSender: Could not resolve hostname " << addr
+                  << " on port " <<  port<< ": " << SDLNet_GetError() << std::endl;
 		return false;
 	}
+    
+    _sAddr = addr;
+    _uiPort = port;
     
     return true;
 }
@@ -85,7 +85,7 @@ bool UdpSender::send(const uint8_t* data, unsigned int len)
     // allocate packet memory (if not allocated)
     if(!_packet)
     {
-        if(!(_packet = SDLNet_AllocPacket(VISUAL_MAX_PACKET_LEN)))
+        if(!(_packet = SDLNet_AllocPacket(len)))
         {
             LOG_ERROR << "UdpSender: Could not allocate packet:" << SDLNet_GetError() << std::endl;
             return false;
@@ -97,16 +97,15 @@ bool UdpSender::send(const uint8_t* data, unsigned int len)
     {
         // how many bytes to send?
         numSend = len - position;
-        if(numSend > VISUAL_MAX_PACKET_LEN)
+        if(numSend > _packet->maxlen)
         {
-            numSend = VISUAL_MAX_PACKET_LEN;
+            numSend = _packet->maxlen;
         }
 
         // load packet
         try
         {
             _packet->len = numSend;
-            _packet->maxlen = VISUAL_MAX_PACKET_LEN;
             memcpy(_packet->data, data+position, numSend);
         }
         catch(std::exception& e)

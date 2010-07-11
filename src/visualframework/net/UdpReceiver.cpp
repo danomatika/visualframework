@@ -45,7 +45,7 @@ UdpReceiver::~UdpReceiver()
         SDLNet_FreePacket(_packet);
 }
 
-bool UdpReceiver::setup(unsigned int port, unsigned int packetLen)
+bool UdpReceiver::setup(unsigned int port, unsigned int len)
 {
     if(threadIsRunning())
     {
@@ -56,7 +56,7 @@ bool UdpReceiver::setup(unsigned int port, unsigned int packetLen)
     // allocate packet memory (if not allocated)
     if(!_packet)
     {
-        if(!(_packet = SDLNet_AllocPacket(packetLen)))
+        if(!(_packet = SDLNet_AllocPacket(len)))
         {
             LOG_ERROR << "UdpReceiver: Could not allocate packet:" << SDLNet_GetError() << std::endl;
             return false;
@@ -70,7 +70,7 @@ bool UdpReceiver::setup(unsigned int port, unsigned int packetLen)
 	// try to open the socket
 	if(!(_socket = SDLNet_UDP_Open(port)))
 	{
-		LOG_ERROR << "UdpReceiver: Could not open socket on port " << _uiPort << ": "
+		LOG_ERROR << "UdpReceiver: Could not open socket on port " << port << ": "
                   <<  SDLNet_GetError() << std::endl;
 		return false;
 	}
