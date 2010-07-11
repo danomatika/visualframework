@@ -28,14 +28,14 @@ UdpReceiver::UdpReceiver() : Thread("UdpReceiver"),
 	_uiPort(0), _packet(NULL)
 {
     Net::init();
-    _socket == NULL;
+    _socket = NULL;
 }
 
 UdpReceiver::UdpReceiver(unsigned int port) : Thread("UdpReceiver"),
      _packet(NULL)
 {
     Net::init();
-    _socket == NULL;
+    _socket = NULL;
     setup(port);
 }
 
