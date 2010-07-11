@@ -37,11 +37,11 @@ class UdpSender
         UdpSender();
         virtual ~UdpSender();
 
-        /// calls setAddr automatically
-        UdpSender(std::string addr, unsigned int port=8000);
+        /// calls setup automatically
+        UdpSender(std::string addr, unsigned int port);
 
         /// setup the udp socket using the given port
-        void setup(std::string addr="127.0.0.1", unsigned int port=8000);
+        bool setup(std::string addr, unsigned int port);
 
         /// send the message
         bool send(const uint8_t* buffer, unsigned int length);

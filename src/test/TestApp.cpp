@@ -32,7 +32,7 @@ TestApp::TestApp() : _currentRes(0)
 TestApp::~TestApp()
 {}
 
-void TestApp::init()
+bool TestApp::init()
 {
     test.testLog();
 
@@ -43,6 +43,7 @@ void TestApp::init()
     test.testUdpSender();
     test.stopTestUdpReceiver();
 
+	return true;
 }
 
 void TestApp::setup()

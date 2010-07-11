@@ -31,6 +31,8 @@
 #include "UdpSender.h"
 #include "UdpReceiver.h"
 
+typedef UDPpacket UdpPacket;
+
 namespace visual {
 
 class Net

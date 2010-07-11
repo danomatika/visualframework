@@ -48,8 +48,8 @@ class UdpReceiver : protected Thread
         /// calls setup automatically
         UdpReceiver(unsigned int port);
 
-        /// setup the udp socket using the given port
-        void setup(unsigned int port, unsigned int packetLen=VISUAL_MAX_PACKET_LEN);
+        /// setup the udp socket using the given port, returns true on success
+        bool setup(unsigned int port, unsigned int packetLen=VISUAL_MAX_PACKET_LEN);
 
 		/// get the packet data, make sure to lock first if using the thread!
         const uint8_t* getData();

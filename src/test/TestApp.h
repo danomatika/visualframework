@@ -34,10 +34,9 @@ class TestApp : public Application
     public:
 
         TestApp();
-
         virtual ~TestApp();
 
-        void init();
+        bool init();
 
         void setup();
 

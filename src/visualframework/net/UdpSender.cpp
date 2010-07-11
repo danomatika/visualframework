@@ -32,7 +32,6 @@ UdpSender::UdpSender() : _packet(NULL)
 {
     Net::init();
     _socket = NULL;
-    setup();
 }
 
 UdpSender::UdpSender(std::string addr, unsigned int port) : _packet(NULL)
@@ -49,10 +48,10 @@ UdpSender::~UdpSender()
     SDLNet_UDP_Close(_socket);
 }
 
-void UdpSender::setup(std::string addr, unsigned int port)
+bool UdpSender::setup(std::string addr, unsigned int port)
 {
     if(addr == _sAddr && port == _uiPort)
-        return;
+        return false;
 
     _sAddr = addr;
     _uiPort = port;
@@ -65,7 +64,7 @@ void UdpSender::setup(std::string addr, unsigned int port)
 	{
 		LOG_ERROR << "UdpSender: Could not open socket on port " << _uiPort << ": "
                   <<  SDLNet_GetError() << std::endl;
-		return;
+		return false;
 	}
 
 	// Resolve server name
@@ -73,8 +72,10 @@ void UdpSender::setup(std::string addr, unsigned int port)
 	{
 	    LOG_ERROR << "UdpSender: Could not resolve hostname " << _sAddr
                   << " on port " <<  _uiPort<< ": " << SDLNet_GetError() << std::endl;
-		return;
+		return false;
 	}
+    
+    return true;
 }
 
 bool UdpSender::send(const uint8_t* data, unsigned int len)

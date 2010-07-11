@@ -25,16 +25,17 @@
 namespace visual {
 
 UdpReceiver::UdpReceiver() : Thread("UdpReceiver"),
-	_uiPort(8000), _packet(NULL)
+	_uiPort(0), _packet(NULL)
 {
     Net::init();
-    setup(_uiPort);
+    _socket == NULL;
 }
 
 UdpReceiver::UdpReceiver(unsigned int port) : Thread("UdpReceiver"),
-     _uiPort(port), _packet(NULL)
+     _packet(NULL)
 {
     Net::init();
+    _socket == NULL;
     setup(port);
 }
 
@@ -44,12 +45,12 @@ UdpReceiver::~UdpReceiver()
         SDLNet_FreePacket(_packet);
 }
 
-void UdpReceiver::setup(unsigned int port, unsigned int packetLen)
+bool UdpReceiver::setup(unsigned int port, unsigned int packetLen)
 {
     if(threadIsRunning())
     {
         LOG_WARN << "UdpReceiver: Cannot set port while thread is running" << std::endl;
-        return;
+        return false;
     }
 
     // allocate packet memory (if not allocated)
@@ -58,7 +59,7 @@ void UdpReceiver::setup(unsigned int port, unsigned int packetLen)
         if(!(_packet = SDLNet_AllocPacket(packetLen)))
         {
             LOG_ERROR << "UdpReceiver: Could not allocate packet:" << SDLNet_GetError() << std::endl;
-            return;
+            return false;
         }
     }
     
@@ -71,10 +72,11 @@ void UdpReceiver::setup(unsigned int port, unsigned int packetLen)
 	{
 		LOG_ERROR << "UdpReceiver: Could not open socket on port " << _uiPort << ": "
                   <<  SDLNet_GetError() << std::endl;
-		return;
+		return false;
 	}
 
     _uiPort = port;
+    return true;
 }
 
 const uint8_t* UdpReceiver::getData()
