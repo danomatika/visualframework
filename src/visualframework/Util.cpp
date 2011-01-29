@@ -30,42 +30,103 @@ std::string Util::dataPath = "../../data/";
 //
 //	data path code from OpenFrameworks: http://openframeworks.cc
 //
-std::string Util::toDataPath(std::string path, bool absolute)
+std::string Util::toDataPath(std::string path, bool makeAbsolute)
 {
 	if(bUsingDataPath)
 	{
 		// check if absolute path has been passed or if data path has already been applied
-		if(path.length() == 0 || (path.substr(0,1) != "/" && path.substr(1,1) != ":" &&
-		   path.substr(0, dataPath.length()) != dataPath))
+		if(path.length() == 0 ||
+		   (!isAbsolutePath(path) && path.substr(0, dataPath.length()) != dataPath))
 		{
-			path = dataPath+path;
+			path = dataPath + path;
 		}
 
-		if(absolute && (path.length()==0 || path.substr(0,1) != "/"))
+		if(makeAbsolute)
 		{
-			#ifndef _MSC_VER
-				char currDir[1024];
-				path = "/"+path;
-				path = getcwd(currDir, 1024)+path;
-			#else // LINUX, MAC
-				char currDir[1024];
-				path = "\\"+path;
-				path = getcwd(currDir, 1024)+path;
-				std::replace(path.begin(), path.end(), '/', '\\' ); // fix any unixy paths...
-			#endif
+			path = makeAbsolutePath(path);
 		}
 	}
 	return path;	
 }
 
-void Util::setDataPath(const std::string& path)
+void Util::setDataPath(const std::string& path, bool makeAbsolute)
 {
-	dataPath = path;
+	if(makeAbsolute)
+		dataPath = makeAbsolutePath(path);
+	else
+		dataPath = path;
+	
+	// add trailing slash
+	if(dataPath.length() > 0 && dataPath.substr(dataPath.length()-2, dataPath.length()-1) != "/")
+		dataPath += "/";
 }
 
 std::string Util::getDataPath()
 {
 	return dataPath;
+}
+
+void Util::useDataPath(bool onoff)
+{
+	bUsingDataPath = onoff;
+}
+
+std::string Util::getCWD()
+{
+	char currDir[1024];
+	getcwd(currDir, 1024);
+	return (std::string) currDir;
+}
+
+bool Util::isAbsolutePath(const std::string& path)
+{
+	if(path.length() == 0)
+		return false;
+	
+	if(path.substr(0,1) == "/" || path.substr(1,1) == ":")
+		return true;
+	return false;
+}
+
+std::string Util::getDirPath(const std::string& path)
+{
+	if(path.length() == 0 || path.substr(path.length()-2, path.length()-1) == "/")
+		return path;
+		
+	std::string::size_type loc = path.rfind("/");
+	if(loc != std::string::npos)
+		return path.substr(0, loc);
+	return path;
+}
+		
+std::string Util::getFileName(const std::string& path)
+{
+	if(path.length() == 0 || path.substr(path.length()-2, path.length()-1) == "/")
+		return "";
+		
+	std::string::size_type loc = path.rfind("/");
+	if(loc != std::string::npos)
+		return path.substr(loc+1, path.length()-1);
+	return "";
+}
+
+std::string Util::makeAbsolutePath(std::string path)
+{
+	if(path.length() == 0 || isAbsolutePath(path))
+		return path;
+	
+	#ifndef _MSC_VER // LINUX, MAC
+		char currDir[1024];
+		path = "/"+path;
+		path = getcwd(currDir, 1024)+path;
+	#else 
+		char currDir[1024];
+		path = "\\"+path;
+		path = _getcwd(currDir, 1024)+path;
+		std::replace(path.begin(), path.end(), '/', '\\' ); // fix any unixy paths...
+	#endif
+	
+	return path;
 }
 
 } // namespace

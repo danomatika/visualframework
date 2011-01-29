@@ -46,7 +46,9 @@ class ClassTests
         
         void update();
 
-        void testLog();
+		void testUtil();
+        
+		void testLog();
         
         void testThread();
 

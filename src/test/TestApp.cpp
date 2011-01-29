@@ -35,13 +35,14 @@ TestApp::~TestApp()
 bool TestApp::init()
 {
     test.testLog();
+	test.testUtil();
 
 	//test.testThread();
 
-    test.startTestUdpReceiver();
-    sleep(1);
-    test.testUdpSender();
-    test.stopTestUdpReceiver();
+    //test.startTestUdpReceiver();
+    //sleep(1);
+    //test.testUdpSender();
+    //test.stopTestUdpReceiver();
 
 	return true;
 }

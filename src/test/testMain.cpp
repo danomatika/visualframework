@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     testApp.init();
 
     // set icon
-    Graphics::setWindowIcon("../data/icon.bmp");
+    Graphics::setWindowIcon(Util::toDataPath("icon.bmp"));
 
     // open sdl window
     Graphics::createWindow("visualframework test");

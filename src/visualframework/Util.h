@@ -35,14 +35,36 @@ class Util
 {
 	public:
 	
+		/// \section Data Path
+	
 		/// append a the data path to a given path or filename
-		static std::string toDataPath(std::string path, bool absolute=false);
+		static std::string toDataPath(std::string path, bool makeAbsolute=false);
 		
 		/// set the data path
-		static void setDataPath(const std::string& path);
+		static void setDataPath(const std::string& path, bool makeAbsolute=false);
 		
 		/// get the current data path
 		static std::string getDataPath();
+		
+		/// use the data path? if off, causes toDataPath to return the given string
+		static void useDataPath(bool onoff); 
+		
+		/// \section Path Utils
+		
+		/// get the current working dir
+		static std::string getCWD();
+		
+		/// is this an absolute path?
+		static bool isAbsolutePath(const std::string& path);
+
+		/// get the dir path minus the filename (if there is one)
+		static std::string getDirPath(const std::string& path);
+		
+		/// get the filename minus the path
+		static std::string getFileName(const std::string& path);
+		
+		/// make a path absolute
+		static std::string makeAbsolutePath(std::string path);
 
 	private:
 	
