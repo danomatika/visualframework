@@ -41,7 +41,9 @@ libvisualframework_a_SOURCES = \
         Point.cpp \
         Thread.h \
         Thread.cpp \
-        Timer.h
+        Timer.h \
+		Util.h\
+		Util.cpp
 
 # include paths
 AM_CPPFLAGS = $(CXXFLAGS) -I./ -I../ \

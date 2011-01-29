@@ -32,9 +32,6 @@ project "visualframework"
 	configuration "macosx"
 		-- get rid of visibilty warnings
 		buildoptions { "-fvisibility-inlines-hidden" }
-		-- MacPorts
-		includedirs { "/opt/local/include" }
-		libdirs { "/opt/local/lib" }
 
 	configuration "Debug"
 		defines { "DEBUG" }
@@ -65,9 +62,6 @@ project "vftest"
 					  "`pkg-config --cflags SDL_image`" }
 
 	configuration "macosx"
-		-- MacPorts
-		includedirs { "/opt/local/include"}
-		libdirs { "/opt/local/lib" }
 		links { "lo", "pthread", "SDLmain", "SDL", "SDL_gfx", "SDL_image", "SDL_ttf", "SDL_net" }
 		linkoptions { "-Wl,-framework,Cocoa", "-Wl,-framework,OpenGL",
 					  "-Wl,-framework,ApplicationServices",
