@@ -15,7 +15,7 @@ solution "visualframework"
 project "visualframework"
 	kind "StaticLib"
 	language "C++"
-	targetdir "../lib"
+	targetdir "../src/visualframework"
 	files { "../src/visualframework/**.h", "../src/visualframework/**.cpp", "../src/visualframework/**.c" }
 	
 	includedirs { "../src", "../src/visualframework" }
@@ -48,7 +48,7 @@ project "visualframework"
 project "vftest"
 	kind "ConsoleApp"
 	language "C++"
-	targetdir "../bin"
+	targetdir "../src/test"
 	files { "../src/test/**.h", "../src/test/**.cpp" }
 	
 	includedirs { "../src", "../src/visualframework" }

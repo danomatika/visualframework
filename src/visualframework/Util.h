@@ -1,10 +1,10 @@
 /*==============================================================================
 
-	Color.h
+	Util.h
 
 	visualframework: a simple 2d graphics framework
   
-	Copyright (C) 2009, 2010  Dan Wilcox <danomatika@gmail.com>
+	Copyright (C) 2010  Dan Wilcox <danomatika@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,21 +20,36 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ==============================================================================*/
-#ifndef VISUAL_FRAMEWORK_H
-#define VISUAL_FRAMEWORK_H
+#ifndef VISUAL_UTIL_H
+#define VISUAL_UTIL_H
 
-#include "Common.h"
+#include <string>
 
-#include "Application.h"
-#include "Thread.h"
-#include "Timer.h"
-#include "Util.h"
+namespace visual {
 
-#include "graphics/Image.h"
-#include "graphics/Font.h"
+/**
+	\class	Util
+	\brief	a static class of Utility functions
+*/
+class Util
+{
+	public:
+	
+		/// append a the data path to a given path or filename
+		static std::string toDataPath(std::string path, bool absolute=false);
+		
+		/// set the data path
+		static void setDataPath(const std::string& path);
+		
+		/// get the current data path
+		static std::string getDataPath();
 
-#include "net/Net.h"
+	private:
+	
+		static bool bUsingDataPath;		///< are we using the data path?
+		static std::string dataPath;	///< the data path (../../data default)
+};
 
-#include <vmmlib/vmmlib.h>
+} // namespace
 
-#endif //VISUAL_FRAMEWORK_H
+#endif // VISUAL_UTIL_H

@@ -38,13 +38,13 @@ void ClassTests::setup()
     polygon.push_back(Point(450, 200));
 
 	// load image
-	image.load("../data/testImage.jpg");
+	image.load(Util::toDataPath("testImage.jpg"));
     image.scale(0.5, 0.5);
     image.pixelate(5, 5);
     //image.resize(320, 240);
     
     // load alpha image
-    imageAlpha.load("../data/testAlpha.png");
+    imageAlpha.load(Util::toDataPath("testAlpha.png"));
     imageAlpha.scale(0.5, 0.5);
     imageAlpha.pixelate(5, 5);
     
@@ -54,7 +54,7 @@ void ClassTests::setup()
     imagePixels.load(pixels, 8, 8);
     
     // load font
-    font.load("../data/ATARCC__.TTF", 25);
+    font.load(Util::toDataPath("ATARCC__.TTF"), 25);
     
     // set initial timer
     testTimer.setAlarm(5000);
