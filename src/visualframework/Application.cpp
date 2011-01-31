@@ -24,7 +24,7 @@
 
 #include "graphics/Font.h"
 
-#define VISUAL_APP_SLEEP_MS 50	// how long to sleep while waiting to draw
+#define VISUAL_APP_SLEEP_MS 25	// how long to sleep while waiting to draw
 #define VISUAL_APP_FRAMES	5	// number of frames calc current fps
 
 namespace visual {
@@ -102,11 +102,6 @@ void Application::setFrameRate(float frameRate)
 void Application::_draw()
 {    
     // clear background
-    /*
-    SDL_FillRect(Graphics::getScreen(), 0,
-        SDL_MapRGBA(Graphics::getScreen()->format,
-            _background.R, _background.G, _background.B, _background.A));
-	*/
     Graphics::clear(_background);
     
     // user render function
@@ -189,7 +184,7 @@ void Application::_events()
             } // end switch
         } // end of message processing
 
-//        SDL_Delay(VISUAL_APP_SLEEP_MS); // msec for the scheduler
+        //SDL_Delay(VISUAL_APP_SLEEP_MS); // msec for the scheduler
 //    }
 }
 

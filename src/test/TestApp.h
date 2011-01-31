@@ -59,6 +59,10 @@ class TestApp : public Application
 
         int _currentRes;
         vector<SDL_Rect*> _resolutions;
+
+		bool _blend;
+		bool _smooth;
+		bool _big;
 };
 
 #endif // TESTAPP_H

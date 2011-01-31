@@ -26,6 +26,7 @@
 #define VISUAL_GRAPHICS_H
 
 #include <string>
+#include <vector>
 
 #include <SDL/SDL.h>
 
@@ -83,10 +84,10 @@ class Graphics
         static void inline setFullscreen() {_mode = FULLSCREEN;}
 
         /// set the window's title text
-        static void setWindowTitle(const std::string title);
+        static void setWindowTitle(const std::string& title);
 
         /// set the window's icon
-        static bool setWindowIcon(const std::string bitmapFile);
+        static bool setWindowIcon(const std::string& bitmapFile);
 
         /// create the actual sdl draw surface
         static bool createWindow(std::string title="");
@@ -113,16 +114,15 @@ class Graphics
         
         /// clear the screen with a given color
         static void clear(unsigned int color);	///< ARGB
-        static void clear(Color color);
+        static void clear(Color& color);
         
         /// swap the draw surface to the screen
         static void swap();
-        
 
         // global gets
         static const GraphicsType getType()     {return _type;}
         static const GraphicsMode getMode()     {return _mode;}
-        static SDL_Surface* getScreen() 		{return _screen;}
+        static const SDL_Surface* getScreen() 	{return _screen;}
         static const unsigned int getWidth()   	{return _iWidth;}
         static const unsigned int getHeight()  	{return _iHeight;}
         static const unsigned int getDepth()   	{return _iDepth;}
@@ -157,6 +157,13 @@ class Graphics
         // antialiasing on lines and objects
         static void smooth();
         static void noSmooth();
+		
+		// alpha blending on lines and objects
+		static void blend();
+		static void noBlend();
+		
+		// bezier curve detail (default is 20)
+		static void bezierDetail(const uint8_t detail);
 
         // global primitives
         static void point(const int x, const int y);
@@ -166,10 +173,26 @@ class Graphics
         static void ellipse(const int x, const int y, const int rx, const int ry);
         static void triangle(const int x1, const int y1, const int x2, const int y2, const int x3, const int y3);
         static void polygon(const PointList& points);
-        static void character(const int x, const int y, const char c);
-        static void string(const int x, const int y, const std::string line);
+		
+		static void arc(const int x, const int y, const float r, const float startAngle, const float endAngle);
+		static void bezier(const int x, const int y, const int cx1, const int cx2, const int cy1, const int cy2, const int endX, const int endY);
+        
+		static void character(const int x, const int y, const char c);
+        static void string(const int x, const int y, const std::string& line);
         
         static void surface(const int x, const int y, const SDL_Surface* surface);
+		static void quadtex(const SDL_Surface* surface, float sx, float sy, float sw, float sh,
+												   		float dx, float dy, float dw, float dh);
+
+		// draw transforms
+		static void push();
+		static void pop();	// popping at the bottom level clears the default transform
+		static void popAll();
+
+		static void scale(float x, float y);
+		static void rotate(float angle);
+		static void skew(float x, float y);
+		static void translate(float x, float y);
 
         // global utils
         static std::string getLastError();
@@ -177,12 +200,15 @@ class Graphics
 
     private:
 
+		// apply the current transform to the point vector
+		static void applyTransform();
+
         Graphics() {}                       // cannot create
         Graphics(const Graphics& from) {}   // not copyable
         virtual ~Graphics() {}              // cannot destroy
         void operator =(Color& from) {}     // not copyable
 
-        static SDL_Surface* _screen;		/// SDL draw surface
+        static SDL_Surface* _screen;		/// SDL screen
 
         static unsigned int _iWidth;    /// window width
         static unsigned int _iHeight;   /// window height
@@ -203,6 +229,78 @@ class Graphics
         static DrawMode _rectMode;
         static DrawMode _imageMode;
         static FontMode _fontMode;
+		
+		// global primitive settings
+		static uint8_t _bezierDetail;
+		
+		// current transform
+		struct Transform
+		{
+			bool bScale, bRotate, bSkew, bTranslate;
+			float scaleX, scaleY, scaleAvg;
+			float rotateAngle;
+			float skewX, skewY;
+			float translateX, translateY;
+			
+			Transform() {clear();}
+			
+			void clear()
+			{
+				bScale = false; bRotate = false;
+				bSkew = false; bTranslate = false;
+				scaleX = 0.0f; scaleY = 0.0f;
+				rotateAngle = 0.0f;
+				skewX = 0.0f; skewY = 0.0f;
+				translateX = 0.0f; translateY = 0.0f;
+			}
+			
+			void scale(float x, float y)
+			{
+				if(x == 0 && y == 0)
+					bScale = false;
+				else
+					bScale = true;
+				scaleX = x;
+				scaleY = y;
+				scaleAvg = (x+y)/2;
+			}
+			
+			void rotate(float angle)
+			{
+				if(angle == 0)
+					bRotate = false;
+				else
+					bRotate = true;
+				rotateAngle = angle;
+			}
+			
+			void skew(float x, float y)
+			{
+				if(x == 0 && y == 0)
+					bSkew = false;
+				else
+					bSkew = true;
+				skewX = x;
+				skewY = y;
+			}
+			
+			void translate(float x, float y)
+			{
+				if(x == 0 && y == 0)
+					bTranslate = false;
+				else
+					bTranslate = true;
+				translateX = x;
+				translateY = y;
+			}
+			
+			// safe scale getters
+			float getScaleX()	{return bScale && scaleX != 0 ? scaleX : 1;}
+			float getScaleY()	{return bScale && scaleY != 0 ? scaleY : 1;}
+			float getScaleAvg()	{return bScale && scaleAvg != 0 ? scaleAvg : 1;}
+		};
+		static std::vector<Transform> transforms;
+		static std::vector<Point> points; // temp for transforms
 };
 
 } // namespace

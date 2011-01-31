@@ -76,19 +76,12 @@ class Color
         }
 
         /// attribute sets
-        void set(const uint8_t r, const uint8_t g, const uint8_t b, const uint8_t a)
+        void set(const uint8_t r, const uint8_t g, const uint8_t b, const uint8_t a=255)
         {
             R = r;
             G = g;
             B = b;
             A = a;
-        }
-        void set(const uint8_t r, const uint8_t g, const uint8_t b)
-        {
-            R = r;
-            G = g;
-            B = b;
-            A = 255;
         }
 
 		/// ARGB, no alpha
@@ -106,7 +99,7 @@ class Color
         	A = color >> 24;
         	R = color >> 16;
             G = color >> 8;
-            B = color;
+            B = color >> 0;
         }
         
         /// uint operator

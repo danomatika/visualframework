@@ -31,11 +31,13 @@ ClassTests::~ClassTests()
 void ClassTests::setup()
 {
     // load points for polygon
-    polygon.push_back(Point(400, 100));
-    polygon.push_back(Point(500, 100));
-    polygon.push_back(Point(450, 400));
-    polygon.push_back(Point(400, 200));
-    polygon.push_back(Point(450, 200));
+    polygon.push_back(Point(0, 0));
+    polygon.push_back(Point(100, 0));
+    polygon.push_back(Point(50, 300));
+    polygon.push_back(Point(0, 100));
+    polygon.push_back(Point(50, 100));
+	Point::scale(polygon, 1.5, 1.5);
+	Point::translate(polygon, 400, 100);
 
 	// load image
 	image.load(Util::toDataPath("testImage.jpg"));
@@ -50,7 +52,7 @@ void ClassTests::setup()
     
     // load image from pixel array
     for(int i = 0; i < 64; ++i)
-    	pixels[i] = 0xFFFF0000;
+    	pixels[i] = 0xFF00FF00;
     imagePixels.load(pixels, 8, 8);
     
     // load font
@@ -212,11 +214,9 @@ void ClassTests::testGraphicsPrimitives()
     Graphics::circle(100, 300, 50);
 
 	// draw a smooth ellipse
-    Graphics::smooth();
     Graphics::stroke(0xFFFF00);
     Graphics::fill(0xAAAAAA);
     Graphics::ellipse(300, 300, 50, 25);
-    Graphics::noSmooth();
 
     Graphics::stroke(0x00FFFF);
     Graphics::character(50, 400, '!');
@@ -236,6 +236,12 @@ void ClassTests::testGraphicsPrimitives()
     Graphics::rectangle(600, 50, 50, 50);
     Graphics::fill(Color(0, 0, 0xFF, 0x66));
     Graphics::rectangle(625, 75, 50, 50);
+	
+	Graphics::stroke(0xFF0000);
+	Graphics::fill(0x999900);
+	Graphics::arc(400, 25, 50, 0.0, 90.0);
+	
+	Graphics::bezier(85, 20, 10, 10, 90, 90, 15, 80);
 }
 
 void ClassTests::testImage(int x, int y)

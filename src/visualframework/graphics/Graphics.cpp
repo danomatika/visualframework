@@ -29,6 +29,10 @@
 #include <SDL/SDL_gfxPrimitives.h>
 #include "sprig/sprig.h"
 
+// sprig: http://www.sdltutorials.com/a-guide-to-graphics-with-sprig/
+
+#define VISUAL_MAX_TRANSFORMS	5
+
 namespace visual {
 
 // ***** STATIC VARIABLES *****
@@ -52,8 +56,10 @@ DrawMode Graphics::_rectMode = CORNER;
 DrawMode Graphics::_imageMode = CORNER;
 FontMode Graphics::_fontMode = SOLID;
 
-// ***** LOCAL GLOBAL VARIABLES *****
-int _x1, _y1, _x2, _y2; // computed rectangle points
+uint8_t Graphics::_bezierDetail = 20;
+
+std::vector<Graphics::Transform> Graphics::transforms;
+std::vector<Point> Graphics::points;
 
 bool Graphics::init(unsigned int w, unsigned int h, unsigned int depth, GraphicsType type)
 {
@@ -75,6 +81,9 @@ bool Graphics::init(unsigned int w, unsigned int h, unsigned int depth, Graphics
 
     // make sure SDL cleans up before exit
     atexit(SDL_Quit);
+	
+	// push the default transform
+	push();
 
     return true;
 }
@@ -120,13 +129,13 @@ std::vector<SDL_Rect*> Graphics::getResolutions()
     return resolutions;
 }
 
-void Graphics::setWindowTitle(const std::string title)
+void Graphics::setWindowTitle(const std::string& title)
 {
     _sTitle = title;
     SDL_WM_SetCaption(_sTitle.c_str(), NULL);
 }
 
-bool Graphics::setWindowIcon(const std::string bitmapFile)
+bool Graphics::setWindowIcon(const std::string& bitmapFile)
 {
     SDL_Surface *icon = SDL_LoadBMP(bitmapFile.c_str());
     if(icon == NULL)
@@ -224,8 +233,6 @@ bool Graphics::changeResolution(const unsigned int w, const unsigned int h)
     if(_screen == NULL)
         throw WindowException();
 
-    SDL_FreeSurface(_screen);
-
     // set new resolution
     _iWidth = w;
     _iHeight = h;
@@ -265,13 +272,13 @@ void Graphics::clear(unsigned int color)
 	clear(Color(color));
 }
 
-void Graphics::clear(Color color)
+void Graphics::clear(Color& color)
 {
 	SDL_FillRect(_screen, NULL, color.get(_screen));
 }
 
 void Graphics::swap()
-{
+{	
 	SDL_Flip(_screen);
 }
 
@@ -327,7 +334,24 @@ void Graphics::smooth()
 void Graphics::noSmooth()
 {
     SPG_PopAA();
-    SPG_PushAA(false);
+	SPG_PushAA(false);
+}
+
+void Graphics::blend()
+{
+	SPG_PopBlend();
+	SPG_PushBlend(SPG_COMBINE_ALPHA);
+}
+
+void Graphics::noBlend()
+{
+	SPG_PopBlend();
+	SPG_PushBlend(SPG_COPY_NO_ALPHA);
+}
+
+void Graphics::bezierDetail(const uint8_t detail)
+{
+	_bezierDetail = detail;
 }
 
 // ***** global primitives *****
@@ -336,10 +360,15 @@ void Graphics::point(const int x, const int y)
     if(_screen == NULL)
         throw WindowException();
 
+	points.push_back(Point(x, y));
+	applyTransform();
+
     if(_bStroke)
     {
-        SPG_PixelBlend(_screen, x, y, _strokeColor.get(_screen), _strokeColor.A);
+        SPG_PixelBlend(_screen, points[0].x, points[0].y, _strokeColor.get(_screen), _strokeColor.A);
     }
+	
+	points.clear();
 }
 
 void Graphics::line(const int x1, const int y1, const int x2, const int y2)
@@ -347,10 +376,17 @@ void Graphics::line(const int x1, const int y1, const int x2, const int y2)
     if(_screen == NULL)
         throw WindowException();
 
+	points.push_back(Point(x1, y1));
+	points.push_back(Point(x2, y2));
+	applyTransform();
+
     if(_bStroke)
     {
-        SPG_LineBlend(_screen, x1, y1, x2, y2, _strokeColor.get(_screen), _strokeColor.A);
+        SPG_LineBlend(_screen, points[0].x, points[0].y, points[1].x, points[1].y,
+			_strokeColor.get(_screen), _strokeColor.A);
     }
+	
+	points.clear();
 }
 
 void Graphics::rectangle(const int x, const int y, const int w, const int h)
@@ -358,30 +394,39 @@ void Graphics::rectangle(const int x, const int y, const int w, const int h)
     if(_screen == NULL)
         throw WindowException();
 
+	points.push_back(Point());
+	points.push_back(Point());
+
     if(_rectMode == CENTER)
     {
-        _x1 = x-w/2;
-        _x2 = x+w/2;
-        _y1 = y-h/2;
-        _y2 = y+h/2;
+        points[0].x = x-w/2;
+        points[1].x = x+w/2;
+        points[0].y = y-h/2;
+        points[1].y = y+h/2;
     }
     else
     {
-        _x1 = x;
-        _x2 = x+w;
-        _y1 = y;
-        _y2 = y+h;
+        points[0].x = x;
+        points[1].x = x+w;
+        points[0].y = y;
+        points[1].y = y+h;
     }
-    
+	
+	applyTransform();
+	
     if(_bFill)
     {
-        SPG_RectFilledBlend(_screen, _x1, _y1, _x2, _y2, _fillColor.get(_screen), _fillColor.A);
+        SPG_RectFilledBlend(_screen, points[0].x, points[0].y, points[1].x, points[1].y,
+			_fillColor.get(_screen), _fillColor.A);
     }
 
     if(_bStroke)
     {
-        SPG_RectBlend(_screen, _x1, _y1, _x2, _y2, _strokeColor.get(_screen), _strokeColor.A);
+        SPG_RectBlend(_screen, points[0].x, points[0].y, points[1].x, points[1].y,
+			_strokeColor.get(_screen), _strokeColor.A);
     }
+	
+	points.clear();
 }
 
 void Graphics::circle(const int x, const int y, const int r)
@@ -389,15 +434,21 @@ void Graphics::circle(const int x, const int y, const int r)
     if(_screen == NULL)
         throw WindowException();
 
+	points.push_back(Point(x, y));
+	applyTransform();
+	Transform& t = transforms.back();
+
     if(_bFill)
     {
-        SPG_CircleFilledBlend(_screen, x, y, r, _fillColor.get(_screen), _fillColor.A);
+        SPG_CircleFilledBlend(_screen, points[0].x, points[0].y, r*t.getScaleAvg(), _fillColor.get(_screen), _fillColor.A);
     }
 
     if(_bStroke)
     {
-        SPG_CircleBlend(_screen, x, y, r, _strokeColor.get(_screen), _strokeColor.A);
+        SPG_CircleBlend(_screen, points[0].x, points[0].y, r*t.getScaleAvg(), _strokeColor.get(_screen), _strokeColor.A);
     }
+	
+	points.clear();
 }
 
 void Graphics::ellipse(const int x, const int y, const int rx, const int ry)
@@ -405,15 +456,23 @@ void Graphics::ellipse(const int x, const int y, const int rx, const int ry)
     if(_screen == NULL)
         throw WindowException();
 
+	points.push_back(Point(x, y));
+	applyTransform();
+	Transform& t = transforms.back();
+
     if(_bFill)
     {
-        SPG_EllipseFilledBlend(_screen, x, y, rx, ry, _fillColor.get(_screen), _fillColor.A);
+        SPG_EllipseFilledBlend(_screen, points[0].x, points[0].y, rx*t.getScaleX(), ry*t.getScaleY(),
+			_fillColor.get(_screen), _fillColor.A);
     }
 
     if(_bStroke)
     {
-        SPG_EllipseBlend(_screen, x, y, rx, ry, _strokeColor.get(_screen), _strokeColor.A);
+        SPG_EllipseBlend(_screen, points[0].x, points[0].y, rx*t.getScaleX(), ry*t.getScaleY(),
+			_strokeColor.get(_screen), _strokeColor.A);
     }
+	
+	points.clear();
 }
 
 void Graphics::triangle(const int x1, const int y1, const int x2, const int y2, const int x3, const int y3)
@@ -421,15 +480,24 @@ void Graphics::triangle(const int x1, const int y1, const int x2, const int y2, 
     if(_screen == NULL)
         throw WindowException();
 
+	points.push_back(Point(x1, y1));
+	points.push_back(Point(x2, y2));
+	points.push_back(Point(x3, y3));
+	applyTransform();
+
     if(_bFill)
     {
-        SPG_TrigonFilledBlend(_screen, x1, y1, x2, y2, x3, y3, _fillColor, _fillColor.A);
+        SPG_TrigonFilledBlend(_screen, points[0].x, points[0].y, points[1].x, points[1].y, points[2].x, points[2].y, 
+			_fillColor.get(_screen), _fillColor.A);
     }
 
     if(_bStroke)
     {
-        SPG_TrigonBlend(_screen, x1, y1, x2, y2, x3, y3, _strokeColor, _strokeColor.A);
+        SPG_TrigonBlend(_screen, points[0].x, points[0].y, points[1].x, points[1].y, points[2].x, points[2].y,
+			_strokeColor.get(_screen), _strokeColor.A);
     }
+	
+	points.clear();
 }
 
 void Graphics::polygon(const PointList& points)
@@ -437,15 +505,52 @@ void Graphics::polygon(const PointList& points)
     if(_screen == NULL)
         throw WindowException();
 
+	Graphics::points = points;
+	applyTransform();
+
     if(_bFill)
     {
-        SPG_PolygonFilledBlend(_screen, points.size(), (SPG_Point*) &points[0], _fillColor, _fillColor.A);
+        SPG_PolygonFilledBlend(_screen, Graphics::points.size(), (SPG_Point*) &Graphics::points[0], _fillColor.get(_screen), _fillColor.A);
     }
 
     if(_bStroke)
     {
-        SPG_PolygonBlend(_screen, points.size(), (SPG_Point*) &points[0], _strokeColor, _strokeColor.A);
+        SPG_PolygonBlend(_screen, Graphics::points.size(), (SPG_Point*) &Graphics::points[0], _strokeColor.get(_screen), _strokeColor.A);
     }
+}
+
+void Graphics::arc(const int x, const int y, const float r, const float startAngle, const float endAngle)
+{
+	if(_screen == NULL)
+        throw WindowException();
+		
+	points.push_back(Point(x, y));
+	applyTransform();
+	Transform& t = transforms.back();
+		
+	if(_bFill)
+	{
+		SPG_ArcFilledBlend(_screen, points[0].x, points[0].y, r*t.getScaleAvg(), startAngle, endAngle, _fillColor.get(_screen), _fillColor.A);
+	}
+	
+	if(_bStroke)
+	{
+		SPG_ArcBlend(_screen, points[0].x, points[0].y, r*t.getScaleAvg(), startAngle, endAngle, _strokeColor.get(_screen), _strokeColor.A);
+	}
+	
+	points.clear();
+}
+
+void Graphics::bezier(const int x, const int y, const int cx1, const int cx2, const int cy1, const int cy2, const int endX, const int endY)
+{
+	if(_screen == NULL)
+        throw WindowException();
+		
+	if(_bStroke)
+	{
+		SPG_BezierBlend(_screen, x, y, cx1, cx2, cy1, cy2, endX, endY, _bezierDetail, _strokeColor.get(_screen), _strokeColor.A);
+		SDL_UnlockSurface(_screen);
+	}
 }
 
 void Graphics::character(const int x, const int y, const char c)
@@ -460,7 +565,7 @@ void Graphics::character(const int x, const int y, const char c)
     }
 }
 
-void Graphics::string(const int x, const int y, const std::string line)
+void Graphics::string(const int x, const int y, const std::string& line)
 {
     if(_screen == NULL)
         throw WindowException();
@@ -484,8 +589,95 @@ void Graphics::surface(const int x, const int y, const SDL_Surface* surface)
     dest.y = y;
     dest.w = surface->w;
     dest.h = surface->h;
-    
+	
 	SDL_BlitSurface((SDL_Surface*) surface, NULL, _screen, &dest);
+	//SPG_Blit((SDL_Surface*) surface, NULL, _screen, &dest);	
+}
+
+void Graphics::quadtex(const SDL_Surface* surface, float sx, float sy, float sw, float sh,
+												   float dx, float dy, float dw, float dh)
+{
+	for(int i = 0; i < 4; ++i)
+		points.push_back(Point());
+	
+	if(_imageMode == CENTER)
+    {
+        points[0].set(dx-dw/2, dy-dh/2);		// UL
+        points[1].set(points[0].x, dy+dh/2);	// DL
+		points[2].set(dx+dw/2, dy+dy/2);		// DR
+		points[3].set(points[2].x, points[0].y);// UR
+    }
+    else
+    {
+        points[0].set(dx, dy);		// UL
+        points[1].set(dx, dy+dh);	// DL
+		points[2].set(dx+dw, dy+dh);// DR
+		points[3].set(dx+dw, dy);	// UR
+    }
+	
+	// setup tex coords
+	points[4].set(sx, sy);			// UL
+	points[5].set(sx, sy+sh);		// DL
+	points[6].set(sx+sw, sy+sh);	// DR
+	points[7].set(sx+sw, sy);		// UR
+	
+	applyTransform();
+
+	SPG_QuadTexPoints(_screen, (SPG_Point*) &Graphics::points[0],
+					  (SDL_Surface*) surface,
+					  (SPG_Point*) &Graphics::points[4]);
+					  
+	points.clear();
+}
+
+// ***** draw transforms *****
+void Graphics::push()
+{
+	if(transforms.size() >= VISUAL_MAX_TRANSFORMS)
+	{
+		LOG_WARN << "Too many pushes" << std::endl;
+		return;
+	}
+		
+	Transform t;
+	transforms.push_back(t);
+}
+
+void Graphics::pop()
+{
+	if(transforms.size() == 1)
+	{
+		transforms[0].clear();
+		return;
+	}
+	
+	transforms.erase(transforms.end());
+}
+
+void Graphics::popAll()
+{
+	transforms.clear();
+	push();
+}
+
+void Graphics::scale(float x, float y)
+{
+	transforms.back().scale(x, y);
+}
+
+void Graphics::rotate(float angle)
+{
+	transforms.back().rotate(angle);
+}
+
+void Graphics::skew(float x, float y)
+{
+	transforms.back().skew(x, y);
+}
+
+void Graphics::translate(float x, float y)
+{
+	transforms.back().translate(x, y);
 }
 
 /* ***** global util ***** */
@@ -498,6 +690,24 @@ std::string Graphics::getLastError()
 unsigned int Graphics::getMillis()
 {
     return SDL_GetTicks();
+}
+
+/* ***** PRIVATE ***** */
+
+void Graphics::applyTransform()
+{
+	for(unsigned int i = 0; i < transforms.size(); ++i)
+	{
+		Transform& t = transforms[i];
+		if(t.bScale)
+			SPG_ScalePoints(points.size(), (SPG_Point*) &points[0], t.scaleX, t.scaleY);
+		if(t.bRotate)
+			SPG_RotatePoints(points.size(), (SPG_Point*) &points[0], t.rotateAngle);
+		if(t.bSkew)
+			SPG_SkewPoints(points.size(), (SPG_Point*) &points[0], t.skewX, t.skewY);
+		if(t.bTranslate)
+			SPG_TranslatePoints(points.size(), (SPG_Point*) &points[0], t.translateX, t.translateY);
+	}
 }
 
 } // namespace

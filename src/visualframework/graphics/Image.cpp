@@ -48,12 +48,12 @@ bool Image::load(std::string filename)
     clear();
 
 	_image = IMG_Load(filename.c_str());
-    if(!_image)
+	if(!_image)
     {
-    	LOG_ERROR << "Image: "  << IMG_GetError() << std::endl; 
+    	LOG_ERROR << "Image: " << IMG_GetError() << std::endl; 
         return false;
     }
-    
+
     _filename = filename;
     return true;
 }
@@ -63,9 +63,9 @@ bool Image::load(const uint32_t* pixels, unsigned int w, unsigned int h)
 	clear();
     
     _image = SPG_CreateSurface32(SDL_SWSURFACE, w, h);
-    if(!_image)
+	if(!_image)
     {
-    	LOG_ERROR << "Image: "  << SDL_GetError() << std::endl; 
+    	LOG_ERROR << "Image: " << SDL_GetError() << std::endl; 
         return false;
     }
     
@@ -76,7 +76,7 @@ bool Image::load(const uint32_t* pixels, unsigned int w, unsigned int h)
         {
         	Color color;
             color.setWithAlpha(pixels[y*w + x]);
-        	SPG_Pixel(_image, x, y, color.get(_image));
+        	SPG_PixelBlend(_image, x, y, color.get(Graphics::getScreen()), color.A);
         }
     }
     
@@ -105,6 +105,8 @@ void Image::draw(int x, int y)
     }
 
 	Graphics::surface(x, y, _image);
+//	Graphics::quadtex(_image, 0, 0, _image->w-1, _image->h-1,
+//							  x, y, _image->w-1, _image->h-1);
 }
 
 void Image::resize(int w, int h)
@@ -215,8 +217,8 @@ void Image::pixelate(unsigned int pixelWidth, unsigned int pixelHeight)
             newA /= colors.size();
             
             // and use the new numbers as our color
-            SPG_RectFilled(_image, x, y, x+pixelWidth, y+pixelHeight,
-            	SDL_MapRGBA(_image->format, newR, newG, newB, newA));
+            SPG_RectFilledBlend(_image, x, y, x+pixelWidth, y+pixelHeight,
+            	SDL_MapRGB(_image->format, newR, newG, newB), newA);
         }
     }
 }

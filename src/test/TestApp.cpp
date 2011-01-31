@@ -27,6 +27,9 @@
 TestApp::TestApp() : _currentRes(0)
 {
     _resolutions = Graphics::getResolutions();
+	_blend = true;
+	_smooth = false;
+	_big = false;
 }
 
 TestApp::~TestApp()
@@ -49,7 +52,7 @@ bool TestApp::init()
 
 void TestApp::setup()
 {
-    setBackground(0x505050);
+	setBackground(0x505050);
     setFrameRate(25);
     
     test.setup();
@@ -62,6 +65,7 @@ void TestApp::update()
 
 void TestApp::draw()
 {
+
     test.testGraphicsPrimitives();
     test.testImage(550, 200);
     test.testFont(50, 450);
@@ -71,7 +75,7 @@ void TestApp::draw()
     stream << getFrameRate();
     Graphics::stroke(0xFFFFFF);
     Graphics::string(12, 12, stream.str());
-    
+
     // draw a rect if the mouse cursor is off
     if(!Graphics::getShowMouseCursor())
     {
@@ -106,6 +110,37 @@ void TestApp::keyPressed(SDLKey key, SDLMod mod)
         	Graphics::toggleShowMouseCursor();
             LOG << "Show mouse cursor is: " << Graphics::getShowMouseCursor() << endl;
             break;
+			
+		case 's':
+			_smooth = !_smooth;
+			LOG << "Smooth: " << _smooth << endl;
+			if(_smooth)
+				Graphics::smooth();
+			else
+				Graphics::noSmooth();
+			break;
+			
+		case 'b':
+			_blend = !_blend;
+			LOG << "Blend: " << _blend << endl;
+			if(_blend)
+				Graphics::blend();
+			else
+				Graphics::noBlend();
+			break;
+			
+		case ' ':
+			_big = !_big;
+			if(_big)
+			{
+				Graphics::push();
+				Graphics::scale(1.25, 1.25);
+			}
+			else
+			{
+				Graphics::pop();
+			}
+			break;
 
         case SDLK_RIGHTBRACKET:
             // go up in resolution
