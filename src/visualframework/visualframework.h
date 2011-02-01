@@ -30,6 +30,7 @@
 #include "Timer.h"
 #include "Util.h"
 
+#include "graphics/Texture.h"
 #include "graphics/Image.h"
 #include "graphics/Font.h"
 

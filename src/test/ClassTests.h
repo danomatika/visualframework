@@ -59,11 +59,15 @@ class ClassTests
         void testUdpSender();
 
         void testGraphicsPrimitives();
+		
+		void testDrawTexture();
         
         void testImage(int x, int y);
         
         void testFont(int x, int y);
 
+		void scaleUp()	{scale = 1.25;}
+		void scaleDown(){scale = 0;}
 		void skewUp()	{skew+=0.05;}
 		void skewDown()	{skew-=0.05;}
 		void rotateUp()	{rotate+=5;}
@@ -78,8 +82,11 @@ class ClassTests
         Font font;
 
         PointList polygon;
+		float scale;
 		float skew;
 		float rotate;
+		
+		Texture drawTexture;
         
         Timer testTimer;
 };

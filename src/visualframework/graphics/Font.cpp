@@ -61,7 +61,7 @@ void Font::clear()
     	TTF_CloseFont(_font);
 }
 
-bool Font::isLoaded()
+bool Font::isLoaded() const
 {
 	return (bool) _font;
 }

@@ -18,8 +18,8 @@ libvisualframework_a_SOURCES = \
             graphics/Graphics.cpp \
             graphics/Image.h \
             graphics/Image.cpp \
-            graphics/resize/resize++.h \
-            graphics/resize/resize++.cpp \
+			graphics/Texture.h \
+			graphics/Texture.cpp \
             graphics/sprig/sprig.h \
             graphics/sprig/sprig_inline.h \
             graphics/sprig/sprig_common.h \

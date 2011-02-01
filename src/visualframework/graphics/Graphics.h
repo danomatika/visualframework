@@ -31,6 +31,7 @@
 #include <SDL/SDL.h>
 
 #include "Color.h"
+#include "Texture.h"
 
 #include "../Point.h"
 #include "../Exception.h"
@@ -51,9 +52,9 @@ enum GraphicsType {
  // global primitive draw options
 enum DrawMode
 {
-    CENTER,
-    CORNER,
-	CORNERS	// only affects rectangles
+    CENTER,	// pos is upper right corner
+    CORNER,	// pos is center of rect/texture
+	CORNERS	// pos is upper right corner, w/h is lower left corner
 };
 
 // global font modes
@@ -168,9 +169,9 @@ class Graphics
         static void rectMode(const DrawMode mode) {_rectMode = mode;}
         static const DrawMode getRectMode() {return _rectMode;} 
         
-        // affects images
-        static void imageMode(const DrawMode mode) {_imageMode = mode;}
-        static const DrawMode getImageMode() {return _imageMode;}
+        // affects textures
+        static void textureMode(const DrawMode mode) {_textureMode = mode;}
+        static const DrawMode getTextureMode() {return _textureMode;}
         
         // affects fonts
         static void fontMode(const FontMode mode) {_fontMode = mode;}
@@ -229,6 +230,10 @@ class Graphics
 		static void rotate(float angle);	// degrees
 		static void skew(float x, float y);
 		static void translate(float x, float y);
+		
+		// set a texture to draw into for all subsequenct drawing calls
+		static void setDrawTexture(Texture& texture);
+		static void clearDrawTexture();
 
         // global utils
         static std::string getLastError();
@@ -245,6 +250,7 @@ class Graphics
         void operator =(Color& from) {}     // not copyable
 
         static SDL_Surface* _screen;		/// SDL screen
+		static SDL_Surface* _drawSurface;	/// the render surface pointer
 
         static unsigned int _iWidth;    /// window width
         static unsigned int _iHeight;   /// window height
@@ -263,7 +269,7 @@ class Graphics
 
 		// global draw modes
         static DrawMode _rectMode;
-        static DrawMode _imageMode;
+        static DrawMode _textureMode;
         static FontMode _fontMode;
 		
 		// global primitive settings

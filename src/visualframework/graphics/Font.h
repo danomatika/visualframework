@@ -43,7 +43,7 @@ class Font
         
         void clear();
         
-        bool isLoaded();
+        bool isLoaded() const;
         
         /// draw characters
         void draw(const char c, const int x, const int y);
@@ -60,6 +60,14 @@ class Font
         
         inline std::string getFilename() {return _filename;}
         
+		/// print this texture's info via ostream
+        friend std::ostream& operator<<(std::ostream& os, const Font& from)
+        {
+            os << "loaded: " << from.isLoaded() << " filename: " << from._filename;
+            return os;
+        }
+		
+		// global SDL_ttf functions
         static void initTTF();
         static void cleanupTTF();
 

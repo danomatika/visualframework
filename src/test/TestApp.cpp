@@ -65,11 +65,11 @@ void TestApp::update()
 
 void TestApp::draw()
 {
-
     test.testGraphicsPrimitives();
     test.testImage(550, 200);
     test.testFont(50, 450);
-    
+    test.testDrawTexture();
+	
     // fps display
     stringstream stream;
     stream << getFrameRate();
@@ -132,14 +132,9 @@ void TestApp::keyPressed(SDLKey key, SDLMod mod)
 		case ' ':
 			_big = !_big;
 			if(_big)
-			{
-				Graphics::push();
-				Graphics::scale(1.25, 1.25);
-			}
+				test.scaleUp();
 			else
-			{
-				Graphics::pop();
-			}
+				test.scaleDown();
 			break;
 			
 		case SDLK_LEFT:

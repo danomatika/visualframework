@@ -37,6 +37,7 @@ namespace visual {
 
 // ***** STATIC VARIABLES *****
 SDL_Surface* Graphics::_screen  = NULL;
+SDL_Surface* Graphics::_drawSurface  = NULL;
 
 unsigned int Graphics::_iWidth           = 0;
 unsigned int Graphics::_iHeight          = 0;
@@ -53,7 +54,7 @@ bool Graphics::_bStroke = true;
 bool Graphics::_bFill   = true;
 
 DrawMode Graphics::_rectMode = CORNER;
-DrawMode Graphics::_imageMode = CORNER;
+DrawMode Graphics::_textureMode = CORNER;
 FontMode Graphics::_fontMode = SOLID;
 
 uint8_t Graphics::_bezierDetail = 20;
@@ -172,6 +173,7 @@ bool Graphics::createWindow(const std::string title)
         LOG_ERROR << "Graphics: " << getLastError() << std::endl;
         return false;
     }
+	_drawSurface = _screen;
 
     LOG << "Setting: " << getModeString() << std::endl;
 
@@ -323,7 +325,7 @@ void Graphics::noFill()
 void Graphics::strokeWeight(unsigned int weight)
 {
 	if(weight == 0)
-    	return;
+    	weight = 1.0;
 	SPG_PopThickness();
     SPG_PushThickness(weight);
 }
@@ -368,7 +370,8 @@ void Graphics::point(const int x, const int y)
 
     if(_bStroke)
     {
-        SPG_PixelBlend(_screen, _points[0].x, _points[0].y, _strokeColor.get(_screen), _strokeColor.A);
+        SPG_PixelBlend(_drawSurface, _points[0].x, _points[0].y,
+			_strokeColor.get(_drawSurface), _strokeColor.A);
     }
 	
 	_points.clear();
@@ -385,8 +388,8 @@ void Graphics::line(const int x1, const int y1, const int x2, const int y2)
 
     if(_bStroke)
     {
-        SPG_LineBlend(_screen, _points[0].x, _points[0].y, _points[1].x, _points[1].y,
-			_strokeColor.get(_screen), _strokeColor.A);
+        SPG_LineBlend(_drawSurface, _points[0].x, _points[0].y, _points[1].x, _points[1].y,
+			_strokeColor.get(_drawSurface), _strokeColor.A);
     }
 	
 	_points.clear();
@@ -400,38 +403,35 @@ void Graphics::rectangle(const int x, const int y, const int w, const int h)
 	_points.push_back(Point());
 	_points.push_back(Point());	
 	
-	if(_rectMode == CORNERS)
+	switch(_rectMode)
 	{
-		_points[0].set(x, y);
-		_points[1].set(w, h);
+		case CENTER:
+			_points[0].set(x-w/2, y-h/2);
+			_points[1].set(x+w/2, y+h/2);
+			break;
+			
+		case CORNER:
+			_points[0].set(x, y);
+			_points[1].set(x+w, y+h);
+			break;
+			
+		case CORNERS:
+			_points[0].set(x, y);
+			_points[1].set(w, h);
+			break;
 	}
-	else if(_rectMode == CENTER)
-	{
-		_points[0].x = x-w/2;
-		_points[1].x = x+w/2;
-		_points[0].y = y-h/2;
-		_points[1].y = y+h/2;
-	}
-	else if(_rectMode == CORNER)
-	{
-		_points[0].x = x;
-		_points[1].x = x+w;
-		_points[0].y = y;
-		_points[1].y = y+h;
-	}
-		
 	applyTransform();
 	
 	if(_bFill)
 	{
-		SPG_RectFilledBlend(_screen, _points[0].x, _points[0].y, _points[1].x, _points[1].y,
-			_fillColor.get(_screen), _fillColor.A);
+		SPG_RectFilledBlend(_drawSurface, _points[0].x, _points[0].y, _points[1].x, _points[1].y,
+			_fillColor.get(_drawSurface), _fillColor.A);
 	}
 
 	if(_bStroke)
 	{
-		SPG_RectBlend(_screen, _points[0].x, _points[0].y, _points[1].x, _points[1].y,
-			_strokeColor.get(_screen), _strokeColor.A);
+		SPG_RectBlend(_drawSurface, _points[0].x, _points[0].y, _points[1].x, _points[1].y,
+			_strokeColor.get(_drawSurface), _strokeColor.A);
 	}
 		
 	_points.clear();
@@ -448,12 +448,14 @@ void Graphics::circle(const int x, const int y, const int r)
 
     if(_bFill)
     {
-        SPG_CircleFilledBlend(_screen, _points[0].x, _points[0].y, r*t.getScaleAvg(), _fillColor.get(_screen), _fillColor.A);
+        SPG_CircleFilledBlend(_drawSurface, _points[0].x, _points[0].y, r*t.getScaleAvg(),
+			_fillColor.get(_drawSurface), _fillColor.A);
     }
 
     if(_bStroke)
     {
-        SPG_CircleBlend(_screen, _points[0].x, _points[0].y, r*t.getScaleAvg(), _strokeColor.get(_screen), _strokeColor.A);
+        SPG_CircleBlend(_drawSurface, _points[0].x, _points[0].y, r*t.getScaleAvg(),
+			_strokeColor.get(_drawSurface), _strokeColor.A);
     }
 	
 	_points.clear();
@@ -470,14 +472,14 @@ void Graphics::ellipse(const int x, const int y, const int rx, const int ry)
 
     if(_bFill)
     {
-        SPG_EllipseFilledBlend(_screen, _points[0].x, _points[0].y, rx*t.getScaleX(), ry*t.getScaleY(),
-			_fillColor.get(_screen), _fillColor.A);
+        SPG_EllipseFilledBlend(_drawSurface, _points[0].x, _points[0].y, rx*t.getScaleX(), ry*t.getScaleY(),
+			_fillColor.get(_drawSurface), _fillColor.A);
     }
 
     if(_bStroke)
     {
-        SPG_EllipseBlend(_screen, _points[0].x, _points[0].y, rx*t.getScaleX(), ry*t.getScaleY(),
-			_strokeColor.get(_screen), _strokeColor.A);
+        SPG_EllipseBlend(_drawSurface, _points[0].x, _points[0].y, rx*t.getScaleX(), ry*t.getScaleY(),
+			_strokeColor.get(_drawSurface), _strokeColor.A);
     }
 	
 	_points.clear();
@@ -495,14 +497,14 @@ void Graphics::triangle(const int x1, const int y1, const int x2, const int y2, 
 
     if(_bFill)
     {
-        SPG_TrigonFilledBlend(_screen, _points[0].x, _points[0].y, _points[1].x, _points[1].y, _points[2].x, _points[2].y, 
-			_fillColor.get(_screen), _fillColor.A);
+        SPG_TrigonFilledBlend(_drawSurface, _points[0].x, _points[0].y, _points[1].x, _points[1].y, _points[2].x, _points[2].y, 
+			_fillColor.get(_drawSurface), _fillColor.A);
     }
 
     if(_bStroke)
     {
-        SPG_TrigonBlend(_screen, _points[0].x, _points[0].y, _points[1].x, _points[1].y, _points[2].x, _points[2].y,
-			_strokeColor.get(_screen), _strokeColor.A);
+        SPG_TrigonBlend(_drawSurface, _points[0].x, _points[0].y, _points[1].x, _points[1].y, _points[2].x, _points[2].y,
+			_strokeColor.get(_drawSurface), _strokeColor.A);
     }
 	
 	_points.clear();
@@ -518,12 +520,14 @@ void Graphics::polygon(const PointList& points)
 
     if(_bFill)
     {
-        SPG_PolygonFilledBlend(_screen, Graphics::_points.size(), (SPG_Point*) &Graphics::_points[0], _fillColor.get(_screen), _fillColor.A);
+        SPG_PolygonFilledBlend(_drawSurface, Graphics::_points.size(), (SPG_Point*) &Graphics::_points[0],
+			_fillColor.get(_drawSurface), _fillColor.A);
     }
 
     if(_bStroke)
     {
-        SPG_PolygonBlend(_screen, Graphics::_points.size(), (SPG_Point*) &Graphics::_points[0], _strokeColor.get(_screen), _strokeColor.A);
+        SPG_PolygonBlend(_drawSurface, Graphics::_points.size(), (SPG_Point*) &Graphics::_points[0],
+			_strokeColor.get(_drawSurface), _strokeColor.A);
     }
 }
 
@@ -538,12 +542,14 @@ void Graphics::arc(const int x, const int y, const float r, const float startAng
 		
 	if(_bFill)
 	{
-		SPG_ArcFilledBlend(_screen, _points[0].x, _points[0].y, r*t.getScaleAvg(), startAngle, endAngle, _fillColor.get(_screen), _fillColor.A);
+		SPG_ArcFilledBlend(_drawSurface, _points[0].x, _points[0].y, r*t.getScaleAvg(), startAngle, endAngle,
+			_fillColor.get(_drawSurface), _fillColor.A);
 	}
 	
 	if(_bStroke)
 	{
-		SPG_ArcBlend(_screen, _points[0].x, _points[0].y, r*t.getScaleAvg(), startAngle, endAngle, _strokeColor.get(_screen), _strokeColor.A);
+		SPG_ArcBlend(_drawSurface, _points[0].x, _points[0].y, r*t.getScaleAvg(), startAngle, endAngle,
+			_strokeColor.get(_drawSurface), _strokeColor.A);
 	}
 	
 	_points.clear();
@@ -562,9 +568,9 @@ void Graphics::bezier(const int x, const int y, const int cx1, const int cx2, co
 		
 	if(_bStroke)
 	{
-		SPG_BezierBlend(_screen, _points[0].x, _points[0].y, _points[1].x, _points[2].x,
-			_points[1].y, _points[2].y, _points[3].x, _points[3].y, _bezierDetail, _strokeColor.get(_screen), _strokeColor.A);
-		SDL_UnlockSurface(_screen);
+		SPG_BezierBlend(_drawSurface, _points[0].x, _points[0].y, _points[1].x, _points[2].x,
+			_points[1].y, _points[2].y, _points[3].x, _points[3].y, _bezierDetail, _strokeColor.get(_drawSurface), _strokeColor.A);
+		SDL_UnlockSurface(_drawSurface);
 	}
 }
 
@@ -575,7 +581,7 @@ void Graphics::character(const int x, const int y, const char c)
 
     if(_bStroke)
     {
-        characterRGBA(_screen, x, y, c,
+        characterRGBA(_drawSurface, x, y, c,
         	_strokeColor.R, _strokeColor.G, _strokeColor.B, _strokeColor.A);
     }
 }
@@ -587,7 +593,7 @@ void Graphics::string(const int x, const int y, const std::string& line)
 
     if(_bStroke)
     {
-        stringRGBA(_screen, x, y, line.c_str(),
+        stringRGBA(_drawSurface, x, y, line.c_str(),
         	_strokeColor.R, _strokeColor.G, _strokeColor.B, _strokeColor.A);
     }
 }
@@ -605,7 +611,7 @@ void Graphics::surface(const int x, const int y, const SDL_Surface* surface)
     dest.w = surface->w;
     dest.h = surface->h;
 	
-	SDL_BlitSurface((SDL_Surface*) surface, NULL, _screen, &dest);
+	SDL_BlitSurface((SDL_Surface*) surface, NULL, _drawSurface, &dest);
 	//SPG_Blit((SDL_Surface*) surface, NULL, _screen, &dest);	
 }
 
@@ -615,7 +621,7 @@ void Graphics::quadtex(const SDL_Surface* surface, float sx, float sy, float sw,
 	for(int i = 0; i < 4; ++i)
 		_points.push_back(Point());
 	
-	if(_imageMode == CENTER)
+	if(_textureMode == CENTER)
     {
         _points[0].set(dx-dw/2, dy-dh/2);		// UL
         _points[1].set(_points[0].x, dy+dh/2);	// DL
@@ -638,7 +644,7 @@ void Graphics::quadtex(const SDL_Surface* surface, float sx, float sy, float sw,
 	
 	applyTransform();
 
-	SPG_QuadTexPoints(_screen, (SPG_Point*) &Graphics::_points[0],
+	SPG_QuadTexPoints(_drawSurface, (SPG_Point*) &Graphics::_points[0],
 					  (SDL_Surface*) surface,
 					  (SPG_Point*) &Graphics::_points[4]);
 					  
@@ -814,6 +820,18 @@ void Graphics::skew(float x, float y)
 void Graphics::translate(float x, float y)
 {
 	_transforms.back().translate(x, y);
+}
+
+/* ***** draw texture **** */
+
+void Graphics::setDrawTexture(Texture& texture)
+{
+	_drawSurface = texture;
+}
+
+void Graphics::clearDrawTexture()
+{
+	_drawSurface = _screen;
 }
 
 /* ***** global util ***** */

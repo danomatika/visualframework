@@ -47,7 +47,7 @@ ARFLAGS = cru
 libvisualframework_a_AR = $(AR) $(ARFLAGS)
 libvisualframework_a_LIBADD =
 am_libvisualframework_a_OBJECTS = Application.$(OBJEXT) Font.$(OBJEXT) \
-	Graphics.$(OBJEXT) Image.$(OBJEXT) resize++.$(OBJEXT) \
+	Graphics.$(OBJEXT) Image.$(OBJEXT) Texture.$(OBJEXT) \
 	SPG_misc.$(OBJEXT) SPG_polygon.$(OBJEXT) \
 	SPG_primitives.$(OBJEXT) SPG_rotation.$(OBJEXT) \
 	SPG_surface.$(OBJEXT) Net.$(OBJEXT) UdpReceiver.$(OBJEXT) \
@@ -201,8 +201,8 @@ libvisualframework_a_SOURCES = \
             graphics/Graphics.cpp \
             graphics/Image.h \
             graphics/Image.cpp \
-            graphics/resize/resize++.h \
-            graphics/resize/resize++.cpp \
+			graphics/Texture.h \
+			graphics/Texture.cpp \
             graphics/sprig/sprig.h \
             graphics/sprig/sprig_inline.h \
             graphics/sprig/sprig_common.h \
@@ -294,11 +294,11 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SPG_primitives.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SPG_rotation.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SPG_surface.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Texture.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Thread.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UdpReceiver.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UdpSender.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Util.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/resize++.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -440,19 +440,19 @@ Image.obj: graphics/Image.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Image.obj `if test -f 'graphics/Image.cpp'; then $(CYGPATH_W) 'graphics/Image.cpp'; else $(CYGPATH_W) '$(srcdir)/graphics/Image.cpp'; fi`
 
-resize++.o: graphics/resize/resize++.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT resize++.o -MD -MP -MF $(DEPDIR)/resize++.Tpo -c -o resize++.o `test -f 'graphics/resize/resize++.cpp' || echo '$(srcdir)/'`graphics/resize/resize++.cpp
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/resize++.Tpo $(DEPDIR)/resize++.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='graphics/resize/resize++.cpp' object='resize++.o' libtool=no @AMDEPBACKSLASH@
+Texture.o: graphics/Texture.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Texture.o -MD -MP -MF $(DEPDIR)/Texture.Tpo -c -o Texture.o `test -f 'graphics/Texture.cpp' || echo '$(srcdir)/'`graphics/Texture.cpp
+@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/Texture.Tpo $(DEPDIR)/Texture.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='graphics/Texture.cpp' object='Texture.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o resize++.o `test -f 'graphics/resize/resize++.cpp' || echo '$(srcdir)/'`graphics/resize/resize++.cpp
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Texture.o `test -f 'graphics/Texture.cpp' || echo '$(srcdir)/'`graphics/Texture.cpp
 
-resize++.obj: graphics/resize/resize++.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT resize++.obj -MD -MP -MF $(DEPDIR)/resize++.Tpo -c -o resize++.obj `if test -f 'graphics/resize/resize++.cpp'; then $(CYGPATH_W) 'graphics/resize/resize++.cpp'; else $(CYGPATH_W) '$(srcdir)/graphics/resize/resize++.cpp'; fi`
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/resize++.Tpo $(DEPDIR)/resize++.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='graphics/resize/resize++.cpp' object='resize++.obj' libtool=no @AMDEPBACKSLASH@
+Texture.obj: graphics/Texture.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Texture.obj -MD -MP -MF $(DEPDIR)/Texture.Tpo -c -o Texture.obj `if test -f 'graphics/Texture.cpp'; then $(CYGPATH_W) 'graphics/Texture.cpp'; else $(CYGPATH_W) '$(srcdir)/graphics/Texture.cpp'; fi`
+@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/Texture.Tpo $(DEPDIR)/Texture.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='graphics/Texture.cpp' object='Texture.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o resize++.obj `if test -f 'graphics/resize/resize++.cpp'; then $(CYGPATH_W) 'graphics/resize/resize++.cpp'; else $(CYGPATH_W) '$(srcdir)/graphics/resize/resize++.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Texture.obj `if test -f 'graphics/Texture.cpp'; then $(CYGPATH_W) 'graphics/Texture.cpp'; else $(CYGPATH_W) '$(srcdir)/graphics/Texture.cpp'; fi`
 
 Net.o: net/Net.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Net.o -MD -MP -MF $(DEPDIR)/Net.Tpo -c -o Net.o `test -f 'net/Net.cpp' || echo '$(srcdir)/'`net/Net.cpp

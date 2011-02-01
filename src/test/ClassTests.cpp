@@ -43,7 +43,9 @@ void ClassTests::setup()
 	Point::translate(polygon, 400, 100);
 	
 	skew = 0.0f;
-	Graphics::rectMode(CENTER);
+	scale = 0;
+	rotate = 0;
+	Graphics::rectMode(CORNER);
 
 	// load image
 	image.load(Util::toDataPath("testImage.jpg"));
@@ -55,6 +57,7 @@ void ClassTests::setup()
     imageAlpha.load(Util::toDataPath("testAlpha.png"));
     imageAlpha.scale(0.5, 0.5);
     imageAlpha.pixelate(5, 5);
+	imageAlpha.rotate(90);
     
     // load image from pixel array
     for(int i = 0; i < 64; ++i)
@@ -63,6 +66,9 @@ void ClassTests::setup()
     
     // load font
     font.load(Util::toDataPath("ATARCC__.TTF"), 25);
+	
+	drawTexture.allocate(100, 50);
+	LOG << "draw texture: " << drawTexture << endl;
     
     // set initial timer
     testTimer.setAlarm(5000);
@@ -200,6 +206,11 @@ void ClassTests::testUdpSender()
 
 void ClassTests::testGraphicsPrimitives()
 {
+	Graphics::push();
+	Graphics::scale(scale, scale);
+	Graphics::skew(skew, 0);
+	Graphics::rotate(rotate);
+
     Graphics::stroke(0xFFFFFF);
     Graphics::point(25, 25);
 
@@ -229,9 +240,6 @@ void ClassTests::testGraphicsPrimitives()
     Graphics::stroke(0xFFFFFF);
     Graphics::string(100, 400, "this is a test string");
 
-	Graphics::skew(skew, 0);
-	Graphics::rotate(rotate);
-
 	// draw a thick-edged polygon
 	Graphics::strokeWeight(3);
     Graphics::fill(0x888888);
@@ -259,6 +267,29 @@ void ClassTests::testGraphicsPrimitives()
 	Graphics::arc(400, 25, 50, 0.0, 90.0);
 	
 	Graphics::bezier(85, 20, 10, 10, 90, 90, 15, 80);
+	
+	Graphics::pop();
+}
+
+void ClassTests::testDrawTexture()
+{
+	Graphics::rectMode(CORNER);
+	drawTexture.fill(0xFF000000);
+	Graphics::setDrawTexture(drawTexture);
+		Graphics::fill(0x00FF00);
+		Graphics::rectangle(0, 0, 50, 50);
+		Graphics::stroke(0x0000FF);
+		Graphics::strokeWeight(2);
+		Graphics::line(10, 10, 30, 30);
+		Graphics::strokeWeight(0);
+		Graphics::stroke(0xFF0000);
+		Graphics::noFill();
+		Graphics::rectangle(0, 0, drawTexture.width()-1, drawTexture.height()-1);
+		Graphics::stroke(0xFFFFFF);
+		Graphics::string(10, 10, "draw tex");
+	Graphics::clearDrawTexture();
+	drawTexture.draw(Graphics::getWidth()-drawTexture.width()-10,
+					 Graphics::getHeight()-drawTexture.height()-10);
 }
 
 void ClassTests::testImage(int x, int y)

@@ -16,10 +16,10 @@
 		2A2315D75A0A001296279835 /* Thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2206605438A2001296279835 /* Thread.cpp */; };
 		2AC324A2125C001296279835 /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2DF274D40B88001296279835 /* Util.cpp */; };
 		2E6C4FD7400F001296279835 /* SPG_rotation.c in Sources */ = {isa = PBXBuildFile; fileRef = 36E24CE222A7001296279835 /* SPG_rotation.c */; };
+		3081F1E312F7BE6D00A08F22 /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3081F1E112F7BE6D00A08F22 /* Texture.cpp */; };
 		32AC75EF4CA8001296279835 /* Application.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7FA872CA3E9E001296279835 /* Application.cpp */; };
 		367947BE2EBA001296279835 /* UdpSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43114ECA4B72001296279835 /* UdpSender.cpp */; };
 		44EF55EF66DC001296279835 /* Font.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53813C024015001296279835 /* Font.cpp */; };
-		4AD9717C1DB1001296279835 /* resize++.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 474401A64065001296279835 /* resize++.cpp */; };
 		5154620D682B001296279835 /* Net.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54492FFD107A001296279835 /* Net.cpp */; };
 		569028DC386E001296279835 /* SPG_surface.c in Sources */ = {isa = PBXBuildFile; fileRef = 4BD7479C08FB001296279835 /* SPG_surface.c */; };
 		5E75659E1DB8001296279835 /* Graphics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20B96E0D1D2C001296279835 /* Graphics.cpp */; };
@@ -57,6 +57,8 @@
 		2D81148F5396001296279835 /* Exception.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Exception.h; sourceTree = "<group>"; };
 		2DF274D40B88001296279835 /* Util.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Util.cpp; sourceTree = "<group>"; };
 		2E4F05172A3B001296279835 /* matrix4.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = matrix4.h; sourceTree = "<group>"; };
+		3081F1E112F7BE6D00A08F22 /* Texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Texture.cpp; sourceTree = "<group>"; };
+		3081F1E212F7BE6D00A08F22 /* Texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Texture.h; sourceTree = "<group>"; };
 		323023A329C7001296279835 /* vector4.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vector4.h; sourceTree = "<group>"; };
 		333769291DA5001296279835 /* sprig_inline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sprig_inline.h; sourceTree = "<group>"; };
 		34093CE21DAF001296279835 /* vector2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vector2.h; sourceTree = "<group>"; };
@@ -69,7 +71,6 @@
 		43114ECA4B72001296279835 /* UdpSender.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UdpSender.cpp; sourceTree = "<group>"; };
 		43E8506B4387001296279835 /* Graphics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Graphics.h; sourceTree = "<group>"; };
 		45E60ECE15B1001296279835 /* lapack_includes.hpp */ = {isa = PBXFileReference; lastKnownFileType = text; path = lapack_includes.hpp; sourceTree = "<group>"; };
-		474401A64065001296279835 /* resize++.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "resize++.cpp"; sourceTree = "<group>"; };
 		4A200C2D660C001296279835 /* vector.hpp */ = {isa = PBXFileReference; lastKnownFileType = text; path = vector.hpp; sourceTree = "<group>"; };
 		4BD7479C08FB001296279835 /* SPG_surface.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = SPG_surface.c; sourceTree = "<group>"; };
 		4C6672162E59001296279835 /* frustumCuller.hpp */ = {isa = PBXFileReference; lastKnownFileType = text; path = frustumCuller.hpp; sourceTree = "<group>"; };
@@ -99,7 +100,6 @@
 		7AAE63916607001296279835 /* jacobiSolver.hpp */ = {isa = PBXFileReference; lastKnownFileType = text; path = jacobiSolver.hpp; sourceTree = "<group>"; };
 		7B77031F7650001296279835 /* sprig_common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sprig_common.h; sourceTree = "<group>"; };
 		7C7D0C325A9B001296279835 /* visibility.hpp */ = {isa = PBXFileReference; lastKnownFileType = text; path = visibility.hpp; sourceTree = "<group>"; };
-		7F1168055C2D001296279835 /* resize++.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "resize++.h"; sourceTree = "<group>"; };
 		7FA872CA3E9E001296279835 /* Application.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Application.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -166,18 +166,11 @@
 			name = visualframework;
 			sourceTree = "<group>";
 		};
-		24327C8E62A9001296279835 /* resize */ = {
-			isa = PBXGroup;
-			children = (
-				474401A64065001296279835 /* resize++.cpp */,
-				7F1168055C2D001296279835 /* resize++.h */,
-			);
-			path = resize;
-			sourceTree = "<group>";
-		};
 		32CC181F1DEF001296279835 /* graphics */ = {
 			isa = PBXGroup;
 			children = (
+				3081F1E112F7BE6D00A08F22 /* Texture.cpp */,
+				3081F1E212F7BE6D00A08F22 /* Texture.h */,
 				58826F71774A001296279835 /* Color.h */,
 				53813C024015001296279835 /* Font.cpp */,
 				06AE1D001387001296279835 /* Font.h */,
@@ -185,7 +178,6 @@
 				43E8506B4387001296279835 /* Graphics.h */,
 				6F1833AB22D1001296279835 /* Image.cpp */,
 				06DD263F2F88001296279835 /* Image.h */,
-				24327C8E62A9001296279835 /* resize */,
 				3F9A37636B2B001296279835 /* sprig */,
 			);
 			path = graphics;
@@ -326,7 +318,6 @@
 				44EF55EF66DC001296279835 /* Font.cpp in Sources */,
 				5E75659E1DB8001296279835 /* Graphics.cpp in Sources */,
 				72893B6924B1001296279835 /* Image.cpp in Sources */,
-				4AD9717C1DB1001296279835 /* resize++.cpp in Sources */,
 				1B9C46E03C70001296279835 /* SPG_extended.c in Sources */,
 				00062A3A52A9001296279835 /* SPG_misc.c in Sources */,
 				005F155E76E3001296279835 /* SPG_polygon.c in Sources */,
@@ -336,6 +327,7 @@
 				5154620D682B001296279835 /* Net.cpp in Sources */,
 				08773EA82E92001296279835 /* UdpReceiver.cpp in Sources */,
 				367947BE2EBA001296279835 /* UdpSender.cpp in Sources */,
+				3081F1E312F7BE6D00A08F22 /* Texture.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

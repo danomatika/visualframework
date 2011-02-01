@@ -123,7 +123,7 @@ class Color
         }
         
         /// get this color as an SDL_color
-        operator SDL_Color() const
+        inline operator SDL_Color() const
         {
         	SDL_Color c = {R, G, B, A};
         	return c;

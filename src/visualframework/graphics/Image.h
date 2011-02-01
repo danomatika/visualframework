@@ -29,46 +29,39 @@
 
 #include <string>
 
+#include "Texture.h"
+
 namespace visual {
 
-class Image
+/// a texture that can load from an image file
+class Image : public Texture
 {
 	public:
 	
     	Image();
         Image(std::string filename);
-    	virtual ~Image();
         
-        /// laod an image
+        /// load an image
         bool load(std::string filename);
-        
-        /// load from ARGB pixels
-        bool load(const uint32_t* pixels, unsigned int w, unsigned int h);
-        
-        void clear();
-        
-        bool isLoaded();
-        
-        void draw(int x, int y);
-        
-        void resize(int w, int h);
-        void scale(float scaleX, float scaleY);
-        
-        const int width();
-        const int height();
-        
-        Color getPixel(unsigned int x, unsigned int y);
-        void setPixel(unsigned int x, unsigned int y, Color& color);
-        void pixelate(unsigned int pixelWidth, unsigned int pixelHeight);
-        
-        /// get the raw surface structure of the image (contains pixels)
-        SDL_Surface* getSurface() {return _image;}
+		
+		/// load from ARGB pixels
+		bool load(const uint32_t* pixels, unsigned int w, unsigned int h);
+		
+		void clear();
         
         inline std::string getFilename() {return _filename;}
+		
+		/// print this images's info via ostream
+        friend std::ostream& operator<<(std::ostream& os, const Image& from)
+        {
+            os << "loaded: " << from.isLoaded()
+			   << " w: " << (int) from.width() << " h: " << (int) from.height()
+			   << " filename: " << from._filename;
+            return os;
+        }
 
     protected:
-    	
-        SDL_Surface* _image;
+
     	std::string	_filename;
 };
 
