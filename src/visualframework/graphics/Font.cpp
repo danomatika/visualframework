@@ -66,7 +66,7 @@ bool Font::isLoaded() const
 	return (bool) _font;
 }
 
-void Font::draw(const char c, const int x, const int y)
+void Font::draw(const int x, const int y, const char c)
 {
 	SDL_Surface* surface = render(c);
 	if(!surface)
@@ -76,7 +76,7 @@ void Font::draw(const char c, const int x, const int y)
     SDL_FreeSurface(surface);
 }
 
-void Font::draw(const std::string& text, const int x, const int y)
+void Font::draw(const int x, const int y, const std::string& text)
 {
     SDL_Surface* surface = render(text);
     if(!surface)

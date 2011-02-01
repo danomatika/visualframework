@@ -304,28 +304,28 @@ void ClassTests::testFont(int x, int y)
 	// chars
 	Graphics::fontMode(SOLID);	// fastest
     Graphics::stroke(Color(0xFF, 0x00, 0x00, 128));
-	font.draw('t', x, y);
+	font.draw(x, y, 't');
     
     Graphics::fontMode(BLENDED);	// anti-aliased, slower
     Graphics::stroke(0x00FF00);
-    font.draw('2', x+50, y);
+    font.draw(x+50, y, '2');
     
     Graphics::fontMode(SHADED);	// blended with a background fill
     Graphics::stroke(0x000FF);	// font foreground
     Graphics::fill(0x666666);	// font background
-    font.draw('3', x+100, y); 
+    Font::Stream(font, x+100, y) << '3';	// streamer 
     
     // strings
     Graphics::fontMode(SOLID);
     Graphics::stroke(0xFFFF00);
-	font.draw("this is some solid text", x, y+50);
+	font.draw(x, y+50, "this is some solid text");
     
     Graphics::fontMode(SHADED);
     Graphics::stroke(0x00FFFF);
     Graphics::fill(0x333333);
-    font.draw("this is some shaded text", x, y+80);
+    Font::Stream(font, x, y+80) << "this is some shaded text";
     
     Graphics::fontMode(BLENDED);
     Graphics::stroke(0x00FF00);
-    font.draw("this is some blended text", x, y+110);
+    Font::Stream(font, x, y+110) << "this is some blended text";
 }

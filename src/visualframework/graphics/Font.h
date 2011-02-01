@@ -46,10 +46,10 @@ class Font
         bool isLoaded() const;
         
         /// draw characters
-        void draw(const char c, const int x, const int y);
+        void draw(const int x, const int y, const char c);
         
         /// draw strings
-        void draw(const std::string& text, const int x, const int y);
+        void draw(const int x, const int y, const std::string& text);
         
         /// render the text to a surface
         SDL_Surface* render(const char c);
@@ -66,6 +66,44 @@ class Font
             os << "loaded: " << from.isLoaded() << " filename: " << from._filename;
             return os;
         }
+		
+		// bitmap string stream helper
+		class Stream
+		{
+			public:
+
+				Stream(Font& font, const int x, const int y) : _font(font), _pos(x, y) {}
+				Stream(Font& font, const Point& p) : _font(font), _pos(p) {}
+
+				/// does the actual printing on exit
+				~Stream()
+				{
+					_font.draw(_pos.x, _pos.y, _line.str());
+				}
+
+				/// catch << with a template class to read any type of data
+				template <class T> Stream& operator<<(const T& value)
+				{
+					_line << value;
+					return *this;
+				}
+
+				/// catch << ostream function pointers such as std::endl and std::hex
+				Stream& operator<<(std::ostream& (*func)(std::ostream&))
+				{
+					func(_line);
+					return *this;
+				}
+
+			private:
+
+				Stream(Stream const&);                // not defined, not copyable
+				Stream& operator = (Stream const&);   // not defined, not assignable
+				
+				Font& _font;
+				Point _pos;
+				std::ostringstream _line;   ///< temp buffer
+		};
 		
 		// global SDL_ttf functions
         static void initTTF();

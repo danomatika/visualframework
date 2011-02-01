@@ -209,6 +209,42 @@ class Graphics
         static void surface(const int x, const int y, const SDL_Surface* surface);
 		static void quadtex(const SDL_Surface* surface, float sx, float sy, float sw, float sh,
 												   		float dx, float dy, float dw, float dh);
+		// bitmap string stream helper
+		class BitmapString
+		{
+			public:
+
+				BitmapString(const int x, const int y) : _pos(x, y) {}
+				BitmapString(const Point& p) : _pos(p) {}
+
+				/// does the actual printing on exit
+				~BitmapString()
+				{
+					Graphics::string(_pos.x, _pos.y, _line.str());
+				}
+
+				/// catch << with a template class to read any type of data
+				template <class T> BitmapString& operator<<(const T& value)
+				{
+					_line << value;
+					return *this;
+				}
+
+				/// catch << ostream function pointers such as std::endl and std::hex
+				BitmapString& operator<<(std::ostream& (*func)(std::ostream&))
+				{
+					func(_line);
+					return *this;
+				}
+
+			private:
+
+				BitmapString(BitmapString const&);                // not defined, not copyable
+				BitmapString& operator = (BitmapString const&);   // not defined, not assignable
+				
+				Point _pos;
+				std::ostringstream _line;   ///< temp buffer
+		};
 
 		// draw with shapes
 		static void beginShape(Shape shape);

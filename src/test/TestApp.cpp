@@ -22,8 +22,6 @@
 ==============================================================================*/
 #include "TestApp.h"
 
-#include <sstream>
-
 TestApp::TestApp() : _currentRes(0)
 {
     _resolutions = Graphics::getResolutions();
@@ -71,10 +69,8 @@ void TestApp::draw()
     test.testDrawTexture();
 	
     // fps display
-    stringstream stream;
-    stream << getFrameRate();
     Graphics::stroke(0xFFFFFF);
-    Graphics::string(12, 12, stream.str());
+    Graphics::BitmapString(12, 12) << getFrameRate();
 
     // draw a rect if the mouse cursor is off
     if(!Graphics::getShowMouseCursor())
