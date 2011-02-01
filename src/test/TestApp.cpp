@@ -141,6 +141,22 @@ void TestApp::keyPressed(SDLKey key, SDLMod mod)
 				Graphics::pop();
 			}
 			break;
+			
+		case SDLK_LEFT:
+			test.skewDown();
+			break;
+		
+		case SDLK_RIGHT:
+			test.skewUp();
+			break;
+			
+		case SDLK_UP:
+			test.rotateUp();
+			break;
+			
+		case SDLK_DOWN:
+			test.rotateDown();
+			break;
 
         case SDLK_RIGHTBRACKET:
             // go up in resolution

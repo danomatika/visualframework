@@ -64,6 +64,11 @@ class ClassTests
         
         void testFont(int x, int y);
 
+		void skewUp()	{skew+=0.05;}
+		void skewDown()	{skew-=0.05;}
+		void rotateUp()	{rotate+=5;}
+		void rotateDown(){rotate-=5;}
+
     private:
 
         MyUdpReceiver udpReceiver;
@@ -73,6 +78,8 @@ class ClassTests
         Font font;
 
         PointList polygon;
+		float skew;
+		float rotate;
         
         Timer testTimer;
 };

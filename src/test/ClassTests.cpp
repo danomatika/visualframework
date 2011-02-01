@@ -36,8 +36,14 @@ void ClassTests::setup()
     polygon.push_back(Point(50, 300));
     polygon.push_back(Point(0, 100));
     polygon.push_back(Point(50, 100));
+	polygon.push_back(Point(25, 100));
+	polygon.push_back(Point(25, 50));
+	polygon.push_back(Point(50, 50));
 	Point::scale(polygon, 1.5, 1.5);
 	Point::translate(polygon, 400, 100);
+	
+	skew = 0.0f;
+	Graphics::rectMode(CENTER);
 
 	// load image
 	image.load(Util::toDataPath("testImage.jpg"));
@@ -223,11 +229,22 @@ void ClassTests::testGraphicsPrimitives()
     Graphics::stroke(0xFFFFFF);
     Graphics::string(100, 400, "this is a test string");
 
+	Graphics::skew(skew, 0);
+	Graphics::rotate(rotate);
+
 	// draw a thick-edged polygon
 	Graphics::strokeWeight(3);
     Graphics::fill(0x888888);
     Graphics::noFill();
-    Graphics::polygon(polygon);
+	Graphics::beginShape(QUADS);
+		//Graphics::polygon(polygon);
+		Graphics::vertices(polygon);
+	Graphics::endShape();
+	Graphics::stroke(0xFF0000);
+	Graphics::beginShape(POINTS);
+		//Graphics::polygon(polygon);
+		Graphics::vertices(polygon);
+	Graphics::endShape();
     Graphics::strokeWeight(1);
     
     // cross alpha rects

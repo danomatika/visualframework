@@ -57,9 +57,12 @@ DrawMode Graphics::_imageMode = CORNER;
 FontMode Graphics::_fontMode = SOLID;
 
 uint8_t Graphics::_bezierDetail = 20;
+Shape Graphics::_currentShape = POLYGON;
+bool Graphics::_bShapeStarted = false;
 
-std::vector<Graphics::Transform> Graphics::transforms;
-std::vector<Point> Graphics::points;
+std::vector<Graphics::Transform> Graphics::_transforms;
+std::vector<Point> Graphics::_points;
+std::vector<Point> Graphics::_shapePoints;
 
 bool Graphics::init(unsigned int w, unsigned int h, unsigned int depth, GraphicsType type)
 {
@@ -82,7 +85,7 @@ bool Graphics::init(unsigned int w, unsigned int h, unsigned int depth, Graphics
     // make sure SDL cleans up before exit
     atexit(SDL_Quit);
 	
-	// push the default transform
+	// push the default _transforms
 	push();
 
     return true;
@@ -360,15 +363,15 @@ void Graphics::point(const int x, const int y)
     if(_screen == NULL)
         throw WindowException();
 
-	points.push_back(Point(x, y));
+	_points.push_back(Point(x, y));
 	applyTransform();
 
     if(_bStroke)
     {
-        SPG_PixelBlend(_screen, points[0].x, points[0].y, _strokeColor.get(_screen), _strokeColor.A);
+        SPG_PixelBlend(_screen, _points[0].x, _points[0].y, _strokeColor.get(_screen), _strokeColor.A);
     }
 	
-	points.clear();
+	_points.clear();
 }
 
 void Graphics::line(const int x1, const int y1, const int x2, const int y2)
@@ -376,57 +379,62 @@ void Graphics::line(const int x1, const int y1, const int x2, const int y2)
     if(_screen == NULL)
         throw WindowException();
 
-	points.push_back(Point(x1, y1));
-	points.push_back(Point(x2, y2));
+	_points.push_back(Point(x1, y1));
+	_points.push_back(Point(x2, y2));
 	applyTransform();
 
     if(_bStroke)
     {
-        SPG_LineBlend(_screen, points[0].x, points[0].y, points[1].x, points[1].y,
+        SPG_LineBlend(_screen, _points[0].x, _points[0].y, _points[1].x, _points[1].y,
 			_strokeColor.get(_screen), _strokeColor.A);
     }
 	
-	points.clear();
+	_points.clear();
 }
 
 void Graphics::rectangle(const int x, const int y, const int w, const int h)
 {
     if(_screen == NULL)
         throw WindowException();
-
-	points.push_back(Point());
-	points.push_back(Point());
-
-    if(_rectMode == CENTER)
-    {
-        points[0].x = x-w/2;
-        points[1].x = x+w/2;
-        points[0].y = y-h/2;
-        points[1].y = y+h/2;
-    }
-    else
-    {
-        points[0].x = x;
-        points[1].x = x+w;
-        points[0].y = y;
-        points[1].y = y+h;
-    }
 	
+	_points.push_back(Point());
+	_points.push_back(Point());	
+	
+	if(_rectMode == CORNERS)
+	{
+		_points[0].set(x, y);
+		_points[1].set(w, h);
+	}
+	else if(_rectMode == CENTER)
+	{
+		_points[0].x = x-w/2;
+		_points[1].x = x+w/2;
+		_points[0].y = y-h/2;
+		_points[1].y = y+h/2;
+	}
+	else if(_rectMode == CORNER)
+	{
+		_points[0].x = x;
+		_points[1].x = x+w;
+		_points[0].y = y;
+		_points[1].y = y+h;
+	}
+		
 	applyTransform();
 	
-    if(_bFill)
-    {
-        SPG_RectFilledBlend(_screen, points[0].x, points[0].y, points[1].x, points[1].y,
+	if(_bFill)
+	{
+		SPG_RectFilledBlend(_screen, _points[0].x, _points[0].y, _points[1].x, _points[1].y,
 			_fillColor.get(_screen), _fillColor.A);
-    }
+	}
 
-    if(_bStroke)
-    {
-        SPG_RectBlend(_screen, points[0].x, points[0].y, points[1].x, points[1].y,
+	if(_bStroke)
+	{
+		SPG_RectBlend(_screen, _points[0].x, _points[0].y, _points[1].x, _points[1].y,
 			_strokeColor.get(_screen), _strokeColor.A);
-    }
-	
-	points.clear();
+	}
+		
+	_points.clear();
 }
 
 void Graphics::circle(const int x, const int y, const int r)
@@ -434,21 +442,21 @@ void Graphics::circle(const int x, const int y, const int r)
     if(_screen == NULL)
         throw WindowException();
 
-	points.push_back(Point(x, y));
+	_points.push_back(Point(x, y));
 	applyTransform();
-	Transform& t = transforms.back();
+	Transform& t = _transforms.back();
 
     if(_bFill)
     {
-        SPG_CircleFilledBlend(_screen, points[0].x, points[0].y, r*t.getScaleAvg(), _fillColor.get(_screen), _fillColor.A);
+        SPG_CircleFilledBlend(_screen, _points[0].x, _points[0].y, r*t.getScaleAvg(), _fillColor.get(_screen), _fillColor.A);
     }
 
     if(_bStroke)
     {
-        SPG_CircleBlend(_screen, points[0].x, points[0].y, r*t.getScaleAvg(), _strokeColor.get(_screen), _strokeColor.A);
+        SPG_CircleBlend(_screen, _points[0].x, _points[0].y, r*t.getScaleAvg(), _strokeColor.get(_screen), _strokeColor.A);
     }
 	
-	points.clear();
+	_points.clear();
 }
 
 void Graphics::ellipse(const int x, const int y, const int rx, const int ry)
@@ -456,23 +464,23 @@ void Graphics::ellipse(const int x, const int y, const int rx, const int ry)
     if(_screen == NULL)
         throw WindowException();
 
-	points.push_back(Point(x, y));
+	_points.push_back(Point(x, y));
 	applyTransform();
-	Transform& t = transforms.back();
+	Transform& t = _transforms.back();
 
     if(_bFill)
     {
-        SPG_EllipseFilledBlend(_screen, points[0].x, points[0].y, rx*t.getScaleX(), ry*t.getScaleY(),
+        SPG_EllipseFilledBlend(_screen, _points[0].x, _points[0].y, rx*t.getScaleX(), ry*t.getScaleY(),
 			_fillColor.get(_screen), _fillColor.A);
     }
 
     if(_bStroke)
     {
-        SPG_EllipseBlend(_screen, points[0].x, points[0].y, rx*t.getScaleX(), ry*t.getScaleY(),
+        SPG_EllipseBlend(_screen, _points[0].x, _points[0].y, rx*t.getScaleX(), ry*t.getScaleY(),
 			_strokeColor.get(_screen), _strokeColor.A);
     }
 	
-	points.clear();
+	_points.clear();
 }
 
 void Graphics::triangle(const int x1, const int y1, const int x2, const int y2, const int x3, const int y3)
@@ -480,24 +488,24 @@ void Graphics::triangle(const int x1, const int y1, const int x2, const int y2, 
     if(_screen == NULL)
         throw WindowException();
 
-	points.push_back(Point(x1, y1));
-	points.push_back(Point(x2, y2));
-	points.push_back(Point(x3, y3));
+	_points.push_back(Point(x1, y1));
+	_points.push_back(Point(x2, y2));
+	_points.push_back(Point(x3, y3));
 	applyTransform();
 
     if(_bFill)
     {
-        SPG_TrigonFilledBlend(_screen, points[0].x, points[0].y, points[1].x, points[1].y, points[2].x, points[2].y, 
+        SPG_TrigonFilledBlend(_screen, _points[0].x, _points[0].y, _points[1].x, _points[1].y, _points[2].x, _points[2].y, 
 			_fillColor.get(_screen), _fillColor.A);
     }
 
     if(_bStroke)
     {
-        SPG_TrigonBlend(_screen, points[0].x, points[0].y, points[1].x, points[1].y, points[2].x, points[2].y,
+        SPG_TrigonBlend(_screen, _points[0].x, _points[0].y, _points[1].x, _points[1].y, _points[2].x, _points[2].y,
 			_strokeColor.get(_screen), _strokeColor.A);
     }
 	
-	points.clear();
+	_points.clear();
 }
 
 void Graphics::polygon(const PointList& points)
@@ -505,17 +513,17 @@ void Graphics::polygon(const PointList& points)
     if(_screen == NULL)
         throw WindowException();
 
-	Graphics::points = points;
+	Graphics::_points = points;
 	applyTransform();
 
     if(_bFill)
     {
-        SPG_PolygonFilledBlend(_screen, Graphics::points.size(), (SPG_Point*) &Graphics::points[0], _fillColor.get(_screen), _fillColor.A);
+        SPG_PolygonFilledBlend(_screen, Graphics::_points.size(), (SPG_Point*) &Graphics::_points[0], _fillColor.get(_screen), _fillColor.A);
     }
 
     if(_bStroke)
     {
-        SPG_PolygonBlend(_screen, Graphics::points.size(), (SPG_Point*) &Graphics::points[0], _strokeColor.get(_screen), _strokeColor.A);
+        SPG_PolygonBlend(_screen, Graphics::_points.size(), (SPG_Point*) &Graphics::_points[0], _strokeColor.get(_screen), _strokeColor.A);
     }
 }
 
@@ -524,21 +532,21 @@ void Graphics::arc(const int x, const int y, const float r, const float startAng
 	if(_screen == NULL)
         throw WindowException();
 		
-	points.push_back(Point(x, y));
+	_points.push_back(Point(x, y));
 	applyTransform();
-	Transform& t = transforms.back();
+	Transform& t = _transforms.back();
 		
 	if(_bFill)
 	{
-		SPG_ArcFilledBlend(_screen, points[0].x, points[0].y, r*t.getScaleAvg(), startAngle, endAngle, _fillColor.get(_screen), _fillColor.A);
+		SPG_ArcFilledBlend(_screen, _points[0].x, _points[0].y, r*t.getScaleAvg(), startAngle, endAngle, _fillColor.get(_screen), _fillColor.A);
 	}
 	
 	if(_bStroke)
 	{
-		SPG_ArcBlend(_screen, points[0].x, points[0].y, r*t.getScaleAvg(), startAngle, endAngle, _strokeColor.get(_screen), _strokeColor.A);
+		SPG_ArcBlend(_screen, _points[0].x, _points[0].y, r*t.getScaleAvg(), startAngle, endAngle, _strokeColor.get(_screen), _strokeColor.A);
 	}
 	
-	points.clear();
+	_points.clear();
 }
 
 void Graphics::bezier(const int x, const int y, const int cx1, const int cx2, const int cy1, const int cy2, const int endX, const int endY)
@@ -546,9 +554,16 @@ void Graphics::bezier(const int x, const int y, const int cx1, const int cx2, co
 	if(_screen == NULL)
         throw WindowException();
 		
+	_points.push_back(Point(x, y));
+	_points.push_back(Point(cx1, cy1));
+	_points.push_back(Point(cx2, cy2));
+	_points.push_back(Point(endX, endY));
+	applyTransform();
+		
 	if(_bStroke)
 	{
-		SPG_BezierBlend(_screen, x, y, cx1, cx2, cy1, cy2, endX, endY, _bezierDetail, _strokeColor.get(_screen), _strokeColor.A);
+		SPG_BezierBlend(_screen, _points[0].x, _points[0].y, _points[1].x, _points[2].x,
+			_points[1].y, _points[2].y, _points[3].x, _points[3].y, _bezierDetail, _strokeColor.get(_screen), _strokeColor.A);
 		SDL_UnlockSurface(_screen);
 	}
 }
@@ -598,86 +613,207 @@ void Graphics::quadtex(const SDL_Surface* surface, float sx, float sy, float sw,
 												   float dx, float dy, float dw, float dh)
 {
 	for(int i = 0; i < 4; ++i)
-		points.push_back(Point());
+		_points.push_back(Point());
 	
 	if(_imageMode == CENTER)
     {
-        points[0].set(dx-dw/2, dy-dh/2);		// UL
-        points[1].set(points[0].x, dy+dh/2);	// DL
-		points[2].set(dx+dw/2, dy+dy/2);		// DR
-		points[3].set(points[2].x, points[0].y);// UR
+        _points[0].set(dx-dw/2, dy-dh/2);		// UL
+        _points[1].set(_points[0].x, dy+dh/2);	// DL
+		_points[2].set(dx+dw/2, dy+dy/2);		// DR
+		_points[3].set(_points[2].x, _points[0].y);// UR
     }
     else
     {
-        points[0].set(dx, dy);		// UL
-        points[1].set(dx, dy+dh);	// DL
-		points[2].set(dx+dw, dy+dh);// DR
-		points[3].set(dx+dw, dy);	// UR
+        _points[0].set(dx, dy);		// UL
+        _points[1].set(dx, dy+dh);	// DL
+		_points[2].set(dx+dw, dy+dh);// DR
+		_points[3].set(dx+dw, dy);	// UR
     }
 	
 	// setup tex coords
-	points[4].set(sx, sy);			// UL
-	points[5].set(sx, sy+sh);		// DL
-	points[6].set(sx+sw, sy+sh);	// DR
-	points[7].set(sx+sw, sy);		// UR
+	_points[4].set(sx, sy);			// UL
+	_points[5].set(sx, sy+sh);		// DL
+	_points[6].set(sx+sw, sy+sh);	// DR
+	_points[7].set(sx+sw, sy);		// UR
 	
 	applyTransform();
 
-	SPG_QuadTexPoints(_screen, (SPG_Point*) &Graphics::points[0],
+	SPG_QuadTexPoints(_screen, (SPG_Point*) &Graphics::_points[0],
 					  (SDL_Surface*) surface,
-					  (SPG_Point*) &Graphics::points[4]);
+					  (SPG_Point*) &Graphics::_points[4]);
 					  
-	points.clear();
+	_points.clear();
 }
 
-// ***** draw transforms *****
+void Graphics::beginShape(Shape shape)
+{
+	if(_bShapeStarted)
+		throw ShapeException();
+
+	_currentShape = shape;
+	_bShapeStarted = true;
+}
+
+void Graphics::vertex(int x, int y)
+{
+	if(!_bShapeStarted)
+		throw ShapeException();
+		
+	_shapePoints.push_back(Point(x, y));
+}
+
+void Graphics::vertex(Point& p)
+{
+	if(!_bShapeStarted)
+		throw ShapeException();
+		
+	_shapePoints.push_back(p);
+}
+
+void Graphics::vertices(PointList& _points)
+{
+	if(!_bShapeStarted)
+		throw ShapeException();
+		
+	for(unsigned int i = 0; i < _points.size(); ++i)
+		_shapePoints.push_back(_points[i]);
+}
+
+void Graphics::endShape()
+{
+	if(_shapePoints.size() == 0)
+		throw ShapeException();
+
+	switch(_currentShape)
+	{
+		case POINTS:
+			for(unsigned int i = 0; i < _shapePoints.size(); ++i)
+				point(_shapePoints[i].x, _shapePoints[i].y);
+			break;
+			
+		case LINES:
+			for(unsigned int i = 1; i < _shapePoints.size(); i+=2)
+				line(_shapePoints[i-1].x, _shapePoints[i-1].y, _shapePoints[i].x, _shapePoints[i].y);
+			break;
+			
+		case LINE_STRIP:
+			for(unsigned int i = 1; i < _shapePoints.size(); ++i)
+				line(_shapePoints[i-1].x, _shapePoints[i-1].y, _shapePoints[i].x, _shapePoints[i].y);
+			break;
+			
+		case LINE_LOOP:
+			for(unsigned int i = 1; i < _shapePoints.size(); ++i)
+				line(_shapePoints[i-1].x, _shapePoints[i-1].y, _shapePoints[i].x, _shapePoints[i].y);
+			line(_shapePoints.front().x, _shapePoints.front().y, _shapePoints.back().x, _shapePoints.back().y);
+			break;
+			
+		case TRIANGLES:
+			for(unsigned int i = 2; i < _shapePoints.size(); i+=3)
+				triangle(_shapePoints[i-2].x, _shapePoints[i-2].y, _shapePoints[i-1].x, _shapePoints[i-1].y,
+					_shapePoints[i].x, _shapePoints[i].y);
+			break;
+			
+		case TRIANGLE_STRIP:
+			for(unsigned int i = 2; i < _shapePoints.size(); ++i)
+				triangle(_shapePoints[i-2].x, _shapePoints[i-2].y, _shapePoints[i-1].x, _shapePoints[i-1].y,
+					_shapePoints[i].x, _shapePoints[i].y);
+			break;
+			
+		case TRIANGLE_FAN:
+		{
+			Point& p = _shapePoints.front();
+			for(unsigned int i = 2; i < _shapePoints.size(); i+=2)
+				triangle(p.x, p.y, _shapePoints[i-1].x, _shapePoints[i-1].y,
+					_shapePoints[i].x, _shapePoints[i].y);
+			break;
+		}
+			
+		case QUADS:
+		{
+			std::vector<Point> p;
+			for(unsigned int i = 3; i < _shapePoints.size(); i+=4)
+			{
+				p.push_back(_shapePoints[i-3]);
+				p.push_back(_shapePoints[i-2]);
+				p.push_back(_shapePoints[i-1]);
+				p.push_back(_shapePoints[i]);
+				polygon(p);
+				p.clear();
+			}
+			break;
+		}
+		
+		case QUAD_STRIP:
+		{
+			std::vector<Point> p;
+			for(unsigned int i = 3; i < _shapePoints.size(); ++i)
+			{
+				p.push_back(_shapePoints[i-3]);
+				p.push_back(_shapePoints[i-2]);
+				p.push_back(_shapePoints[i-1]);
+				p.push_back(_shapePoints[i]);
+				polygon(p);
+				p.clear();
+			}
+			break;
+		}
+			
+		case POLYGON:
+				polygon(_shapePoints);
+			break;
+	}
+	_bShapeStarted = false;
+	_shapePoints.clear();
+}
+
+// ***** draw __transforms *****
 void Graphics::push()
 {
-	if(transforms.size() >= VISUAL_MAX_TRANSFORMS)
+	if(_transforms.size() >= VISUAL_MAX_TRANSFORMS)
 	{
 		LOG_WARN << "Too many pushes" << std::endl;
 		return;
 	}
 		
 	Transform t;
-	transforms.push_back(t);
+	_transforms.push_back(t);
 }
 
 void Graphics::pop()
 {
-	if(transforms.size() == 1)
+	if(_transforms.size() == 1)
 	{
-		transforms[0].clear();
+		_transforms[0].clear();
 		return;
 	}
 	
-	transforms.erase(transforms.end());
+	_transforms.erase(_transforms.end());
 }
 
 void Graphics::popAll()
 {
-	transforms.clear();
+	_transforms.clear();
 	push();
 }
 
 void Graphics::scale(float x, float y)
 {
-	transforms.back().scale(x, y);
+	_transforms.back().scale(x, y);
 }
 
 void Graphics::rotate(float angle)
 {
-	transforms.back().rotate(angle);
+	_transforms.back().rotate(angle);
 }
 
 void Graphics::skew(float x, float y)
 {
-	transforms.back().skew(x, y);
+	_transforms.back().skew(x, y);
 }
 
 void Graphics::translate(float x, float y)
 {
-	transforms.back().translate(x, y);
+	_transforms.back().translate(x, y);
 }
 
 /* ***** global util ***** */
@@ -696,17 +832,17 @@ unsigned int Graphics::getMillis()
 
 void Graphics::applyTransform()
 {
-	for(unsigned int i = 0; i < transforms.size(); ++i)
+	for(unsigned int i = 0; i < _transforms.size(); ++i)
 	{
-		Transform& t = transforms[i];
+		Transform& t = _transforms[i];
 		if(t.bScale)
-			SPG_ScalePoints(points.size(), (SPG_Point*) &points[0], t.scaleX, t.scaleY);
+			SPG_ScalePoints(_points.size(), (SPG_Point*) &_points[0], t.scaleX, t.scaleY);
 		if(t.bRotate)
-			SPG_RotatePoints(points.size(), (SPG_Point*) &points[0], t.rotateAngle);
+			SPG_RotatePoints(_points.size(), (SPG_Point*) &_points[0], t.rotateAngle);
 		if(t.bSkew)
-			SPG_SkewPoints(points.size(), (SPG_Point*) &points[0], t.skewX, t.skewY);
+			SPG_SkewPoints(_points.size(), (SPG_Point*) &_points[0], t.skewX, t.skewY);
 		if(t.bTranslate)
-			SPG_TranslatePoints(points.size(), (SPG_Point*) &points[0], t.translateX, t.translateY);
+			SPG_TranslatePoints(_points.size(), (SPG_Point*) &_points[0], t.translateX, t.translateY);
 	}
 }
 

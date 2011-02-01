@@ -52,7 +52,8 @@ enum GraphicsType {
 enum DrawMode
 {
     CENTER,
-    CORNER
+    CORNER,
+	CORNERS	// only affects rectangles
 };
 
 // global font modes
@@ -63,12 +64,36 @@ enum FontMode
     SHADED		// background
 };
 
+// shapes (following OpenGL)
+enum Shape
+{
+	POINTS,
+	LINES,
+	LINE_STRIP,
+	LINE_LOOP,
+	TRIANGLES,
+	TRIANGLE_STRIP,
+	TRIANGLE_FAN,
+	QUADS,
+	QUAD_STRIP,
+	POLYGON
+};
+
 /// Window exception
 class WindowException : public Exception
 {
 	public:
     	WindowException(
             const char* w="call to graphics command when SDL window is not yet setup")
+        	: Exception(w) {}
+};
+
+/// Shape exception
+class ShapeException : public Exception
+{
+	public:
+    	ShapeException(
+            const char* w="cannot start a new shape or shape has not begun")
         	: Exception(w) {}
 };
 
@@ -184,13 +209,24 @@ class Graphics
 		static void quadtex(const SDL_Surface* surface, float sx, float sy, float sw, float sh,
 												   		float dx, float dy, float dw, float dh);
 
+		// draw with shapes
+		static void beginShape(Shape shape);
+		static void vertex(int x, int y);
+		static void vertex(Point& p);
+		static void vertices(PointList& points);
+		static void endShape();
+		
 		// draw transforms
 		static void push();
 		static void pop();	// popping at the bottom level clears the default transform
 		static void popAll();
 
+		// primitive transforms
+		// rotate and skew are non orthographic and work best for points, lines,
+		// triangles, beziers, polygons and shapes. Does not work as expected
+		// with orthographic primitives ie rects, circles, ellipses, and arcs.
 		static void scale(float x, float y);
-		static void rotate(float angle);
+		static void rotate(float angle);	// degrees
 		static void skew(float x, float y);
 		static void translate(float x, float y);
 
@@ -232,6 +268,8 @@ class Graphics
 		
 		// global primitive settings
 		static uint8_t _bezierDetail;
+		static Shape _currentShape;
+		static bool _bShapeStarted;
 		
 		// current transform
 		struct Transform
@@ -299,8 +337,9 @@ class Graphics
 			float getScaleY()	{return bScale && scaleY != 0 ? scaleY : 1;}
 			float getScaleAvg()	{return bScale && scaleAvg != 0 ? scaleAvg : 1;}
 		};
-		static std::vector<Transform> transforms;
-		static std::vector<Point> points; // temp for transforms
+		static std::vector<Transform> _transforms;	// transform stack
+		static std::vector<Point> _points; 		// temp for transforms
+		static std::vector<Point> _shapePoints;	// temp for shapes
 };
 
 } // namespace
