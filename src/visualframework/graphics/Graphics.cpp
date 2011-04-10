@@ -29,7 +29,10 @@
 #include <SDL/SDL_gfxPrimitives.h>
 #include "sprig/sprig.h"
 
-// sprig: http://www.sdltutorials.com/a-guide-to-graphics-with-sprig/
+// references
+// sprig:
+// 	- http://www.sdltutorials.com/a-guide-to-graphics-with-sprig/
+// 	- http://code.bluedinosaurs.com/tutorials/SprigGuide.html
 
 #define VISUAL_MAX_TRANSFORMS	5
 

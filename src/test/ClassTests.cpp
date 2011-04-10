@@ -87,6 +87,8 @@ void ClassTests::testUtil()
 {
 	LOG << "Begin testUtil()" << endl;
 	
+	LOG << Util::toString(100) << " " << Util::toString(10234.232256785445, 5) << endl;
+	
 	LOG << "CWD: " << Util::getCWD() << endl;
 	LOG << "absolute?: " << Util::isAbsolutePath("/usr/local") << endl;
 	LOG << "relative?: " << !Util::isAbsolutePath("../../data") << endl;

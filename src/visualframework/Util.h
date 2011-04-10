@@ -24,6 +24,8 @@
 #define VISUAL_UTIL_H
 
 #include <string>
+#include <sstream>
+#include <iomanip>
 
 namespace visual {
 
@@ -34,6 +36,24 @@ namespace visual {
 class Util
 {
 	public:
+	
+		/// \section String Conversion
+		
+		template <class T>
+		static std::string toString(const T& value)
+		{
+			std::ostringstream out;
+			out << value;
+			return out.str();
+		}
+
+		template <class T>
+		static std::string toString(const T& value, int precision)
+		{
+			std::ostringstream out;
+			out << std::fixed << std::setprecision(precision) << value;
+			return out.str();
+		}
 	
 		/// \section Data Path
 	
