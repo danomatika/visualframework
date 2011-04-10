@@ -222,12 +222,12 @@ void Texture::pixelate(unsigned int pixelWidth, unsigned int pixelHeight)
     }
 }
 
-int Texture::width() const
+unsigned int Texture::width() const
 {
     return _surface ? _surface->w : -1;
 }
 
-int Texture::height() const
+unsigned int Texture::height() const
 {
 	return _surface ? _surface->h : -1;
 }

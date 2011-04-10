@@ -74,8 +74,8 @@ class Texture
 		void pixelate(unsigned int pixelWidth, unsigned int pixelHeight);
         
 		/// get the texture dimensions
-        int width() const;
-        int height() const;
+        unsigned int width() const;
+        unsigned int height() const;
         
 		/// pixel access
         Color getPixel(unsigned int x, unsigned int y);
