@@ -72,7 +72,10 @@ class Util
 		/// \section Path Utils
 		
 		/// get the current working dir
-		static std::string getCWD();
+		static std::string getCurrentDir();
+
+		// returns the path to the executable
+		static std::string getExecutablePath();
 		
 		/// is this an absolute path?
 		static bool isAbsolutePath(const std::string& path);

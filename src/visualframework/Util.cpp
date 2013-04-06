@@ -22,6 +22,12 @@
 ==============================================================================*/
 #include "Util.h"
 
+#if defined( __WIN32__ ) || defined( _WIN32 )
+	#include <windows.h>
+#elif defined( __APPLE_CC__)
+	#include <mach-o/dyld.h>
+#endif
+
 namespace visual {
 
 bool Util::bUsingDataPath = true;
@@ -71,11 +77,37 @@ void Util::useDataPath(bool onoff)
 	bUsingDataPath = onoff;
 }
 
-std::string Util::getCWD()
+std::string Util::getCurrentDir()
 {
 	char currDir[1024];
 	getcwd(currDir, 1024);
 	return (std::string) currDir;
+}
+
+// from http://stackoverflow.com/questions/1023306/finding-current-executables-path-without-proc-self-exe
+std::string Util::getExecutablePath()
+{
+	char path[1024];
+	
+	#if defined( __WIN32__ ) || defined( _WIN32 )
+		// Will contain exe path
+		HMODULE hModule = GetModuleHandle(NULL);
+		if(hModule != NULL)
+		{
+			// When passing NULL to GetModuleHandle, it returns handle of exe itself
+			GetModuleFileName(hModule, path, (sizeof(path)));
+		}
+		else
+			return "";
+	#elif defined( __APPLE_CC__)
+		uint32_t size = sizeof(path);
+		if(_NSGetExecutablePath(path, &size) != 0)
+			return "";
+	#else // LINUX
+		readlink("/proc/self/exe", path, sizeof(path));
+	#endif
+	
+	return (std::string) path;
 }
 
 bool Util::isAbsolutePath(const std::string& path)

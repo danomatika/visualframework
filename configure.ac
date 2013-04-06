@@ -1,7 +1,7 @@
 #########################################
 ##### Prelude #####
 
-AC_INIT([visualframework], [0.1.0], [danomatika@gmail.com])
+AC_INIT([visualframework], [0.1.1], [danomatika@gmail.com], [visualframework], [https://github.com/danomatika/visualframework])
 AC_CONFIG_SRCDIR([src/visualframework/visualframework.h])
 AC_CONFIG_AUX_DIR([config])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
@@ -22,6 +22,9 @@ AC_PROG_CC # <- for Sprig c sources
 
 # using c++ compiler and linker
 AC_LANG_CPLUSPLUS
+
+# allow non-POSIX libs
+AM_PROG_AR
 
 # check for headers
 AC_HEADER_STDC

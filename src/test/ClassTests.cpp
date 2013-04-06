@@ -89,19 +89,22 @@ void ClassTests::testUtil()
 	
 	LOG << Util::toString(100) << " " << Util::toString(10234.232256785445, 5) << endl;
 	
-	LOG << "CWD: " << Util::getCWD() << endl;
+	LOG << "current working dir: " << Util::getCurrentDir() << endl;
+    LOG << "executable path: " << Util::getExecutablePath() << endl;
 	LOG << "absolute?: " << Util::isAbsolutePath("/usr/local") << endl;
 	LOG << "relative?: " << !Util::isAbsolutePath("../../data") << endl;
 	LOG << "dirname: " << Util::getDirPath("../data/example.xml") << endl;
 	LOG << "basename: " << Util::getFileName("../data/example.xml") << endl;
 	LOG << "to data path: " << Util::toDataPath("example.xml", true) << endl;
 	LOG << "make absolute: " << Util::makeAbsolutePath("example.xml") << endl;
-	Util::setDataPath("/usr/local/bin");
+	string dataPath = Util::getDataPath();
+    Util::setDataPath("/usr/local/bin");
 	LOG << "data path: " << Util::getDataPath() << endl;
 	Util::setDataPath("../../data", true);
 	LOG << "data path: " << Util::getDataPath() << endl;
 	Util::setDataPath("../../data");
 	LOG << "data path: " << Util::getDataPath() << endl << endl;
+    Util::setDataPath(dataPath);
 }
 
 void ClassTests::testLog()

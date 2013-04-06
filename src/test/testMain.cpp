@@ -35,6 +35,9 @@ int main(int argc, char *argv[])
 {
     LOG << "starting testMain" << endl;
 
+	Util::setDataPath(Util::makeAbsolutePath(Util::getDirPath(Util::getExecutablePath())+"/../../data"));
+	LOG << "Data path is " << Util::getDataPath() << endl;
+
     // initialize SDL context
     if(!Graphics::init(800, 600, 32, HARDWARE))
     	return EXIT_FAILURE;
@@ -44,6 +47,7 @@ int main(int argc, char *argv[])
     testApp.init();
 
     // set icon
+    LOG << Util::toDataPath("icon.bmp") << endl;
     Graphics::setWindowIcon(Util::toDataPath("icon.bmp"));
 
     // open sdl window
