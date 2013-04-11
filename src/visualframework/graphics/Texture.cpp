@@ -119,7 +119,7 @@ void Texture::fill(Color& color)
 
 void Texture::resize(int w, int h)
 {
-	scale(width()/w, height()/h);
+	scale((float)w/(float)width(), (float)h/(float)height());
 }
 
 void Texture::scale(float scaleX, float scaleY)
