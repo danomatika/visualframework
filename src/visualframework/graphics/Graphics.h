@@ -3,23 +3,23 @@
 	Graphics.h
 
 	visualframework: a simple 2d graphics framework
-    
-    Uses the SPriG - SDL Primitive Generator by Jonathan Dearborn (GPL2)
+	
+	Uses the SPriG - SDL Primitive Generator by Jonathan Dearborn (GPL2)
   
 	Copyright (C) 2009, 2010  Dan Wilcox <danomatika@gmail.com>
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ==============================================================================*/
 #ifndef VISUAL_GRAPHICS_H
@@ -44,16 +44,16 @@ enum GraphicsMode {
 };
 
 enum GraphicsType {
-    UNKNOWN     = 0,
-    SOFTWARE    = SDL_SWSURFACE,
-    HARDWARE    = SDL_HWSURFACE
+	UNKNOWN		= 0,
+	SOFTWARE	= SDL_SWSURFACE,
+	HARDWARE	= SDL_HWSURFACE
 };
 
  // global primitive draw options
 enum DrawMode
 {
-    CENTER,	// pos is upper right corner
-    CORNER,	// pos is center of rect/texture
+	CENTER,	// pos is upper right corner
+	CORNER,	// pos is center of rect/texture
 	CORNERS	// pos is upper right corner, w/h is lower left corner
 };
 
@@ -61,8 +61,8 @@ enum DrawMode
 enum FontMode
 {
 	SOLID,		// fast
-    BLENDED,	// antialiased
-    SHADED		// background
+	BLENDED,	// antialiased
+	SHADED		// background
 };
 
 // shapes (following OpenGL)
@@ -84,105 +84,105 @@ enum Shape
 class WindowException : public Exception
 {
 	public:
-    	WindowException(
-            const char* w="call to graphics command when SDL window is not yet setup")
-        	: Exception(w) {}
+		WindowException(
+			const char* w="call to graphics command when SDL window is not yet setup")
+			: Exception(w) {}
 };
 
 /// Shape exception
 class ShapeException : public Exception
 {
 	public:
-    	ShapeException(
-            const char* w="cannot start a new shape or shape has not begun")
-        	: Exception(w) {}
+		ShapeException(
+			const char* w="cannot start a new shape or shape has not begun")
+			: Exception(w) {}
 };
 
 class Graphics
 {
-    public:
+	public:
 
-        /// init sdl graphics
-        static bool init(unsigned int w, unsigned int h, unsigned int depth, GraphicsType type=HARDWARE);
+		/// init sdl graphics
+		static bool init(unsigned int w, unsigned int h, unsigned int depth, GraphicsType type=HARDWARE);
 
-        /// set screen mode before creating window
-        static void inline setWindow()     {_mode = WINDOW;}
-        static void inline setFullscreen() {_mode = FULLSCREEN;}
+		/// set screen mode before creating window
+		static void inline setWindow()     {_mode = WINDOW;}
+		static void inline setFullscreen() {_mode = FULLSCREEN;}
 
-        /// set the window's title text
-        static void setWindowTitle(const std::string& title);
+		/// set the window's title text
+		static void setWindowTitle(const std::string& title);
 
-        /// set the window's icon
-        static bool setWindowIcon(const std::string& bitmapFile);
+		/// set the window's icon
+		static bool setWindowIcon(const std::string& bitmapFile);
 
-        /// create the actual sdl draw surface
-        static bool createWindow(std::string title="");
+		/// create the actual sdl draw surface
+		static bool createWindow(std::string title="");
 
-        /// toggles between fullscreen and window,
-        /// automatically destroys and recreates draw surface
-        static bool toggleFullscreen();
-        
-        /// show/hide the mouse cursor (shown by default)
-        static bool getShowMouseCursor();
-        static void showMouseCursor(bool show);
-        static void toggleShowMouseCursor();
+		/// toggles between fullscreen and window,
+		/// automatically destroys and recreates draw surface
+		static bool toggleFullscreen();
+		
+		/// show/hide the mouse cursor (shown by default)
+		static bool getShowMouseCursor();
+		static void showMouseCursor(bool show);
+		static void toggleShowMouseCursor();
 
-        /// get available fullscreen video resolutions (descending order)
-        /// note: do not free any of the SDL_Rect pointers
-        static std::vector<SDL_Rect*> getResolutions();
+		/// get available fullscreen video resolutions (descending order)
+		/// note: do not free any of the SDL_Rect pointers
+		static std::vector<SDL_Rect*> getResolutions();
 
-        /// change the window/screen resolution
-        /// automatically destroys and recreates draw surface
-        static bool changeResolution(const unsigned int w, const unsigned int h);
+		/// change the window/screen resolution
+		/// automatically destroys and recreates draw surface
+		static bool changeResolution(const unsigned int w, const unsigned int h);
 
-        /// get the current vode mode as a string
-        static std::string getModeString();
-        
-        /// clear the screen with a given color
-        static void clear(unsigned int color);	///< ARGB
-        static void clear(Color& color);
-        
-        /// swap the draw surface to the screen
-        static void swap();
+		/// get the current vode mode as a string
+		static std::string getModeString();
+		
+		/// clear the screen with a given color
+		static void clear(unsigned int color);	///< ARGB
+		static void clear(Color& color);
+		
+		/// swap the draw surface to the screen
+		static void swap();
 
-        // global gets
-        static const GraphicsType getType()     {return _type;}
-        static const GraphicsMode getMode()     {return _mode;}
-        static const SDL_Surface* getScreen() 	{return _screen;}
-        static const unsigned int getWidth()   	{return _iWidth;}
-        static const unsigned int getHeight()  	{return _iHeight;}
-        static const unsigned int getDepth()   	{return _iDepth;}
+		// global gets
+		static const GraphicsType getType()     {return _type;}
+		static const GraphicsMode getMode()     {return _mode;}
+		static const SDL_Surface* getScreen() 	{return _screen;}
+		static const unsigned int getWidth()   	{return _iWidth;}
+		static const unsigned int getHeight()  	{return _iHeight;}
+		static const unsigned int getDepth()   	{return _iDepth;}
 
-        // global color
-        static void stroke(const unsigned int color);	///< ARGB
-        static void stroke(const Color& color);
-        static void fill(const unsigned int color);		///< ARGB
-        static void fill(const Color& color);
+		// global color
+		static void stroke(const unsigned int color);	///< ARGB
+		static void stroke(const Color& color);
+		static void fill(const unsigned int color);		///< ARGB
+		static void fill(const Color& color);
 
-        static void noStroke();
-        static void noFill();
-        
-        static const Color& getStroke()	{return _strokeColor;}
-        static const Color& getFill()	{return _fillColor;}
-        
-        // affects rectangles
-        static void rectMode(const DrawMode mode) {_rectMode = mode;}
-        static const DrawMode getRectMode() {return _rectMode;} 
-        
-        // affects textures
-        static void textureMode(const DrawMode mode) {_textureMode = mode;}
-        static const DrawMode getTextureMode() {return _textureMode;}
-        
-        // affects fonts
-        static void fontMode(const FontMode mode) {_fontMode = mode;}
-        static const FontMode getFontMode() {return _fontMode;}
-        
-        // affects lines and object edges
-        static void strokeWeight(unsigned int weight=1);
-        
-        // antialiasing on lines and objects
-        static void smooth();
-        static void noSmooth();
+		static void noStroke();
+		static void noFill();
+		
+		static const Color& getStroke()	{return _strokeColor;}
+		static const Color& getFill()	{return _fillColor;}
+		
+		// affects rectangles
+		static void rectMode(const DrawMode mode) {_rectMode = mode;}
+		static const DrawMode getRectMode() {return _rectMode;} 
+		
+		// affects textures
+		static void textureMode(const DrawMode mode) {_textureMode = mode;}
+		static const DrawMode getTextureMode() {return _textureMode;}
+		
+		// affects fonts
+		static void fontMode(const FontMode mode) {_fontMode = mode;}
+		static const FontMode getFontMode() {return _fontMode;}
+		
+		// affects lines and object edges
+		static void strokeWeight(unsigned int weight=1);
+		
+		// antialiasing on lines and objects
+		static void smooth();
+		static void noSmooth();
 		
 		// alpha blending on lines and objects
 		static void blend();
@@ -191,24 +191,24 @@ class Graphics
 		// bezier curve detail (default is 20)
 		static void bezierDetail(const uint8_t detail);
 
-        // global primitives
-        static void point(const int x, const int y);
-        static void line(const int x1, const int y1, const int x2, const int y2);
-        static void rectangle(const int x, const int y, const int w, const int h);
-        static void circle(const int x, const int y, const int r);
-        static void ellipse(const int x, const int y, const int rx, const int ry);
-        static void triangle(const int x1, const int y1, const int x2, const int y2, const int x3, const int y3);
-        static void polygon(const PointList& points);
+		// global primitives
+		static void point(const int x, const int y);
+		static void line(const int x1, const int y1, const int x2, const int y2);
+		static void rectangle(const int x, const int y, const int w, const int h);
+		static void circle(const int x, const int y, const int r);
+		static void ellipse(const int x, const int y, const int rx, const int ry);
+		static void triangle(const int x1, const int y1, const int x2, const int y2, const int x3, const int y3);
+		static void polygon(const PointList& points);
 		
 		static void arc(const int x, const int y, const float r, const float startAngle, const float endAngle);
 		static void bezier(const int x, const int y, const int cx1, const int cx2, const int cy1, const int cy2, const int endX, const int endY);
-        
+		
 		static void character(const int x, const int y, const char c);
-        static void string(const int x, const int y, const std::string& line);
-        
-        static void surface(const int x, const int y, const SDL_Surface* surface);
+		static void string(const int x, const int y, const std::string& line);
+		
+		static void surface(const int x, const int y, const SDL_Surface* surface);
 		static void quadtex(const SDL_Surface* surface, float sx, float sy, float sw, float sh,
-												   		float dx, float dy, float dw, float dh);
+														float dx, float dy, float dw, float dh);
 		// bitmap string stream helper
 		class BitmapString
 		{
@@ -271,42 +271,42 @@ class Graphics
 		static void setDrawTexture(Texture& texture);
 		static void clearDrawTexture();
 
-        // global utils
-        static std::string getLastError();
-        static unsigned int getMillis();
+		// global utils
+		static std::string getLastError();
+		static unsigned int getMillis();
 
-    private:
+	private:
 
 		// apply the current transform to the point vector
 		static void applyTransform();
 
-        Graphics() {}                       // cannot create
-        Graphics(const Graphics& from) {}   // not copyable
-        virtual ~Graphics() {}              // cannot destroy
-        void operator =(Color& from) {}     // not copyable
+		Graphics() {}                       // cannot create
+		Graphics(const Graphics& from) {}   // not copyable
+		virtual ~Graphics() {}              // cannot destroy
+		void operator =(Color& from) {}     // not copyable
 
-        static SDL_Surface* _screen;		/// SDL screen
+		static SDL_Surface* _screen;		/// SDL screen
 		static SDL_Surface* _drawSurface;	/// the render surface pointer
 
-        static unsigned int _iWidth;    /// window width
-        static unsigned int _iHeight;   /// window height
-        static unsigned int _iDepth;    /// bit depth
+		static unsigned int _iWidth;    /// window width
+		static unsigned int _iHeight;   /// window height
+		static unsigned int _iDepth;    /// bit depth
 
-        static uint32_t _ui32VideoFlags;/// sdl video mode flags
-        static GraphicsMode _mode;      /// context mode, WINDOW or FULLSCREEN
-        static GraphicsType _type;      /// context type
-        static std::string _sTitle;     /// window title
+		static uint32_t _ui32VideoFlags;/// sdl video mode flags
+		static GraphicsMode _mode;      /// context mode, WINDOW or FULLSCREEN
+		static GraphicsType _type;      /// context type
+		static std::string _sTitle;     /// window title
 
-        // global color settings
-        static Color _strokeColor;
-        static Color _fillColor;
-        static bool _bStroke;
-        static bool _bFill;
+		// global color settings
+		static Color _strokeColor;
+		static Color _fillColor;
+		static bool _bStroke;
+		static bool _bFill;
 
 		// global draw modes
-        static DrawMode _rectMode;
-        static DrawMode _textureMode;
-        static FontMode _fontMode;
+		static DrawMode _rectMode;
+		static DrawMode _textureMode;
+		static FontMode _fontMode;
 		
 		// global primitive settings
 		static uint8_t _bezierDetail;

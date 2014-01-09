@@ -5,8 +5,8 @@ noinst_PROGRAMS = vftest
 
 # bin sources, headers here because we dont want to install them
 vftest_SOURCES = ClassTests.h ClassTests.cpp \
-                  TestApp.h TestApp.cpp testMain.cpp
-                  
+				  TestApp.h TestApp.cpp testMain.cpp
+				  
 # local libraries needed to build (builddir)
 vftest_LDADD = -L$(top_builddir)/src/visualframework -lvisualframework
 

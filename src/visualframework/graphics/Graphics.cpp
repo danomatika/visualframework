@@ -6,18 +6,18 @@
   
 	Copyright (C) 2009, 2010  Dan Wilcox <danomatika@gmail.com>
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ==============================================================================*/
 #include "Graphics.h"
@@ -70,209 +70,209 @@ std::vector<Point> Graphics::_shapePoints;
 
 bool Graphics::init(unsigned int w, unsigned int h, unsigned int depth, GraphicsType type)
 {
-    _iWidth = w;
-    _iHeight = h;
-    _iDepth = depth;
-    _ui32VideoFlags = 0;
-    _type = type;
+	_iWidth = w;
+	_iHeight = h;
+	_iDepth = depth;
+	_ui32VideoFlags = 0;
+	_type = type;
 
-    // initialize SDL video
-    if(SDL_Init(SDL_INIT_VIDEO) < 0)
-    {
-        LOG_ERROR << "Graphics: " << getLastError() << std::endl;
-        return false;
-    }
+	// initialize SDL video
+	if(SDL_Init(SDL_INIT_VIDEO) < 0)
+	{
+		LOG_ERROR << "Graphics: " << getLastError() << std::endl;
+		return false;
+	}
 
-    // set proper flags for mode
-    _ui32VideoFlags = _type|SDL_DOUBLEBUF|_mode;
+	// set proper flags for mode
+	_ui32VideoFlags = _type|SDL_DOUBLEBUF|_mode;
 
-    // make sure SDL cleans up before exit
-    atexit(SDL_Quit);
+	// make sure SDL cleans up before exit
+	atexit(SDL_Quit);
 	
 	// push the default _transforms
 	push();
 
-    return true;
+	return true;
 }
 
 // sort resolutions by area in descending order
 bool cmpRes(SDL_Rect* a, SDL_Rect* b )
 {
-    int areaA = a->w*a->h;
-    int areaB = b->w*b->h;
-    return areaA < areaB;
+	int areaA = a->w*a->h;
+	int areaB = b->w*b->h;
+	return areaA < areaB;
 }
 
 std::vector<SDL_Rect*> Graphics::getResolutions()
 {
-    // get available fullscreen modes
-    SDL_Rect** modes;
-    std::vector<SDL_Rect*> resolutions;
-    modes = SDL_ListModes(NULL, SDL_FULLSCREEN|_type);
+	// get available fullscreen modes
+	SDL_Rect** modes;
+	std::vector<SDL_Rect*> resolutions;
+	modes = SDL_ListModes(NULL, SDL_FULLSCREEN|_type);
 
-    // check if there are any modes available
-    if(modes == (SDL_Rect**)0)
-    {
-        LOG_WARN << "No resolutions available!" << std::endl;
-    }
+	// check if there are any modes available
+	if(modes == (SDL_Rect**)0)
+	{
+		LOG_WARN << "No resolutions available!" << std::endl;
+	}
 
-    // check if our resolution is restricted
-    if(modes == (SDL_Rect**)-1)
-    {
-        LOG << "All resolutions available" << std::endl;
-    }
+	// check if our resolution is restricted
+	if(modes == (SDL_Rect**)-1)
+	{
+		LOG << "All resolutions available" << std::endl;
+	}
 
-    else
-    {
-        for(int i=0; modes[i] != NULL; ++i)
-        {
-            resolutions.push_back(modes[i]);
-        }
-    }
+	else
+	{
+		for(int i=0; modes[i] != NULL; ++i)
+		{
+			resolutions.push_back(modes[i]);
+		}
+	}
 
-    // sort into descending order
-    std::sort(resolutions.begin(), resolutions.end(), cmpRes);
+	// sort into descending order
+	std::sort(resolutions.begin(), resolutions.end(), cmpRes);
 
-    return resolutions;
+	return resolutions;
 }
 
 void Graphics::setWindowTitle(const std::string& title)
 {
-    _sTitle = title;
-    SDL_WM_SetCaption(_sTitle.c_str(), NULL);
+	_sTitle = title;
+	SDL_WM_SetCaption(_sTitle.c_str(), NULL);
 }
 
 bool Graphics::setWindowIcon(const std::string& bitmapFile)
 {
-    SDL_Surface *icon = SDL_LoadBMP(bitmapFile.c_str());
-    if(icon == NULL)
-    {
-        LOG_ERROR << "Graphics: " << getLastError() << std::endl;
-        return false;
-    }
+	SDL_Surface *icon = SDL_LoadBMP(bitmapFile.c_str());
+	if(icon == NULL)
+	{
+		LOG_ERROR << "Graphics: " << getLastError() << std::endl;
+		return false;
+	}
 
-    SDL_WM_SetIcon(icon, NULL);
+	SDL_WM_SetIcon(icon, NULL);
 
-    return true;
+	return true;
 }
 
 bool Graphics::createWindow(const std::string title)
 {
 	unsigned int bpp = SDL_VideoModeOK(_iWidth, _iHeight, _iDepth, _ui32VideoFlags);
 	if(!bpp)
-    {
-    	LOG_ERROR << "Graphics: " << getLastError() << std::endl;
-    	return false;
+	{
+		LOG_ERROR << "Graphics: " << getLastError() << std::endl;
+		return false;
 	}
 
 	// clear?
-    if(_screen)
-        SDL_FreeSurface(_screen);
+	if(_screen)
+		SDL_FreeSurface(_screen);
 
-    // create a new window
-    _screen = SDL_SetVideoMode(_iWidth, _iHeight, _iDepth, _ui32VideoFlags);
-    if(!_screen)
-    {
-        LOG_ERROR << "Graphics: " << getLastError() << std::endl;
-        return false;
-    }
+	// create a new window
+	_screen = SDL_SetVideoMode(_iWidth, _iHeight, _iDepth, _ui32VideoFlags);
+	if(!_screen)
+	{
+		LOG_ERROR << "Graphics: " << getLastError() << std::endl;
+		return false;
+	}
 	_drawSurface = _screen;
 
-    LOG << "Setting: " << getModeString() << std::endl;
+	LOG << "Setting: " << getModeString() << std::endl;
 
-    if(title != "")
-    {
-        _sTitle = title;
-        SDL_WM_SetCaption(_sTitle.c_str(), NULL);
-    }
+	if(title != "")
+	{
+		_sTitle = title;
+		SDL_WM_SetCaption(_sTitle.c_str(), NULL);
+	}
 
-    return true;
+	return true;
 }
 
 bool Graphics::toggleFullscreen()
 {
-    if(_screen == NULL)
-        throw WindowException();
+	if(_screen == NULL)
+		throw WindowException();
 
-    switch(_mode)
-    {
-        case WINDOW:
-            _mode = FULLSCREEN;
-            break;
+	switch(_mode)
+	{
+		case WINDOW:
+			_mode = FULLSCREEN;
+			break;
 
-        case FULLSCREEN:
-            _mode = WINDOW;
-            break;
-    }
+		case FULLSCREEN:
+			_mode = WINDOW;
+			break;
+	}
 
-    // set proper flags for mode
-    _ui32VideoFlags = _type|SDL_DOUBLEBUF|_mode;
+	// set proper flags for mode
+	_ui32VideoFlags = _type|SDL_DOUBLEBUF|_mode;
 
-    return createWindow(_sTitle);
+	return createWindow(_sTitle);
 }
 
 bool Graphics::getShowMouseCursor()
 {
 	int state = SDL_ShowCursor(SDL_QUERY);
-    if(state == SDL_ENABLE)
-    	return true;
-    return false;
+	if(state == SDL_ENABLE)
+		return true;
+	return false;
 }
 
 void Graphics::showMouseCursor(bool show)
 {
 	if(show)
-    	SDL_ShowCursor(SDL_ENABLE);
-    else
-    	SDL_ShowCursor(SDL_DISABLE);
+		SDL_ShowCursor(SDL_ENABLE);
+	else
+		SDL_ShowCursor(SDL_DISABLE);
 }
 
 void Graphics::toggleShowMouseCursor()
 {
 	int state = SDL_ShowCursor(SDL_QUERY);
-    if(state == SDL_ENABLE)
-    	SDL_ShowCursor(SDL_DISABLE);
-    else
-    	SDL_ShowCursor(SDL_ENABLE);
+	if(state == SDL_ENABLE)
+		SDL_ShowCursor(SDL_DISABLE);
+	else
+		SDL_ShowCursor(SDL_ENABLE);
 }
 
 bool Graphics::changeResolution(const unsigned int w, const unsigned int h)
 {
-    if(_screen == NULL)
-        throw WindowException();
+	if(_screen == NULL)
+		throw WindowException();
 
-    // set new resolution
-    _iWidth = w;
-    _iHeight = h;
+	// set new resolution
+	_iWidth = w;
+	_iHeight = h;
 
-    return createWindow(_sTitle);
+	return createWindow(_sTitle);
 }
 
 std::string Graphics::getModeString()
 {
-    std::ostringstream stream;
+	std::ostringstream stream;
 
-    switch(_type)
-    {
-        case SOFTWARE:
-            stream << "SDL_SWSURFACE";
-            break;
-        case HARDWARE:
-            stream << "SDL_HWSURFACE";
-            break;
-    }
-    stream << " " << _iWidth << "x" << _iHeight << "@" << _iDepth << "bit ";
-    switch(_mode)
-    {
-        case WINDOW:
-            stream << "window";
-            break;
-        case FULLSCREEN:
-            stream << "fullscreen";
-            break;
-    }
+	switch(_type)
+	{
+		case SOFTWARE:
+			stream << "SDL_SWSURFACE";
+			break;
+		case HARDWARE:
+			stream << "SDL_HWSURFACE";
+			break;
+	}
+	stream << " " << _iWidth << "x" << _iHeight << "@" << _iDepth << "bit ";
+	switch(_mode)
+	{
+		case WINDOW:
+			stream << "window";
+			break;
+		case FULLSCREEN:
+			stream << "fullscreen";
+			break;
+	}
 
-    return stream.str();
+	return stream.str();
 }
 
 void Graphics::clear(unsigned int color)
@@ -293,55 +293,55 @@ void Graphics::swap()
 // ***** global color *****
 void Graphics::stroke(const unsigned int color)
 {
-    _strokeColor.set(color);
-    _bStroke = true;
+	_strokeColor.set(color);
+	_bStroke = true;
 }
 
 void Graphics::stroke(const Color& color)
 {
-    _strokeColor = color;
-    _bStroke = true;
+	_strokeColor = color;
+	_bStroke = true;
 }
 
 void Graphics::fill(const unsigned int color)
 {
-    _fillColor.set(color);
-    _bFill = true;
+	_fillColor.set(color);
+	_bFill = true;
 }
 
 void Graphics::fill(const Color& color)
 {
-    _fillColor = color;
-    _bFill = true;
+	_fillColor = color;
+	_bFill = true;
 }
 
 void Graphics::noStroke()
 {
-    _bStroke = false;
+	_bStroke = false;
 }
 
 void Graphics::noFill()
 {
-    _bFill = false;
+	_bFill = false;
 }
 
 void Graphics::strokeWeight(unsigned int weight)
 {
 	if(weight == 0)
-    	weight = 1.0;
+		weight = 1.0;
 	SPG_PopThickness();
-    SPG_PushThickness(weight);
+	SPG_PushThickness(weight);
 }
 
 void Graphics::smooth()
 {
 	SPG_PopAA();
-    SPG_PushAA(true);
+	SPG_PushAA(true);
 }
 
 void Graphics::noSmooth()
 {
-    SPG_PopAA();
+	SPG_PopAA();
 	SPG_PushAA(false);
 }
 
@@ -365,43 +365,43 @@ void Graphics::bezierDetail(const uint8_t detail)
 // ***** global primitives *****
 void Graphics::point(const int x, const int y)
 {
-    if(_screen == NULL)
-        throw WindowException();
+	if(_screen == NULL)
+		throw WindowException();
 
 	_points.push_back(Point(x, y));
 	applyTransform();
 
-    if(_bStroke)
-    {
-        SPG_PixelBlend(_drawSurface, _points[0].x, _points[0].y,
+	if(_bStroke)
+	{
+		SPG_PixelBlend(_drawSurface, _points[0].x, _points[0].y,
 			_strokeColor.get(_drawSurface), _strokeColor.A);
-    }
+	}
 	
 	_points.clear();
 }
 
 void Graphics::line(const int x1, const int y1, const int x2, const int y2)
 {
-    if(_screen == NULL)
-        throw WindowException();
+	if(_screen == NULL)
+		throw WindowException();
 
 	_points.push_back(Point(x1, y1));
 	_points.push_back(Point(x2, y2));
 	applyTransform();
 
-    if(_bStroke)
-    {
-        SPG_LineBlend(_drawSurface, _points[0].x, _points[0].y, _points[1].x, _points[1].y,
+	if(_bStroke)
+	{
+		SPG_LineBlend(_drawSurface, _points[0].x, _points[0].y, _points[1].x, _points[1].y,
 			_strokeColor.get(_drawSurface), _strokeColor.A);
-    }
+	}
 	
 	_points.clear();
 }
 
 void Graphics::rectangle(const int x, const int y, const int w, const int h)
 {
-    if(_screen == NULL)
-        throw WindowException();
+	if(_screen == NULL)
+		throw WindowException();
 	
 	_points.push_back(Point());
 	_points.push_back(Point());	
@@ -442,102 +442,102 @@ void Graphics::rectangle(const int x, const int y, const int w, const int h)
 
 void Graphics::circle(const int x, const int y, const int r)
 {
-    if(_screen == NULL)
-        throw WindowException();
+	if(_screen == NULL)
+		throw WindowException();
 
 	_points.push_back(Point(x, y));
 	applyTransform();
 	Transform& t = _transforms.back();
 
-    if(_bFill)
-    {
-        SPG_CircleFilledBlend(_drawSurface, _points[0].x, _points[0].y, r*t.getScaleAvg(),
+	if(_bFill)
+	{
+		SPG_CircleFilledBlend(_drawSurface, _points[0].x, _points[0].y, r*t.getScaleAvg(),
 			_fillColor.get(_drawSurface), _fillColor.A);
-    }
+	}
 
-    if(_bStroke)
-    {
-        SPG_CircleBlend(_drawSurface, _points[0].x, _points[0].y, r*t.getScaleAvg(),
+	if(_bStroke)
+	{
+		SPG_CircleBlend(_drawSurface, _points[0].x, _points[0].y, r*t.getScaleAvg(),
 			_strokeColor.get(_drawSurface), _strokeColor.A);
-    }
+	}
 	
 	_points.clear();
 }
 
 void Graphics::ellipse(const int x, const int y, const int rx, const int ry)
 {
-    if(_screen == NULL)
-        throw WindowException();
+	if(_screen == NULL)
+		throw WindowException();
 
 	_points.push_back(Point(x, y));
 	applyTransform();
 	Transform& t = _transforms.back();
 
-    if(_bFill)
-    {
-        SPG_EllipseFilledBlend(_drawSurface, _points[0].x, _points[0].y, rx*t.getScaleX(), ry*t.getScaleY(),
+	if(_bFill)
+	{
+		SPG_EllipseFilledBlend(_drawSurface, _points[0].x, _points[0].y, rx*t.getScaleX(), ry*t.getScaleY(),
 			_fillColor.get(_drawSurface), _fillColor.A);
-    }
+	}
 
-    if(_bStroke)
-    {
-        SPG_EllipseBlend(_drawSurface, _points[0].x, _points[0].y, rx*t.getScaleX(), ry*t.getScaleY(),
+	if(_bStroke)
+	{
+		SPG_EllipseBlend(_drawSurface, _points[0].x, _points[0].y, rx*t.getScaleX(), ry*t.getScaleY(),
 			_strokeColor.get(_drawSurface), _strokeColor.A);
-    }
+	}
 	
 	_points.clear();
 }
 
 void Graphics::triangle(const int x1, const int y1, const int x2, const int y2, const int x3, const int y3)
 {
-    if(_screen == NULL)
-        throw WindowException();
+	if(_screen == NULL)
+		throw WindowException();
 
 	_points.push_back(Point(x1, y1));
 	_points.push_back(Point(x2, y2));
 	_points.push_back(Point(x3, y3));
 	applyTransform();
 
-    if(_bFill)
-    {
-        SPG_TrigonFilledBlend(_drawSurface, _points[0].x, _points[0].y, _points[1].x, _points[1].y, _points[2].x, _points[2].y, 
+	if(_bFill)
+	{
+		SPG_TrigonFilledBlend(_drawSurface, _points[0].x, _points[0].y, _points[1].x, _points[1].y, _points[2].x, _points[2].y, 
 			_fillColor.get(_drawSurface), _fillColor.A);
-    }
+	}
 
-    if(_bStroke)
-    {
-        SPG_TrigonBlend(_drawSurface, _points[0].x, _points[0].y, _points[1].x, _points[1].y, _points[2].x, _points[2].y,
+	if(_bStroke)
+	{
+		SPG_TrigonBlend(_drawSurface, _points[0].x, _points[0].y, _points[1].x, _points[1].y, _points[2].x, _points[2].y,
 			_strokeColor.get(_drawSurface), _strokeColor.A);
-    }
+	}
 	
 	_points.clear();
 }
 
 void Graphics::polygon(const PointList& points)
 {
-    if(_screen == NULL)
-        throw WindowException();
+	if(_screen == NULL)
+		throw WindowException();
 
 	Graphics::_points = points;
 	applyTransform();
 
-    if(_bFill)
-    {
-        SPG_PolygonFilledBlend(_drawSurface, Graphics::_points.size(), (SPG_Point*) &Graphics::_points[0],
+	if(_bFill)
+	{
+		SPG_PolygonFilledBlend(_drawSurface, Graphics::_points.size(), (SPG_Point*) &Graphics::_points[0],
 			_fillColor.get(_drawSurface), _fillColor.A);
-    }
+	}
 
-    if(_bStroke)
-    {
-        SPG_PolygonBlend(_drawSurface, Graphics::_points.size(), (SPG_Point*) &Graphics::_points[0],
+	if(_bStroke)
+	{
+		SPG_PolygonBlend(_drawSurface, Graphics::_points.size(), (SPG_Point*) &Graphics::_points[0],
 			_strokeColor.get(_drawSurface), _strokeColor.A);
-    }
+	}
 }
 
 void Graphics::arc(const int x, const int y, const float r, const float startAngle, const float endAngle)
 {
 	if(_screen == NULL)
-        throw WindowException();
+		throw WindowException();
 		
 	_points.push_back(Point(x, y));
 	applyTransform();
@@ -561,7 +561,7 @@ void Graphics::arc(const int x, const int y, const float r, const float startAng
 void Graphics::bezier(const int x, const int y, const int cx1, const int cx2, const int cy1, const int cy2, const int endX, const int endY)
 {
 	if(_screen == NULL)
-        throw WindowException();
+		throw WindowException();
 		
 	_points.push_back(Point(x, y));
 	_points.push_back(Point(cx1, cy1));
@@ -579,40 +579,40 @@ void Graphics::bezier(const int x, const int y, const int cx1, const int cx2, co
 
 void Graphics::character(const int x, const int y, const char c)
 {
-    if(_screen == NULL)
-        throw WindowException();
+	if(_screen == NULL)
+		throw WindowException();
 
-    if(_bStroke)
-    {
-        characterRGBA(_drawSurface, x, y, c,
-        	_strokeColor.R, _strokeColor.G, _strokeColor.B, _strokeColor.A);
-    }
+	if(_bStroke)
+	{
+		characterRGBA(_drawSurface, x, y, c,
+			_strokeColor.R, _strokeColor.G, _strokeColor.B, _strokeColor.A);
+	}
 }
 
 void Graphics::string(const int x, const int y, const std::string& line)
 {
-    if(_screen == NULL)
-        throw WindowException();
+	if(_screen == NULL)
+		throw WindowException();
 
-    if(_bStroke)
-    {
-        stringRGBA(_drawSurface, x, y, line.c_str(),
-        	_strokeColor.R, _strokeColor.G, _strokeColor.B, _strokeColor.A);
-    }
+	if(_bStroke)
+	{
+		stringRGBA(_drawSurface, x, y, line.c_str(),
+			_strokeColor.R, _strokeColor.G, _strokeColor.B, _strokeColor.A);
+	}
 }
 
 void Graphics::surface(const int x, const int y, const SDL_Surface* surface)
 {
 	if(_screen == NULL)
-        throw WindowException();
-        
+		throw WindowException();
+		
 	assert(surface);	// surface should not be NULL
 
 	SDL_Rect dest;
-    dest.x = x;
-    dest.y = y;
-    dest.w = surface->w;
-    dest.h = surface->h;
+	dest.x = x;
+	dest.y = y;
+	dest.w = surface->w;
+	dest.h = surface->h;
 	
 	SDL_BlitSurface((SDL_Surface*) surface, NULL, _drawSurface, &dest);
 	//SPG_Blit((SDL_Surface*) surface, NULL, _screen, &dest);	
@@ -625,19 +625,19 @@ void Graphics::quadtex(const SDL_Surface* surface, float sx, float sy, float sw,
 		_points.push_back(Point());
 	
 	if(_textureMode == CENTER)
-    {
-        _points[0].set(dx-dw/2, dy-dh/2);		// UL
-        _points[1].set(_points[0].x, dy+dh/2);	// DL
+	{
+		_points[0].set(dx-dw/2, dy-dh/2);		// UL
+		_points[1].set(_points[0].x, dy+dh/2);	// DL
 		_points[2].set(dx+dw/2, dy+dy/2);		// DR
 		_points[3].set(_points[2].x, _points[0].y);// UR
-    }
-    else
-    {
-        _points[0].set(dx, dy);		// UL
-        _points[1].set(dx, dy+dh);	// DL
+	}
+	else
+	{
+		_points[0].set(dx, dy);		// UL
+		_points[1].set(dx, dy+dh);	// DL
 		_points[2].set(dx+dw, dy+dh);// DR
 		_points[3].set(dx+dw, dy);	// UR
-    }
+	}
 	
 	// setup tex coords
 	_points[4].set(sx, sy);			// UL
@@ -841,12 +841,12 @@ void Graphics::clearDrawTexture()
 
 std::string Graphics::getLastError()
 {
-    return SDL_GetError();
+	return SDL_GetError();
 }
 
 unsigned int Graphics::getMillis()
 {
-    return SDL_GetTicks();
+	return SDL_GetTicks();
 }
 
 /* ***** PRIVATE ***** */

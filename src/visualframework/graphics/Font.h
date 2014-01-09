@@ -6,18 +6,18 @@
   
 	Copyright (C) 2010  Dan Wilcox <danomatika@gmail.com>
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ==============================================================================*/
 #ifndef VISUAL_FONT_H
@@ -35,37 +35,37 @@ class Font
 {
 	public:
 	
-    	Font();
-        Font(std::string filename, unsigned int size);
-    	virtual ~Font();
-        
-        bool load(std::string filename, unsigned int size);
-        
-        void clear();
-        
-        bool isLoaded() const;
-        
-        /// draw characters
-        void draw(const int x, const int y, const char c);
-        
-        /// draw strings
-        void draw(const int x, const int y, const std::string& text);
-        
-        /// render the text to a surface
-        SDL_Surface* render(const char c);
-        SDL_Surface* render(const std::string& text);
-        
-        //const int width();
-        //const int height();
-        
-        inline std::string getFilename() {return _filename;}
-        
+		Font();
+		Font(std::string filename, unsigned int size);
+		virtual ~Font();
+		
+		bool load(std::string filename, unsigned int size);
+		
+		void clear();
+		
+		bool isLoaded() const;
+		
+		/// draw characters
+		void draw(const int x, const int y, const char c);
+		
+		/// draw strings
+		void draw(const int x, const int y, const std::string& text);
+		
+		/// render the text to a surface
+		SDL_Surface* render(const char c);
+		SDL_Surface* render(const std::string& text);
+		
+		//const int width();
+		//const int height();
+		
+		inline std::string getFilename() {return _filename;}
+		
 		/// print this texture's info via ostream
-        friend std::ostream& operator<<(std::ostream& os, const Font& from)
-        {
-            os << "loaded: " << from.isLoaded() << " filename: " << from._filename;
-            return os;
-        }
+		friend std::ostream& operator<<(std::ostream& os, const Font& from)
+		{
+			os << "loaded: " << from.isLoaded() << " filename: " << from._filename;
+			return os;
+		}
 		
 		// bitmap string stream helper
 		class Stream
@@ -106,13 +106,13 @@ class Font
 		};
 		
 		// global SDL_ttf functions
-        static void initTTF();
-        static void cleanupTTF();
+		static void initTTF();
+		static void cleanupTTF();
 
-    protected:
-    	
-        TTF_Font*	_font;
-    	std::string	_filename;
+	protected:
+		
+		TTF_Font*	_font;
+		std::string	_filename;
 };
 
 } // namespace
