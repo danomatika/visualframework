@@ -37,7 +37,7 @@ On Max OS X, they can be installed using macports: http://macports.org
 * install the macport binary and setup the macports environment
   * go to the Terminal and install the libs:
       
-	  sudo port install libsdl libsdl_gfx libsdl_image libsdl_ttf
+    sudo port install libsdl libsdl_gfx libsdl_image libsdl_ttf
 
 BUILD AND INSTALLATION
 ----------------------
@@ -46,7 +46,6 @@ Build the library using:
 
     ./configure
     make
-
 
 Install the library (after building):
 
