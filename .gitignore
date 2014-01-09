@@ -11,6 +11,7 @@ config.log
 config.status
 src/config.h
 src/stamp-h1
+.dirstamp
 
 # build
 *.o

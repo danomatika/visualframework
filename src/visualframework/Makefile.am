@@ -1,5 +1,7 @@
 # visualframework
 
+AUTOMAKE_OPTIONS = subdir-objects
+
 # dirs to delve into
 SUBDIRS = vmmlib
 
